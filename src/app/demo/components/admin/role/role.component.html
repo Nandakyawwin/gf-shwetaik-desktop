@@ -34,7 +34,7 @@
 							<td>{{ role.createAt | date }}</td>
 							<td>
 								<div class="flex">
-									<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(user.user_id)"></button>
+									<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(role.role_id)"></button>
 								</div>
 							</td>
 						</tr>
@@ -43,60 +43,15 @@
 			</div>
 			<p-dialog [(visible)]="productDialog" [style]="{width: '450px'}"[modal]="true" class="p-fluid">
 				<ng-template pTemplate="header">
-					<span *ngIf="!addOrUpdate"><b>Add New User</b></span>
-					<span *ngIf="addOrUpdate"><b>Edit User</b></span>
+					<span *ngIf="!addOrUpdate"><b>Add New Role</b></span>
+					<span *ngIf="addOrUpdate"><b>Edit Role</b></span>
 				  </ng-template>
 				<ng-template pTemplate="content">
 					<form [formGroup]="formGroup">
 						<div class="field">
-							<label for="name">Name</label>
-							<input type="text" pInputText id="name" [(ngModel)]="name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !name}"/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !name">Name is required.</small>
-						</div>
-						<div class="field">
-							<label for="email">Email</label>
-							<input 
-								type="email" 
-								pInputText id="email" 
-								[(ngModel)]="email" 
-								required 
-								autofocus 
-								[ngClass]="{'ng-invalid ng-dirty' : submitted && !email}"
-								#emailModel="ngModel"
-							/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !email">Email is required.</small>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && emailModel.errors?.email">Invalid email format.</small>
-						</div>
-						<div class="field" *ngIf="addOrUpdate">
-							<label for="userName">Username</label>
-							<input type="text" pInputText id="userName" [(ngModel)]="userName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !userName}"/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !userName">Username is required.</small>
-						</div>
-						<div class="field">
-							<label for="role">Role</label>
-							<p-dropdown 
-								[options]="Roles"
-								[(ngModel)]="selectedRole"
-								optionLabel="roleName"
-								[filter]="true"
-								filterBy="roleName"
-								id="role"
-								[showClear]="true"
-								placeholder="Select Role"
-								[ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedRole}"
-								>
-							</p-dropdown>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is required.</small>
-						</div>
-						<div class="field">
-							<label for="phone">Phone Number</label>
-							<input type="phone" pInputText id="phone" [(ngModel)]="phone" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !phone}"/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !email">Phone Number is required.</small>
-						</div>
-						<div class="field" *ngIf="!addOrUpdate">
-							<label for="password">Password</label>
-							<p-password [(ngModel)]="password" [ngClass]="{'ng-invalid ng-dirty' : submitted && !password}" [toggleMask]="true"></p-password>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !password">Password is required.</small>
+							<label for="roleName">Role Name (eg: Admin )</label>
+							<input type="text" pInputText id="roleName" [(ngModel)]="roleName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !roleName}"/>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !roleName">Role Name is required.</small>
 						</div>
 					</form>
 				</ng-template>

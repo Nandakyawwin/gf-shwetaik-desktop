@@ -13,9 +13,13 @@ export class RoleComponent {
 
   selectedProduct: any;
 
+  role_id: any;
+
   first: any = 0;
 
   userName: any;
+
+  roleName: any;
 
   disabled: boolean = false;
 
@@ -54,19 +58,11 @@ export class RoleComponent {
 
 
   ngOnInit(): void {
-    this.http.allUser().subscribe(
-      (response: any) => {
-        let Users = response.data;
-        this.Users = Users.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
 
     this.http.allRole().subscribe(
       (res: any) => {
-        this.Roles = res.data;
+        let Roles = res.data;
+        this.Roles = Roles.reverse();
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -106,30 +102,22 @@ export class RoleComponent {
     this.submitted = true;
 
     let obj = {
-      name: this.name,
-      email: this.email,
-      password: this.password,
-      role: this.selectedRole.roleName,
-      phone: this.phone
+      roleName: this.roleName,
     };
 
-    this.http.saveUser(obj).subscribe(
+    this.http.saveRole(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
-          this.name = '';
-          this.email = '';
-          this.phone = '';
-          this.selectedRole = '';
-          this.password = '';
+          this.roleName = '';
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
 
-          this.http.allUser().subscribe(
-            (response: any) => {
-              let Users = response.data;
-              this.Users = Users.reverse();
+          this.http.allRole().subscribe(
+            (res: any) => {
+              let Roles = res.data;
+              this.Roles = Roles.reverse();
             },
             (error: any) => {
               this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -146,15 +134,10 @@ export class RoleComponent {
 
   onRowSelect(event: any) {
     console.log(event)
-    console.log(this.selectedRole)
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.name = event.data.name;
-    this.email = event.data.email;
-    this.selectedRole = this.Roles.find(role => role.roleName === event.data.role);
-    this.phone = event.data.phone;
-    this.userName = event.data.userName;
-    this.user_id = event.data.user_id;
+    this.roleName = event.data.roleName;
+    this.role_id = event.data.role_id;
 
   };
 
@@ -167,33 +150,25 @@ export class RoleComponent {
     this.submitted = true;
 
     let obj = {
-      name: this.name,
-      email: this.email,
-      phone: this.phone,
-      role: this.selectedRole.roleName,
-      userName: this.userName,
-      user_id: this.user_id
+      roleName: this.roleName,
+      role_id: this.role_id
     };
 
-    this.http.updateUser(obj).subscribe(
+    this.http.updateRole(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Update Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Update Successfully' });
 
-          this.name = '';
-          this.email = '';
-          this.phone = '';
-          this.selectedRole = '';
-          this.user_id = '';
-          this.password = '';
+          this.roleName = '';
+          this.role_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allUser().subscribe(
+          this.http.allRole().subscribe(
             (res: any) => {
               if (res.con) {
-                let Users = res.data;
-                this.Users = Users.reverse();
+                let Role = res.data;
+                this.Roles = Role.reverse();
               }
             },
             (err: any) => {
@@ -207,32 +182,28 @@ export class RoleComponent {
 
   deleteProduct(obj: any) {
     this.deleteProductDialog = true;
-    this.user_id = obj;
+    this.role_id = obj;
   }
 
   confirmDelete() {
     let obj = {
-      user_id: this.user_id
+      role_id: this.role_id
     }
-    this.http.deleteUser(obj).subscribe(
+    this.http.deleteRole(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Delete Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Delete Successfully' });
           this.deleteProductDialog = false;
-          this.name = '';
-          this.email = '';
-          this.phone = '';
-          this.selectedRole = '';
-          this.user_id = '';
-          this.password = '';
+          this.roleName = '';
+          this.role_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allUser().subscribe(
+          this.http.allRole().subscribe(
             (res: any) => {
               if (res.con) {
-                let Users = res.data;
-                this.Users = Users.reverse();
+                let Roles = res.data;
+                this.Roles = Roles.reverse();
               }
             },
             (err: any) => {
