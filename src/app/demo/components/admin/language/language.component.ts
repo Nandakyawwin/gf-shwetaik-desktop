@@ -4,14 +4,16 @@ import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
 
 @Component({
-  selector: 'app-role',
+  selector: 'app-language',
   providers: [MessageService,TableService],
-  templateUrl: './role.component.html',
-  styleUrl: './role.component.scss'
+  templateUrl: './language.component.html',
+  styleUrl: './language.component.scss'
 })
-export class RoleComponent {
+export class LanguageComponent {
 
   selectedProduct: any;
+
+  language_id: any;
 
   role_id: any;
 
@@ -45,6 +47,10 @@ export class RoleComponent {
 
   phone: any;
 
+  mm: any;
+
+  en: any;
+
   role: any;
 
   user_id: any;
@@ -53,16 +59,18 @@ export class RoleComponent {
 
   password: any;
 
+  Languages: any;
+
   constructor(private http: StService,private msgService: MessageService) { }
   
 
 
   ngOnInit(): void {
 
-    this.http.allRole().subscribe(
+    this.http.allLanguage().subscribe(
       (res: any) => {
-        let Roles = res.data;
-        this.Roles = Roles.reverse();
+        let Languages = res.data;
+        this.Languages = Languages.reverse();
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -83,8 +91,9 @@ export class RoleComponent {
     if (this.productDialog == false) {
       this.productDialog = true;
       this.addOrUpdate = false;
-      this.roleName = '';
-      this.role_id = '';
+      this.en = '';
+      this.mm = '';
+      this.language_id = '';
     }
   }
 
@@ -92,8 +101,10 @@ export class RoleComponent {
 
     this.productDialog = false;
     this.submitted = false;
-    this.roleName = '';
-    this.role_id = '';
+    this.en = '';
+    this.mm = '';
+    this.language_id = '';
+    console.log("dd")
   }
   
   saveProduct() {
@@ -102,23 +113,26 @@ export class RoleComponent {
     this.submitted = true;
 
     let obj = {
-      roleName: this.roleName,
+      en: this.en,
+      mm: this.mm,
     };
 
-    this.http.saveRole(obj).subscribe(
+    this.http.saveLanguage(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
-          this.roleName = '';
-          this.role_id = '';
+
+          this.en = '';
+          this.mm = '';
+          this.language_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
 
-          this.http.allRole().subscribe(
+          this.http.allLanguage().subscribe(
             (res: any) => {
-              let Roles = res.data;
-              this.Roles = Roles.reverse();
+              let Languages = res.data;
+              this.Languages = Languages.reverse();
             },
             (error: any) => {
               this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -137,8 +151,9 @@ export class RoleComponent {
     console.log(event)
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.roleName = event.data.roleName;
-    this.role_id = event.data.role_id;
+    this.en = event.data.en;
+    this.mm = event.data.mm;
+    this.language_id = event.data.language_id;
 
   };
 
@@ -151,25 +166,26 @@ export class RoleComponent {
     this.submitted = true;
 
     let obj = {
-      roleName: this.roleName,
-      role_id: this.role_id
+      en: this.en,
+      mm: this.mm,
+      language_id: this.language_id
     };
 
-    this.http.updateRole(obj).subscribe(
+    this.http.updateLanguage(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Update Successfully' });
-
-          this.roleName = '';
-          this.role_id = '';
+          this.en = '';
+          this.mm = '';
+          this.language_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allRole().subscribe(
+          this.http.allLanguage().subscribe(
             (res: any) => {
               if (res.con) {
-                let Role = res.data;
-                this.Roles = Role.reverse();
+                let Languages = res.data;
+                this.Languages = Languages.reverse();
               }
             },
             (err: any) => {
@@ -183,28 +199,29 @@ export class RoleComponent {
 
   deleteProduct(obj: any) {
     this.deleteProductDialog = true;
-    this.role_id = obj;
+    this.language_id = obj;
   }
 
   confirmDelete() {
     let obj = {
-      role_id: this.role_id
+      language_id: this.language_id
     }
-    this.http.deleteRole(obj).subscribe(
+    this.http.deleteLanguage(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Delete Successfully' });
           this.deleteProductDialog = false;
-          this.roleName = '';
-          this.role_id = '';
+          this.en = '';
+          this.mm = '';
+          this.language_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allRole().subscribe(
+          this.http.allLanguage().subscribe(
             (res: any) => {
               if (res.con) {
-                let Roles = res.data;
-                this.Roles = Roles.reverse();
+                let Languages = res.data;
+                this.Languages = Languages.reverse();
               }
             },
             (err: any) => {

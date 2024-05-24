@@ -89,4 +89,128 @@ export class StService {
 
   // ******* ROLE *******
 
+  
+  // ******* SYSTEM OPTIONS *******
+
+
+  allSystem() {
+    return this.http.get(this.BASEURL + 'all/systemOption').pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  saveSystem(obj: any) {
+    let url = this.BASEURL + 'save/systemOption';
+    return this.http.post(url,obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  updateSystem(obj: any) {
+    let url = this.BASEURL + 'update/systemOption';
+    return this.http.post(url,obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  deleteSystem(id: any) {
+    let url = this.BASEURL + 'delete/systemOption';
+    return this.http.post(url,id).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+
+  // ******* SYSTEM OPTIONS *******
+
+
+    // ******* LANGUAGE *******
+
+
+    allLanguage() {
+      return this.http.get(this.BASEURL + 'all/language').pipe(
+        map(
+          response => response
+        )
+      )
+    };
+  
+    saveLanguage(obj: any) {
+      let url = this.BASEURL + 'save/language';
+      return this.http.post(url,obj).pipe(
+        map(
+          response => response
+        )
+      )
+    };
+  
+    updateLanguage(obj: any) {
+      let url = this.BASEURL + 'update/language';
+      return this.http.post(url,obj).pipe(
+        map(
+          response => response
+        )
+      )
+    };
+  
+    deleteLanguage(id: any) {
+      let url = this.BASEURL + 'delete/language';
+      return this.http.post(url,id).pipe(
+        map(
+          response => response
+        )
+      )
+    };
+  
+  
+    // ******* LANGUAGE *******
+
+      // ******* LANGUAGE *******
+
+
+      allTable() {
+        return this.http.get(this.BASEURL + 'all/table').pipe(
+          map(
+            response => response
+          )
+        )
+      };
+    
+      saveTable(obj: any) {
+        let url = this.BASEURL + 'save/table';
+        return this.http.post(url,obj).pipe(
+          map(
+            response => response
+          )
+        )
+      };
+    
+      updateTable(obj: any) {
+        let url = this.BASEURL + 'update/table';
+        return this.http.post(url,obj).pipe(
+          map(
+            response => response
+          )
+        )
+      };
+    
+      deleteTable(id: any) {
+        let url = this.BASEURL + 'delete/table';
+        return this.http.post(url,id).pipe(
+          map(
+            response => response
+          )
+        )
+      };
+    
+    
+      // ******* LANGUAGE *******
 }

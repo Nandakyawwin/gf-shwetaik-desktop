@@ -3,7 +3,7 @@
 	<div class="col-12 xl:col-12">
 		<div class="col-23 xl:col-12">
 			<div class="card">
-				<h5>Roles</h5>
+				<h5>Languages</h5>
 				<p-toast key="tst"></p-toast>
 				<div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
 					<button pButton type="button" label="New" icon="pi pi-user-plus" class="mr-2" (click)="openDialog()"></button>
@@ -11,7 +11,7 @@
 
 				<p-table
 					#dt
-					[value]="Roles"
+					[value]="Languages"
 					[paginator]="true"
 					[rows]="5"
 					responsiveLayout="scroll"
@@ -24,17 +24,19 @@
 				>
 					<ng-template pTemplate="header">
 						<tr>
-							<th pSortableColumn="name">Name <p-sortIcon field="roleName"></p-sortIcon></th>
-							<th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
+							<th pSortableColumn="language_id">Language ID <p-sortIcon field="language_id"></p-sortIcon></th>
+							<th pSortableColumn="en">English <p-sortIcon field="en"></p-sortIcon></th>
+							<th pSortableColumn="mm">Myanmar <p-sortIcon field="mm"></p-sortIcon></th>
 						</tr>
 					</ng-template>
-					<ng-template pTemplate="body" let-role>
-						<tr [pSelectableRow]="role">
-							<td>{{ role.roleName }}</td>
-							<td>{{ role.createAt | date }}</td>
+					<ng-template pTemplate="body" let-lang>
+						<tr [pSelectableRow]="lang">
+							<td>{{ lang.language_id }}</td>
+							<td>{{ lang.en }}</td>
+							<td>{{ lang.mm }}</td>
 							<td>
 								<div class="flex">
-									<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(role.role_id)"></button>
+									<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(lang.language_id)"></button>
 								</div>
 							</td>
 						</tr>
@@ -43,15 +45,20 @@
 			</div>
 			<p-dialog [(visible)]="productDialog" [maximizable]="true" [style]="{width: '450px'}"[modal]="true" class="p-fluid">
 				<ng-template pTemplate="header">
-					<span *ngIf="!addOrUpdate"><b>Add New Role</b></span>
-					<span *ngIf="addOrUpdate"><b>Edit Role</b></span>
+					<span *ngIf="!addOrUpdate"><b>Add New Language</b></span>
+					<span *ngIf="addOrUpdate"><b>Edit Language</b></span>
 				  </ng-template>
 				<ng-template pTemplate="content">
 					<form [formGroup]="formGroup">
 						<div class="field">
-							<label for="roleName">Role Name (eg: Admin )</label>
-							<input type="text" pInputText id="roleName" [(ngModel)]="roleName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !roleName}"/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !roleName">Role Name is required.</small>
+							<label for="en">English</label>
+							<input type="text" pInputText id="en" [(ngModel)]="en" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !en}"/>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !en">English Language is required.</small>
+						</div>
+                        <div class="field">
+							<label for="mm">Myanmar</label>
+							<input type="text" pInputText id="mm" [(ngModel)]="mm" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !mm}"/>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !mm">Role Name is required.</small>
 						</div>
 					</form>
 				</ng-template>

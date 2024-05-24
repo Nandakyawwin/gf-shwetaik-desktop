@@ -4,16 +4,24 @@ import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
 
 @Component({
-  selector: 'app-role',
+  selector: 'app-tables',
   providers: [MessageService,TableService],
-  templateUrl: './role.component.html',
-  styleUrl: './role.component.scss'
+  templateUrl: './tables.component.html',
+  styleUrl: './tables.component.scss'
 })
-export class RoleComponent {
+export class TablesComponent {
 
   selectedProduct: any;
 
+  Tables: any;
+
+  tableIndex: any = 0;
+
   role_id: any;
+
+  activeIndex: number = 0;
+
+  scrollableTabs: any[] = Array.from({ length: 50 }, (_, i) => ({ title: "Title", content: "Content" }));
 
   first: any = 0;
 
@@ -51,6 +59,10 @@ export class RoleComponent {
 
   email: any;
 
+  tableName: any;
+
+  table_id: any;
+
   password: any;
 
   constructor(private http: StService,private msgService: MessageService) { }
@@ -59,10 +71,12 @@ export class RoleComponent {
 
   ngOnInit(): void {
 
-    this.http.allRole().subscribe(
+
+
+    this.http.allTable().subscribe(
       (res: any) => {
-        let Roles = res.data;
-        this.Roles = Roles.reverse();
+        let Tables = res.data;
+        this.Tables = Tables.reverse();
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -80,20 +94,15 @@ export class RoleComponent {
   }
   
   openDialog() {
-    if (this.productDialog == false) {
-      this.productDialog = true;
-      this.addOrUpdate = false;
-      this.roleName = '';
-      this.role_id = '';
-    }
+    this.productDialog = true;
   }
 
   hideDialog() {
 
     this.productDialog = false;
     this.submitted = false;
-    this.roleName = '';
-    this.role_id = '';
+    this.tableName = '';
+    this.table_id = '';
   }
   
   saveProduct() {
@@ -102,23 +111,23 @@ export class RoleComponent {
     this.submitted = true;
 
     let obj = {
-      roleName: this.roleName,
+      tableName: this.tableName,
     };
 
-    this.http.saveRole(obj).subscribe(
+    this.http.saveTable(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
-          this.roleName = '';
-          this.role_id = '';
+          this.tableName = '';
+          this.table_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
 
-          this.http.allRole().subscribe(
+          this.http.allTable().subscribe(
             (res: any) => {
-              let Roles = res.data;
-              this.Roles = Roles.reverse();
+              let Table = res.data;
+              this.Tables = Table.reverse();
             },
             (error: any) => {
               this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -137,8 +146,8 @@ export class RoleComponent {
     console.log(event)
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.roleName = event.data.roleName;
-    this.role_id = event.data.role_id;
+    this.tableName = event.data.tableName;
+    this.table_id = event.data.table_id;
 
   };
 
@@ -151,25 +160,25 @@ export class RoleComponent {
     this.submitted = true;
 
     let obj = {
-      roleName: this.roleName,
-      role_id: this.role_id
+      tableName: this.tableName,
+      table_id: this.table_id
     };
 
-    this.http.updateRole(obj).subscribe(
+    this.http.updateTable(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Update Successfully' });
 
-          this.roleName = '';
-          this.role_id = '';
+          this.tableName = '';
+          this.table_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allRole().subscribe(
+          this.http.allTable().subscribe(
             (res: any) => {
               if (res.con) {
-                let Role = res.data;
-                this.Roles = Role.reverse();
+                let Table = res.data;
+                this.Tables = Table.reverse();
               }
             },
             (err: any) => {
@@ -183,28 +192,28 @@ export class RoleComponent {
 
   deleteProduct(obj: any) {
     this.deleteProductDialog = true;
-    this.role_id = obj;
+    this.table_id = obj;
   }
 
   confirmDelete() {
     let obj = {
-      role_id: this.role_id
+      table_id: this.table_id
     }
-    this.http.deleteRole(obj).subscribe(
+    this.http.deleteTable(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Delete Successfully' });
           this.deleteProductDialog = false;
-          this.roleName = '';
-          this.role_id = '';
+          this.tableName = '';
+          this.table_id = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allRole().subscribe(
+          this.http.allTable().subscribe(
             (res: any) => {
               if (res.con) {
-                let Roles = res.data;
-                this.Roles = Roles.reverse();
+                let Table = res.data;
+                this.Tables = Table.reverse();
               }
             },
             (err: any) => {
@@ -217,5 +226,23 @@ export class RoleComponent {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
       }
     )
+  }
+
+  onTabChange(e: any) {
+    console.log(e);
+    let tableData = this.Tables[e.index].tableName;
+    console.log(tableData)
+  }
+
+  dataSync() {
+    
+  }
+
+  dataFetch() {
+    
+  }
+
+  dataInsert() {
+    
   }
 }
