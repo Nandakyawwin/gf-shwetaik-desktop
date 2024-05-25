@@ -52,7 +52,7 @@ export class SystemComponent {
   selectedRole: any;
 
   submitted: boolean = false;
-  
+
   addOrUpdate: boolean = false;
 
   rows = 10;
@@ -78,7 +78,7 @@ export class SystemComponent {
   Systems: any;
 
   constructor(private http: StService,private msgService: MessageService) { }
-  
+
 
 
   ngOnInit(): void {
@@ -118,17 +118,18 @@ export class SystemComponent {
   showErrorViaToast() {
     this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
   }
-  
+
   pageChange(event) {
     this.first = event.first;
     this.rows = event.rows;
   }
-  
+
   openDialog() {
     if (this.productDialog == false) {
       this.productDialog = true;
       this.addOrUpdate = false;
       this.selectedRole = '';
+      this.selectedUsers = '';
       this.userManage = false;
       this.roleManage = false;
       this.languageManage = false;
@@ -159,7 +160,7 @@ export class SystemComponent {
     this.submitted = false;
     this.addOrUpdate = false;
   }
-  
+
   saveProduct() {
 
     this.disabled = true;
@@ -167,6 +168,7 @@ export class SystemComponent {
 
     let obj = {
       roleName: this.selectedRole.roleName,
+        user_id : this.selectedUsers.user_id,
       userManage: this.userManage,
       roleManage: this.roleManage,
       languageManage: this.languageManage,
@@ -182,8 +184,9 @@ export class SystemComponent {
     this.http.saveSystem(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Create Successfully' });
           this.selectedRole = '';
+          this.selectedUsers = '';
           this.userManage = false;
           this.roleManage = false;
           this.languageManage = false;
@@ -221,6 +224,7 @@ export class SystemComponent {
     this.addOrUpdate = true;
     this.selectedRole = this.Roles.find(role => role.roleName === event.data.roleName);
     this.userManage = event.data.userManage;
+    this.selectedUsers = event.data.user_id;
     this.roleManage = event.data.roleManage;
     this.languageManage = event.data.languageManage;
     this.tableManage = event.data.tableManage;
@@ -243,6 +247,7 @@ export class SystemComponent {
     let obj = {
       roleName: this.selectedRole.roleName,
       userManage: this.userManage,
+        user_id : this.selectedUsers.user_id,
       roleManage: this.roleManage,
       languageManage: this.languageManage,
       tableManage: this.tableManage,
@@ -256,8 +261,9 @@ export class SystemComponent {
     this.http.updateSystem(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Update Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Update Successfully' });
           this.selectedRole = '';
+          this.selectedUsers = '';
           this.userManage = false;
           this.roleManage = false;
           this.languageManage = false;
@@ -308,9 +314,10 @@ export class SystemComponent {
     this.http.deleteSystem(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Role Delete Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Delete Successfully' });
           this.deleteProductDialog = false;
           this.selectedRole = '';
+          this.selectedUsers = '';
           this.userManage = false;
           this.roleManage = false;
           this.languageManage = false;

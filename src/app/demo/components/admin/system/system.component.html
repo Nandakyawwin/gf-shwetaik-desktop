@@ -20,12 +20,13 @@
                 selectionMode="single"
                 [resizableColumns]="true"
                 [(selection)]="selectedProduct"
-                (onRowSelect)="onRowSelect($event)" 
-                (onRowUnselect)="onRowUnselect($event)" 
+                (onRowSelect)="onRowSelect($event)"
+                (onRowUnselect)="onRowUnselect($event)"
 				>
 					<ng-template pTemplate="header">
 						<tr>
 							<th pSortableColumn="roleName">Role <p-sortIcon field="roleName"></p-sortIcon></th>
+                            <th pSortableColumn="user_id">User ID <p-sortIcon field="user_id"></p-sortIcon></th>
 							<th pSortableColumn="userManage">User Management <p-sortIcon field="userManage"></p-sortIcon></th>
 							<th pSortableColumn="roleMannage">Role Management <p-sortIcon field="roleMannage"></p-sortIcon></th>
 							<th pSortableColumn="languageManage">Language Management <p-sortIcon field="languageManage"></p-sortIcon></th>
@@ -41,6 +42,7 @@
 					<ng-template pTemplate="body" let-system>
 						<tr [pSelectableRow]="system">
 							<td>{{ system.roleName }}</td>
+                            <td>{{ system.user_id }}</td>
 							<td>{{ system.userManage }}</td>
 							<td>{{ system.roleManage }}</td>
 							<td>{{ system.languageManage }}</td>
@@ -69,7 +71,7 @@
 					<form [formGroup]="formGroup">
                         <div class="field">
 							<label for="role">Role</label>
-							<p-dropdown 
+							<p-dropdown
 								[options]="Roles"
 								[(ngModel)]="selectedRole"
 								optionLabel="roleName"
@@ -84,91 +86,108 @@
 							<small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is required.</small>
 						</div>
 
+                        <div class="field">
+                            <label for="user_id">User ID</label>
+                            <p-dropdown
+                                [options]="Users"
+                                [(ngModel)]="selectedUsers"
+                                optionLabel="name"
+                                [filter]="true"
+                                filterBy="name"
+                                id="user_id"
+                                [showClear]="true"
+                                placeholder="Select User"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedUsers}"
+                            >
+                            </p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedUsers">User is required.</small>
+                        </div>
+
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="userManage" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="userManage"
+                            [binary]="true"
+                            inputId="binary"
                             id="userManage"
                             class="float-end"/>
                             <label for="userManage" class="mt-2"> &nbsp;User Management</label>
                         </div>
 
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="roleManage" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="roleManage"
+                            [binary]="true"
+                            inputId="binary"
                             id="roleManage"
                             class="float-end"/>
                             <label for="roleManage" class="mt-2"> &nbsp;Role Management</label>
                         </div>
 
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="languageManage" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="languageManage"
+                            [binary]="true"
+                            inputId="binary"
                             id="languageManage"
                             class="float-end"/>
                             <label for="languageManage" class="mt-2"> &nbsp;Language Management</label>
                         </div>
-                        
+
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="tableManage" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="tableManage"
+                            [binary]="true"
+                            inputId="binary"
                             id="tableManage"
                             class="float-end"/>
                             <label for="tableManage" class="mt-2"> &nbsp;Table Management</label>
                         </div>
 
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="colorManage" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="colorManage"
+                            [binary]="true"
+                            inputId="binary"
                             id="colorManage"
                             class="float-end"/>
                             <label for="colorManage" class="mt-2"> &nbsp;Color Management</label>
                         </div>
 
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="filterManage" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="filterManage"
+                            [binary]="true"
+                            inputId="binary"
                             id="filterManage"
                             class="float-end"/>
                             <label for="filterManage" class="mt-2"> &nbsp;Filter Management</label>
                         </div>
 
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="tableSync" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="tableSync"
+                            [binary]="true"
+                            inputId="binary"
                             id="tableSync"
                             class="float-end"/>
                             <label for="tableSync" class="mt-2"> &nbsp;Table Sync</label>
                         </div>
-                        
+
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="tableFetch" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="tableFetch"
+                            [binary]="true"
+                            inputId="binary"
                             id="tableFetch"
                             class="float-end"/>
                             <label for="tableFetch" class="mt-2"> &nbsp;Table Fetch</label>
                         </div>
 
                         <div class="field flex align-items-center gap-2">
-                            <p-checkbox 
-                            [(ngModel)]="tableInsert" 
-                            [binary]="true" 
-                            inputId="binary" 
+                            <p-checkbox
+                            [(ngModel)]="tableInsert"
+                            [binary]="true"
+                            inputId="binary"
                             id="tableInsert"
                             class="float-end"/>
                             <label for="tableInsert" class="mt-2"> &nbsp;Table Insert</label>
@@ -176,7 +195,7 @@
 
 					</form>
 				</ng-template>
-				<ng-template pTemplate="footer">   
+				<ng-template pTemplate="footer">
 					<button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
 					<button pButton pRipple label="Save" *ngIf="!addOrUpdate" icon="pi pi-check" class="p-button-text" [disabled]="disabled" (click)="saveProduct()"></button>
 					<button pButton pRipple label="Update" icon="pi pi-check" *ngIf="addOrUpdate" class="p-button-text" [disabled]="disabled" (click)="updateProduct()"></button>
