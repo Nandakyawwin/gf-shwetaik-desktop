@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
@@ -16,6 +17,10 @@ export class TablesComponent {
   Tables: any;
 
   tableIndex: any = 0;
+
+  kk:any;
+
+  fetch:any;
 
   role_id: any;
 
@@ -55,6 +60,8 @@ export class TablesComponent {
 
   role: any;
 
+  form: FormGroup;
+
   user_id: any;
 
   email: any;
@@ -65,23 +72,53 @@ export class TablesComponent {
 
   password: any;
 
-  constructor(private http: StService,private msgService: MessageService) { }
+  keys:any;
+
+  datas :any;
+
+  selectTableName:any;
+
+  constructor(private http: StService,private msgService: MessageService,private fb: FormBuilder) { }
   
 
 
   ngOnInit(): void {
 
-
-
     this.http.allTable().subscribe(
       (res: any) => {
         let Tables = res.data;
         this.Tables = Tables.reverse();
+        this.keys = Object.keys(this.Tables[0]);
+        let table1 = this.Tables[0].tableName;
+        this.http.getList(String(table1)).subscribe(
+          (res:any)=>{
+            console.log(res)
+            this.datas = res;
+            this.keys = Object.keys(this.datas[0]);
+            this.formGroup = this.fb.group({});
+            this.keys.forEach(key => {
+              this.formGroup.addControl(key, this.fb.control(''));
+            });
+          this.http.dataSync(table1,res).subscribe(
+            (res:any)=>{
+              if(res){
+                this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+              }
+            }
+          )
+
+          },
+          (err:any)=>{
+            console.log(err);
+          }
+        )
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
       }
     )
+
+
   }
 
   showErrorViaToast() {
@@ -231,15 +268,44 @@ export class TablesComponent {
   onTabChange(e: any) {
     console.log(e);
     let tableData = this.Tables[e.index].tableName;
-    console.log(tableData)
+    this.selectTableName = tableData;
+    this.http.getList(String(tableData)).subscribe(
+      (res:any)=>{
+        console.log(res)
+        this.datas = res;
+        this.keys = Object.keys(this.datas[0]);
+        this.formGroup = this.fb.group({});
+        this.keys.forEach(key => {
+          this.formGroup.addControl(key, this.fb.control(''));
+        });
+      },
+      (err:any)=>{
+        console.log(err);
+      }
+    )
+
   }
 
+  onSubmit() {
+    this.submitted = true;
+    if (this.formGroup.valid) {
+      console.log(this.formGroup);
+
+    }
+  }
+
+  
   dataSync() {
-    
   }
 
   dataFetch() {
-    
+    this.http.getList(this.selectTableName).subscribe(
+      (res:any)=>{
+        this.fetch = res;
+        this.kk = Object.keys(this.fetch[0]);
+        this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data Fetch Success' })
+      }
+    )
   }
 
   dataInsert() {
