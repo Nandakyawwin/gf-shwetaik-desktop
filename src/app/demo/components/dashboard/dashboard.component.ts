@@ -5,6 +5,7 @@ import { ProductService } from '../../service/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { StService } from '../../service/st.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -26,7 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService,private ST : StService,private msg: MessageService) {
+    constructor(private productService: ProductService, public layoutService: LayoutService,private ST : StService,private msg: MessageService,private router: Router) {
         this.subscription = this.layoutService.configUpdate$
         .pipe(debounceTime(25))
         .subscribe((config) => {
@@ -35,6 +36,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+
+        let role = localStorage.getItem("role");
+        if (role == null || role == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        let name = localStorage.getItem("name");
+        if (name == null || name == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        let email = localStorage.getItem("email");
+        if (email == null || email == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
         this.ST.allUser().subscribe(
             (res: any) => {
                 this.Users = res.length;

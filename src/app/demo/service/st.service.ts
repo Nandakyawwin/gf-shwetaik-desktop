@@ -20,6 +20,15 @@ export class StService {
     )
   };
 
+  loginUser(obj: any) {
+    let url = this.BASEURL + 'login/user';
+    return this.http.post(url,obj).pipe(
+      map(
+        response => response
+      )
+    )
+  }
+  
   saveUser(obj: any) {
     let url = this.BASEURL + 'register/user';
     return this.http.post(url,obj).pipe(
