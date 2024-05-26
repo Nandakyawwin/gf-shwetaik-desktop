@@ -222,4 +222,32 @@ export class StService {
     
     
       // ******* LANGUAGE *******
+
+
+      getList(table:any){
+        let url = `http://localhost/getARC.php?table=${table}`
+        return this.http.get(url).pipe(
+          map(
+            response => response
+          )
+        )
+      }
+
+      dataSync(tableName:any,data:any){
+        let url = this.BASEURL + 'dataSyncFromDesktop';
+        return this.http.post(url,{tableName: tableName,data: data}).pipe(
+          map(
+            response => response
+          )
+        )
+      }
+
+      addList(tableName:any){
+        let url = this.BASEURL + tableName + '/getTable';
+        return this.http.get(url).pipe(
+          map(
+            response => response
+          )
+        )
+      }
 }

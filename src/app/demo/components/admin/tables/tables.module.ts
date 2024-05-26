@@ -13,7 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
@@ -49,6 +49,7 @@ import { TabViewModule } from 'primeng/tabview';
     TableModule,
     DialogModule,
     InputTextareaModule,
+    ReactiveFormsModule,
     RadioButtonModule,
     DropdownModule,
     BreadcrumbModule

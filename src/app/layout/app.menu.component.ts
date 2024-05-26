@@ -35,10 +35,10 @@ export class AppMenuComponent implements OnInit {
                         label: 'System Options', icon: 'pi pi-cog',
                         routerLink: ['/admin/systems']
                     },
-                    {
-                        label: 'Table Filters', icon: 'pi pi-filter',
-                        routerLink: ['/admin/filters']
-                    },
+                    // {
+                    //     label: 'Table Filters', icon: 'pi pi-filter',
+                    //     routerLink: ['/admin/filters']
+                    // },
                 ]
             },
             {
