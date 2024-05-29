@@ -14,9 +14,11 @@ export class TablesComponent {
 
   selectedProduct: any;
 
+  code:any
+
   Tables: any;
 
-  tableIndex: any = 0;
+  tableIndex = 0;
 
   kk:any;
 
@@ -24,29 +26,31 @@ export class TablesComponent {
 
   role_id: any;
 
-  activeIndex: number = 0;
+  activeIndex = 0;
 
-  scrollableTabs: any[] = Array.from({ length: 50 }, (_, i) => ({ title: "Title", content: "Content" }));
+  scrollableTabs = Array.from({ length: 50 }, (_, i) => ({ title: "Title", content: "Content" }));
 
-  first: any = 0;
+  first = 0;
 
   userName: any;
 
   roleName: any;
 
-  disabled: boolean = false;
+  disabled = false;
 
-  productDialog: boolean = false;
+  productDialog = false;
 
-  deleteProductDialog: boolean = false;
+  productDialogs = false;
+
+  deleteProductDialog = false;
 
   formGroup: any;
 
   selectedRole: any;
 
-  submitted: boolean = false;
+  submitted = false;
   
-  addOrUpdate: boolean = false;
+  addOrUpdate = false;
 
   rows = 10;
 
@@ -76,7 +80,9 @@ export class TablesComponent {
 
   datas :any;
 
-  selectTableName:any;
+  selectTableName: any;
+  
+  
 
   constructor(private http: StService,private msgService: MessageService,private fb: FormBuilder) { }
   
@@ -311,4 +317,51 @@ export class TablesComponent {
   dataInsert() {
     
   }
+
+
+  openDialogs() {
+    this.productDialogs = true;
+  }
+
+  saveProducts() {
+
+    this.disabled = true;
+    this.submitted = true;
+
+    let obj = {
+      tableName: this.tableName,
+      code: this.code
+    };
+
+    console.log(obj);
+    // this.http.saveTable(obj).subscribe(
+    //   (res: any) => {
+    //     if (res.con) {
+    //       this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
+    //       this.tableName = '';
+    //       this.code = '';
+    //       this.table_id = '';
+    //       this.productDialogs = false;
+    //       this.submitted = false;
+    //       this.disabled = false;
+
+    //       this.http.allTable().subscribe(
+    //         (res: any) => {
+    //           let Table = res.data;
+    //           this.Tables = Table.reverse();
+    //         },
+    //         (error: any) => {
+    //           this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+    //         }
+    //       )
+    //     }
+    //   },
+    //   (err: any) => {
+    //     this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+    //     this.disabled = false;
+    //   }
+    // )
+  };
+
+
 }
