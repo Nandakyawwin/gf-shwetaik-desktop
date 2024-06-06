@@ -37,18 +37,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        // let role = localStorage.getItem("role");
-        // if (role == null || role == undefined) {
-        //     this.router.navigate(['/auth/login']);
-        // }
-        // let name = localStorage.getItem("name");
-        // if (name == null || name == undefined) {
-        //     this.router.navigate(['/auth/login']);
-        // }
-        // let email = localStorage.getItem("email");
-        // if (email == null || email == undefined) {
-        //     this.router.navigate(['/auth/login']);
-        // }
+        let role = localStorage.getItem("role");
+        if (role == null || role == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        let name = localStorage.getItem("name");
+        if (name == null || name == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        let email = localStorage.getItem("email");
+        if (email == null || email == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
         this.ST.allUser().subscribe(
             (res: any) => {
                 this.Users = res.length;

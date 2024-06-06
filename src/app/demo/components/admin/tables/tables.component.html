@@ -100,17 +100,17 @@
 					<span *ngIf="!addOrUpdate"><b>Add New Table</b></span>
 					<span *ngIf="addOrUpdate"><b>Edit Table</b></span>
 				  </ng-template>
-				<ng-template pTemplate="content">
+				  <ng-template pTemplate="content">
 					<form [formGroup]="formGroup">
 						<div class="field">
 							<label for="tableName">Table Name (eg: From SQL : AR_CUSTOMER )</label>
-							<input type="text" pInputText id="tableName" [(ngModel)]="tableName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !tableName}"/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !tableName">Table Name is required.</small>
+							<input type="text" pInputText id="tableName" formControlName="tableName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !formGroup.controls.tableName.valid}"/>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !formGroup.controls.tableName.valid">Table Name is required.</small>
 						</div>
 						<div class="field">
 							<label for="code">Table Unique Key </label>
-							<input type="text" pInputText id="code" [(ngModel)]="code" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !code}"/>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !code">Table Unique Key is required.</small>
+							<input type="text" pInputText id="code" formControlName="code" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !formGroup.controls.code.valid}"/>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !formGroup.controls.code.valid">Table Unique Key is required.</small>
 						</div>
 					</form>
 				</ng-template>
@@ -118,7 +118,7 @@
 					<button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
 					<button pButton pRipple label="Save" *ngIf="!addOrUpdate" icon="pi pi-check" class="p-button-text" [disabled]="disabled" (click)="saveProducts()"></button>
 					<button pButton pRipple label="Update" icon="pi pi-check" *ngIf="addOrUpdate" class="p-button-text" [disabled]="disabled" (click)="updateProduct()"></button>
-				</ng-template>
+				</ng-template>				
 			</p-dialog>
 
 		</div>

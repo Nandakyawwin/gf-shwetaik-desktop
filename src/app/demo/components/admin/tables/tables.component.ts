@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
@@ -64,8 +64,6 @@ export class TablesComponent {
 
   role: any;
 
-  form: FormGroup;
-
   user_id: any;
 
   email: any;
@@ -82,13 +80,14 @@ export class TablesComponent {
 
   selectTableName: any;
   
-  
-
   constructor(private http: StService,private msgService: MessageService,private fb: FormBuilder) { }
-  
-
 
   ngOnInit(): void {
+
+    this.formGroup = new FormGroup({
+      tableName: new FormControl('', Validators.required),
+      code: new FormControl('', Validators.required)
+    });
 
     this.http.allTable().subscribe(
       (res: any) => {
@@ -146,6 +145,7 @@ export class TablesComponent {
     this.submitted = false;
     this.tableName = '';
     this.table_id = '';
+    this.code = '';
   }
   
   saveProduct() {
@@ -155,6 +155,7 @@ export class TablesComponent {
 
     let obj = {
       tableName: this.tableName,
+      code:  this.code
     };
 
     this.http.saveTable(obj).subscribe(
@@ -163,6 +164,7 @@ export class TablesComponent {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
           this.tableName = '';
           this.table_id = '';
+          this.code = '';
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
@@ -329,38 +331,38 @@ export class TablesComponent {
     this.submitted = true;
 
     let obj = {
-      tableName: this.tableName,
-      code: this.code
+      tableName: this.formGroup.value.tableName,
+      code: this.formGroup.value.code
     };
 
-    console.log(obj);
-    // this.http.saveTable(obj).subscribe(
-    //   (res: any) => {
-    //     if (res.con) {
-    //       this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
-    //       this.tableName = '';
-    //       this.code = '';
-    //       this.table_id = '';
-    //       this.productDialogs = false;
-    //       this.submitted = false;
-    //       this.disabled = false;
+    console.log(obj,this.formGroup);
+    this.http.saveTable(obj).subscribe(
+      (res: any) => {
+        if (res.con) {
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
+          this.tableName = '';
+          this.code = '';
+          this.table_id = '';
+          this.productDialogs = false;
+          this.submitted = false;
+          this.disabled = false;
 
-    //       this.http.allTable().subscribe(
-    //         (res: any) => {
-    //           let Table = res.data;
-    //           this.Tables = Table.reverse();
-    //         },
-    //         (error: any) => {
-    //           this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-    //         }
-    //       )
-    //     }
-    //   },
-    //   (err: any) => {
-    //     this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
-    //     this.disabled = false;
-    //   }
-    // )
+          this.http.allTable().subscribe(
+            (res: any) => {
+              let Table = res.data;
+              this.Tables = Table.reverse();
+            },
+            (error: any) => {
+              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+            }
+          )
+        }
+      },
+      (err: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+        this.disabled = false;
+      }
+    )
   };
 
 

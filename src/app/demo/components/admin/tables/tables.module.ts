@@ -52,7 +52,7 @@ import { TabViewModule } from 'primeng/tabview';
     ReactiveFormsModule,
     RadioButtonModule,
     DropdownModule,
-    BreadcrumbModule
+    BreadcrumbModule,
   ]
 })
 export class TablesModule { }
