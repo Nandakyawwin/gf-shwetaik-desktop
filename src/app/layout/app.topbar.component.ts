@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 
@@ -6,7 +6,7 @@ import { LayoutService } from "./service/app.layout.service";
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
-export class AppTopBarComponent {
+export class AppTopBarComponent implements OnInit{
 
     items!: MenuItem[];
 
@@ -16,5 +16,24 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    productTitle: any;
+
+    en = 'en';
+
+    langBool = false;
+
+    constructor(public layoutService: LayoutService) { 
+    }
+
+    ngOnInit(): void {
+        let en = localStorage.getItem('language');
+        if (en == 'en') {
+            this.langBool = false;
+        } else {
+            this.langBool = true;
+        }
+        this.productTitle = this.langBool == true ? localStorage.getItem('9').split("$-$")[1] : localStorage.getItem('9').split("$-$")[0] 
+        
+    }
+    
 }

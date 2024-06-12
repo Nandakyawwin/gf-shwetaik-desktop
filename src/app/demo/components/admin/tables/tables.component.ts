@@ -335,12 +335,13 @@ export class TablesComponent {
       code: this.formGroup.value.code
     };
 
-    console.log(obj,this.formGroup);
     this.http.saveTable(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
           this.tableName = '';
+          this.formGroup.controls.tableName.reset('');
+          this.formGroup.controls.code.reset('');
           this.code = '';
           this.table_id = '';
           this.productDialogs = false;
@@ -349,8 +350,32 @@ export class TablesComponent {
 
           this.http.allTable().subscribe(
             (res: any) => {
-              let Table = res.data;
-              this.Tables = Table.reverse();
+              let Tables = res.data;
+              this.Tables = Tables.reverse();
+              this.keys = Object.keys(this.Tables[0]);
+              let table1 = this.Tables[0].tableName;
+              this.http.getList(String(table1)).subscribe(
+                (res:any)=>{
+                  console.log(res)
+                  this.datas = res;
+                  this.keys = Object.keys(this.datas[0]);
+                  this.formGroup = this.fb.group({});
+                  this.keys.forEach(key => {
+                    this.formGroup.addControl(key, this.fb.control(''));
+                  });
+                this.http.dataSync(table1,res).subscribe(
+                  (res:any)=>{
+                    if(res){
+                      this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+                    }
+                  }
+                )
+      
+                },
+                (err:any)=>{
+                  console.log(err);
+                }
+              )
             },
             (error: any) => {
               this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })

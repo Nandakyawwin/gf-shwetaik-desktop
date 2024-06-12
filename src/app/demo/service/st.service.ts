@@ -130,12 +130,21 @@ export class StService {
 
   deleteSystem(id: any) {
     let url = this.BASEURL + 'delete/systemOption';
-    return this.http.post(url,id).pipe(
+    return this.http.post(url, id).pipe(
       map(
         response => response
       )
     )
   };
+
+  searchSystem(uid: any) {
+    let url = this.BASEURL + 'search/systemOption/' + uid;
+    return this.http.get(url).pipe(
+      map(
+        response  => response
+      )
+    )
+  }
 
 
   // ******* SYSTEM OPTIONS *******

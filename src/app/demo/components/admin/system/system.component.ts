@@ -77,6 +77,10 @@ export class SystemComponent {
 
   Systems: any;
 
+  Lang = [{ lang: "en" }, { lang: "mm" }];
+
+  selectedLang: any;
+
   constructor(private http: StService,private msgService: MessageService) { }
 
 
@@ -177,7 +181,8 @@ export class SystemComponent {
       filterManage: this.filterManage,
       tableSync: this.tableSync,
       tableFetch: this.tableFetch,
-      tableInsert: this.tableInsert
+      tableInsert: this.tableInsert,
+      lang: this.selectedLang.lang
 
     };
 
@@ -219,12 +224,11 @@ export class SystemComponent {
   };
 
   onRowSelect(event: any) {
-    console.log(event)
     this.productDialog = true;
     this.addOrUpdate = true;
     this.selectedRole = this.Roles.find(role => role.roleName === event.data.roleName);
     this.userManage = event.data.userManage;
-    this.selectedUsers = event.data.user_id;
+    this.selectedUsers = this.Users.find(user => user.user_id == event.data.user_id);
     this.roleManage = event.data.roleManage;
     this.languageManage = event.data.languageManage;
     this.tableManage = event.data.tableManage;
@@ -234,10 +238,7 @@ export class SystemComponent {
     this.tableFetch = event.data.tableFetch;
     this.tableInsert = event.data.tableInsert;
     this.systemOption_id = event.data.systemOption_id;
-  };
-
-  onRowUnselect(event: any) {
-  console.log(event);
+    this.selectedLang = this.Lang.find(lang=> lang.lang === event.data.lang);
   };
 
   updateProduct() {
@@ -256,7 +257,8 @@ export class SystemComponent {
       tableSync: this.tableSync,
       tableFetch: this.tableFetch,
       tableInsert: this.tableInsert,
-      systemOption_id: this.systemOption_id
+      systemOption_id: this.systemOption_id,
+      lang: this.selectedLang.lang
     };
     this.http.updateSystem(obj).subscribe(
       (res: any) => {

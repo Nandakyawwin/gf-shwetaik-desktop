@@ -21,7 +21,6 @@
                 [resizableColumns]="true"
                 [(selection)]="selectedProduct"
                 (onRowSelect)="onRowSelect($event)"
-                (onRowUnselect)="onRowUnselect($event)"
 				>
 					<ng-template pTemplate="header">
 						<tr>
@@ -36,6 +35,7 @@
 							<th pSortableColumn="tableSync">Table Sync <p-sortIcon field="tableSync"></p-sortIcon></th>
 							<th pSortableColumn="tableFetch">Table from Cloud <p-sortIcon field="tableFetch"></p-sortIcon></th>
 							<th pSortableColumn="tableInsert">Table Insert <p-sortIcon field="tableInsert"></p-sortIcon></th>
+							<th pSortableColumn="lang">Display Language <p-sortIcon field="lang"></p-sortIcon></th>
 							<th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
 						</tr>
 					</ng-template>
@@ -52,6 +52,7 @@
 							<td>{{ system.tableSync }}</td>
 							<td>{{ system.tableFetch }}</td>
 							<td>{{ system.tableInsert }}</td>
+							<td>{{ system.lang }}</td>
 							<td>{{ system.createAt | date }}</td>
 							<td>
 								<div class="flex">
@@ -91,9 +92,9 @@
                             <p-dropdown
                                 [options]="Users"
                                 [(ngModel)]="selectedUsers"
-                                optionLabel="name"
+                                optionLabel="user_id"
                                 [filter]="true"
-                                filterBy="name"
+                                filterBy="user_id"
                                 id="user_id"
                                 [showClear]="true"
                                 placeholder="Select User"
@@ -102,6 +103,23 @@
                             </p-dropdown>
                             <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedUsers">User is required.</small>
                         </div>
+
+                        <div class="field">
+							<label for="lang">Display Language</label>
+							<p-dropdown
+								[options]="Lang"
+								[(ngModel)]="selectedLang"
+								optionLabel="lang"
+								[filter]="true"
+								filterBy="lang"
+								id="lang"
+								[showClear]="true"
+								placeholder="Select display language"
+								[ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedLang}"
+								>
+							</p-dropdown>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedLang">Display Language is required.</small>
+						</div>
 
                         <div class="field flex align-items-center gap-2">
                             <p-checkbox

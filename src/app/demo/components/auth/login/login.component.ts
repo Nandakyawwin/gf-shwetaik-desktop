@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit{
 
     email: string;
 
+    Language: any;
     constructor(public layoutService: LayoutService, private http: StService,private msgService: MessageService,private router: Router) { }
     
 
@@ -33,7 +34,20 @@ export class LoginComponent implements OnInit{
         localStorage.removeItem('role');
         localStorage.removeItem('email');
         localStorage.removeItem('name');
-    }
+        localStorage.removeItem('user_id');
+        this.http.allLanguage().subscribe(
+            (res: any) => {
+                if (res.con) {
+                    this.Language = res.data;
+                    let l = this.Language.length;
+                    for (let i: any = 0; i < l; i++){
+                        localStorage.setItem(`${i}`,  `${this.Language[i].en}$-$${this.Language[i].mm}`);
+                    }
+                }
+            }
+        )
+    };
+
     login() {
         let obj = {
             email: this.email,
@@ -43,10 +57,26 @@ export class LoginComponent implements OnInit{
             (res: any) => {
                 if (res.con) {
                     this.msgService.add({ key: 'tst', severity: 'success', summary: JSON.stringify(res.msg), detail: 'Login Successful' });
-                    let role = localStorage.setItem('role', res.data.role);
-                    let email = localStorage.setItem('email', res.data.email);
-                    let name = localStorage.setItem('name', res.data.name);
+                    localStorage.setItem('role', res.data.role);
+                    localStorage.setItem('email', res.data.email);
+                    localStorage.setItem('name', res.data.name);
+                    localStorage.setItem('user_id', res.data.user_id);
                     if (res.data.role == 'admin') {
+                        this.http.searchSystem(res.data.user_id).subscribe(
+                            (ress: any) => {
+                                if (ress.con) {
+                                    // console.log(ress)
+                                    if (ress.data.lang == 'en') {
+                                        localStorage.setItem('language','en')
+                                    } else if (ress.data.lang == 'mm') {
+                                        localStorage.setItem('language','mm')
+                                    }
+                                }
+                            },
+                            (error: any) => {
+                                this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error), detail: 'Internet Server Error' })
+                            }
+                        )
                         this.router.navigateByUrl('/');
                     }
                 } else {
