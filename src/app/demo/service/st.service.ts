@@ -234,7 +234,7 @@ export class StService {
 
 
       getList(table:any){
-        let url = `http://localhost/getARC.php?table=${table}`
+        let url = `http://localhost:8080/getARC.php?table=${table}`
         return this.http.get(url).pipe(
           map(
             response => response
@@ -242,15 +242,33 @@ export class StService {
         )
       }
 
-      dataSync(tableName:any,data:any){
-        let url = this.BASEURL + 'dataSyncFromDesktop';
-        return this.http.post(url,{tableName: tableName,data: data}).pipe(
+      addData(obj: any) {
+        let url = `http://localhost:8080/add_customer.php`;
+        return this.http.post(url, obj).pipe(
+          map(
+            response => response
+          )
+        )
+      };
+
+      dataSync(data:any){
+        let url = 'https://st.golden-future.org/admin/add';
+        return this.http.post(url,data).pipe(
           map(
             response => response
           )
         )
       }
 
+      datafromServer(data: any) {
+        let url = 'https://st.golden-future.org/admin/alldata';
+        return this.http.post(url,data).pipe(
+          map(
+            response => response
+          )
+        )
+      }
+  
       addList(tableName:any){
         let url = this.BASEURL + tableName + '/getTable';
         return this.http.get(url).pipe(

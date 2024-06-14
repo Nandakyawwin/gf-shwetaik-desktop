@@ -42,6 +42,8 @@ export class TablesComponent {
 
   productDialogs = false;
 
+  UIFetch = false;
+
   deleteProductDialog = false;
 
   formGroup: any;
@@ -79,11 +81,16 @@ export class TablesComponent {
   datas :any;
 
   selectTableName: any;
+
+  Btnfetch = false;
+
+  tname: any;
   
   constructor(private http: StService,private msgService: MessageService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
-
+    this.keys = [];
+    this.datas = [];
     this.formGroup = new FormGroup({
       tableName: new FormControl('', Validators.required),
       code: new FormControl('', Validators.required)
@@ -95,23 +102,34 @@ export class TablesComponent {
         this.Tables = Tables.reverse();
         this.keys = Object.keys(this.Tables[0]);
         let table1 = this.Tables[0].tableName;
+        this.selectTableName = table1;
+        this.tname = table1;
         this.http.getList(String(table1)).subscribe(
           (res:any)=>{
             console.log(res)
-            this.datas = res;
-            this.keys = Object.keys(this.datas[0]);
-            this.formGroup = this.fb.group({});
-            this.keys.forEach(key => {
-              this.formGroup.addControl(key, this.fb.control(''));
-            });
-          this.http.dataSync(table1,res).subscribe(
-            (res:any)=>{
-              if(res){
-                this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+            if (res.message === "Record Not Found") {
+              this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
+            } else {
+              this.datas = res;
+              this.keys = Object.keys(this.datas[0]);
+              console.log(this.keys);
+              this.formGroup = this.fb.group({});
+              this.keys.forEach(key => {
+                this.formGroup.addControl(key, this.fb.control(''));
+              });
+              let obj = {
+                tName: this.tname,
+                data: this.datas
               }
+              this.http.dataSync(obj).subscribe(
+                (res: any) => {
+                  if (res) {
+                    this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
+                    this.Btnfetch = true;
+                  }
+                }
+              )
             }
-          )
-
           },
           (err:any)=>{
             console.log(err);
@@ -122,8 +140,6 @@ export class TablesComponent {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
       }
     )
-
-
   }
 
   showErrorViaToast() {
@@ -140,7 +156,6 @@ export class TablesComponent {
   }
 
   hideDialog() {
-
     this.productDialog = false;
     this.submitted = false;
     this.tableName = '';
@@ -274,18 +289,35 @@ export class TablesComponent {
   }
 
   onTabChange(e: any) {
-    console.log(e);
+    this.UIFetch = false;
+    this.Btnfetch = true;
     let tableData = this.Tables[e.index].tableName;
     this.selectTableName = tableData;
+    this.datas = [];
+    this.keys = [];
     this.http.getList(String(tableData)).subscribe(
       (res:any)=>{
-        console.log(res)
+        console.log(res);
+    this.Btnfetch = false;
         this.datas = res;
         this.keys = Object.keys(this.datas[0]);
         this.formGroup = this.fb.group({});
         this.keys.forEach(key => {
           this.formGroup.addControl(key, this.fb.control(''));
         });
+        let obj = {
+          tName: tableData,
+          data: this.datas
+        }
+        this.http.dataSync(obj).subscribe(
+          (res: any) => {
+            if (res) {
+              this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+              this.UIFetch = true;
+            }
+          }
+        )
+    
       },
       (err:any)=>{
         console.log(err);
@@ -302,12 +334,15 @@ export class TablesComponent {
     }
   }
 
-  
   dataSync() {
   }
 
   dataFetch() {
-    this.http.getList(this.selectTableName).subscribe(
+    this.UIFetch = true;
+    let obj = {
+      tName: this.selectTableName
+    }
+    this.http.datafromServer(obj).subscribe(
       (res:any)=>{
         this.fetch = res;
         this.kk = Object.keys(this.fetch[0]);
@@ -317,16 +352,27 @@ export class TablesComponent {
   }
 
   dataInsert() {
-    
+
   }
 
-
+  insert() {
+    let obj = {
+      tName: this.selectTableName,
+    }
+    this.http.addData(obj).subscribe(
+      (res: any) => {
+        this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data Insert Success' })
+      },
+      (err: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: "error", detail: 'Data Insert Failed!' });
+      }
+    )
+  }
   openDialogs() {
     this.productDialogs = true;
   }
 
   saveProducts() {
-
     this.disabled = true;
     this.submitted = true;
 
@@ -354,6 +400,7 @@ export class TablesComponent {
               this.Tables = Tables.reverse();
               this.keys = Object.keys(this.Tables[0]);
               let table1 = this.Tables[0].tableName;
+              this.tname = table1;
               this.http.getList(String(table1)).subscribe(
                 (res:any)=>{
                   console.log(res)
@@ -363,7 +410,11 @@ export class TablesComponent {
                   this.keys.forEach(key => {
                     this.formGroup.addControl(key, this.fb.control(''));
                   });
-                this.http.dataSync(table1,res).subscribe(
+                  let obj = {
+                    tName: this.tname,
+                    data: this.datas
+                  }
+                this.http.dataSync(obj).subscribe(
                   (res:any)=>{
                     if(res){
                       this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
