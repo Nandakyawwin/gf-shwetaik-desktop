@@ -15,9 +15,9 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
             color: var(--primary-color) !important;
         }
     `],
-      providers: [MessageService],
+    providers: [MessageService],
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
 
     valCheck: string[] = ['remember'];
 
@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit{
     email: string;
 
     Language: any;
-    constructor(public layoutService: LayoutService, private http: StService,private msgService: MessageService,private router: Router) { }
-    
+    constructor(public layoutService: LayoutService, private http: StService, private msgService: MessageService, private router: Router) { }
+
 
 
     ngOnInit(): void {
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit{
                 if (res.con) {
                     this.Language = res.data;
                     let l = this.Language.length;
-                    for (let i: any = 0; i < l; i++){
-                        localStorage.setItem(`${i}`,  `${this.Language[i].en}$-$${this.Language[i].mm}`);
+                    for (let i: any = 0; i < l; i++) {
+                        localStorage.setItem(`${i}`, `${this.Language[i].en}$-$${this.Language[i].mm}`);
                     }
                 }
             }
@@ -61,15 +61,15 @@ export class LoginComponent implements OnInit{
                     localStorage.setItem('email', res.data.email);
                     localStorage.setItem('name', res.data.name);
                     localStorage.setItem('user_id', res.data.user_id);
-                    if (res.data.role == 'admin') {
+                    if (res.data.role == 'Admin') {
                         this.http.searchSystem(res.data.user_id).subscribe(
                             (ress: any) => {
                                 if (ress.con) {
                                     // console.log(ress)
                                     if (ress.data.lang == 'en') {
-                                        localStorage.setItem('language','en')
+                                        localStorage.setItem('language', 'en')
                                     } else if (ress.data.lang == 'mm') {
-                                        localStorage.setItem('language','mm')
+                                        localStorage.setItem('language', 'mm')
                                     }
                                 }
                             },
