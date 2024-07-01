@@ -12,7 +12,7 @@ export class StService {
 
   // ******* USER *******
 
-  allUser(){
+  allUser() {
     return this.http.get(this.BASEURL + 'all/user').pipe(
       map(
         response => response
@@ -22,16 +22,16 @@ export class StService {
 
   loginUser(obj: any) {
     let url = this.BASEURL + 'login/user';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
     )
   }
-  
+
   saveUser(obj: any) {
     let url = this.BASEURL + 'register/user';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
@@ -40,7 +40,7 @@ export class StService {
 
   updateUser(obj: any) {
     let url = this.BASEURL + 'update/user';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
@@ -49,7 +49,7 @@ export class StService {
 
   deleteUser(id: any) {
     let url = this.BASEURL + 'delete/user';
-    return this.http.post(url,id).pipe(
+    return this.http.post(url, id).pipe(
       map(
         response => response
       )
@@ -71,7 +71,7 @@ export class StService {
 
   saveRole(obj: any) {
     let url = this.BASEURL + 'save/role';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
@@ -80,7 +80,7 @@ export class StService {
 
   updateRole(obj: any) {
     let url = this.BASEURL + 'update/role';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
@@ -89,7 +89,7 @@ export class StService {
 
   deleteRole(id: any) {
     let url = this.BASEURL + 'delete/role';
-    return this.http.post(url,id).pipe(
+    return this.http.post(url, id).pipe(
       map(
         response => response
       )
@@ -98,7 +98,7 @@ export class StService {
 
   // ******* ROLE *******
 
-  
+
   // ******* SYSTEM OPTIONS *******
 
 
@@ -112,7 +112,7 @@ export class StService {
 
   saveSystem(obj: any) {
     let url = this.BASEURL + 'save/systemOption';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
@@ -121,7 +121,7 @@ export class StService {
 
   updateSystem(obj: any) {
     let url = this.BASEURL + 'update/systemOption';
-    return this.http.post(url,obj).pipe(
+    return this.http.post(url, obj).pipe(
       map(
         response => response
       )
@@ -141,7 +141,7 @@ export class StService {
     let url = this.BASEURL + 'search/systemOption/' + uid;
     return this.http.get(url).pipe(
       map(
-        response  => response
+        response => response
       )
     )
   }
@@ -150,131 +150,172 @@ export class StService {
   // ******* SYSTEM OPTIONS *******
 
 
-    // ******* LANGUAGE *******
+  // ******* LANGUAGE *******
 
 
-    allLanguage() {
-      return this.http.get(this.BASEURL + 'all/language').pipe(
-        map(
-          response => response
-        )
+  allLanguage() {
+    return this.http.get(this.BASEURL + 'all/language').pipe(
+      map(
+        response => response
       )
-    };
-  
-    saveLanguage(obj: any) {
-      let url = this.BASEURL + 'save/language';
-      return this.http.post(url,obj).pipe(
-        map(
-          response => response
-        )
+    )
+  };
+
+  saveLanguage(obj: any) {
+    let url = this.BASEURL + 'save/language';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
       )
-    };
-  
-    updateLanguage(obj: any) {
-      let url = this.BASEURL + 'update/language';
-      return this.http.post(url,obj).pipe(
-        map(
-          response => response
-        )
+    )
+  };
+
+  updateLanguage(obj: any) {
+    let url = this.BASEURL + 'update/language';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
       )
-    };
-  
-    deleteLanguage(id: any) {
-      let url = this.BASEURL + 'delete/language';
-      return this.http.post(url,id).pipe(
-        map(
-          response => response
-        )
+    )
+  };
+
+  deleteLanguage(id: any) {
+    let url = this.BASEURL + 'delete/language';
+    return this.http.post(url, id).pipe(
+      map(
+        response => response
       )
-    };
-  
-  
-    // ******* LANGUAGE *******
-
-      // ******* LANGUAGE *******
+    )
+  };
 
 
-      allTable() {
-        return this.http.get(this.BASEURL + 'all/table').pipe(
-          map(
-            response => response
-          )
-        )
-      };
-    
-      saveTable(obj: any) {
-        let url = this.BASEURL + 'save/table';
-        return this.http.post(url,obj).pipe(
-          map(
-            response => response
-          )
-        )
-      };
-    
-      updateTable(obj: any) {
-        let url = this.BASEURL + 'update/table';
-        return this.http.post(url,obj).pipe(
-          map(
-            response => response
-          )
-        )
-      };
-    
-      deleteTable(id: any) {
-        let url = this.BASEURL + 'delete/table';
-        return this.http.post(url,id).pipe(
-          map(
-            response => response
-          )
-        )
-      };
-    
-    
-      // ******* LANGUAGE *******
+  // ******* LANGUAGE *******
+
+  // ******* TABLE *******
 
 
-      getList(table:any){
-        let url = `http://localhost:8080/getARC.php?table=${table}`
-        return this.http.get(url).pipe(
-          map(
-            response => response
-          )
-        )
-      }
+  allTable() {
+    return this.http.get(this.BASEURL + 'all/table').pipe(
+      map(
+        response => response
+      )
+    )
+  };
 
-      addData(obj: any) {
-        let url = `http://localhost:8080/add_customer.php`;
-        return this.http.post(url, obj).pipe(
-          map(
-            response => response
-          )
-        )
-      };
+  saveTable(obj: any) {
+    let url = this.BASEURL + 'save/table';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
 
-      dataSync(data:any){
-        let url = 'https://st.golden-future.org/admin/add';
-        return this.http.post(url,data).pipe(
-          map(
-            response => response
-          )
-        )
-      }
+  updateTable(obj: any) {
+    let url = this.BASEURL + 'update/table';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
 
-      datafromServer(data: any) {
-        let url = 'https://st.golden-future.org/admin/alldata';
-        return this.http.post(url,data).pipe(
-          map(
-            response => response
-          )
-        )
-      }
-  
-      addList(tableName:any){
-        let url = this.BASEURL + tableName + '/getTable';
-        return this.http.get(url).pipe(
-          map(
-            response => response
-          )
-        )
-      }
+  deleteTable(id: any) {
+    let url = this.BASEURL + 'delete/table';
+    return this.http.post(url, id).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+
+  // ******* TABLE *******
+
+  // ******* FILTER *******
+
+
+  allFilter() {
+    return this.http.get(this.BASEURL + 'all/filter').pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  saveFilter(obj: any) {
+    let url = this.BASEURL + 'save/filter';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  updateFilter(obj: any) {
+    let url = this.BASEURL + 'update/filter';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  deleteFilter(id: any) {
+    let url = this.BASEURL + 'delete/filter';
+    return this.http.post(url, id).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+
+  // ******* FILTER *******
+
+
+  getList(table: any) {
+    let url = `http://localhost:8080/getARC.php?table=${table}`
+    return this.http.get(url).pipe(
+      map(
+        response => response
+      )
+    )
+  }
+
+  addData(obj: any) {
+    let url = `http://localhost:8080/add_customer.php`;
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  dataSync(data: any) {
+    let url = 'https://st.golden-future.org/admin/add';
+    return this.http.post(url, data).pipe(
+      map(
+        response => response
+      )
+    )
+  }
+
+  datafromServer(data: any) {
+    let url = 'https://st.golden-future.org/admin/alldata';
+    return this.http.post(url, data).pipe(
+      map(
+        response => response
+      )
+    )
+  }
+
+  addList(tableName: any) {
+    let url = this.BASEURL + tableName + '/getTable';
+    return this.http.get(url).pipe(
+      map(
+        response => response
+      )
+    )
+  }
 }
