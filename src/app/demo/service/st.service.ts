@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Storage } from '@capacitor/storage';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -317,5 +319,38 @@ export class StService {
         response => response
       )
     )
+  }
+
+  getString(key: string): Promise<string | null> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const result = await Storage.get({ key });
+        resolve(result.value);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  setString(key: string, value: string): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await Storage.set({ key, value });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  removeString(key: string): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await Storage.remove({ key });
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 }

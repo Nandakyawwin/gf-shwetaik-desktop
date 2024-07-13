@@ -1,12 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
+import { StService } from '../demo/service/st.service';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
-export class AppTopBarComponent implements OnInit{
+export class AppTopBarComponent{
 
     items!: MenuItem[];
 
@@ -22,18 +23,18 @@ export class AppTopBarComponent implements OnInit{
 
     langBool = false;
 
-    constructor(public layoutService: LayoutService) { 
+    constructor(public layoutService: LayoutService,private stS : StService) { 
     }
 
-    ngOnInit(): void {
-        let en = localStorage.getItem('language');
-        if (en == 'en') {
-            this.langBool = false;
-        } else {
-            this.langBool = true;
-        }
-        this.productTitle = this.langBool == true ? localStorage.getItem('9').split("$-$")[1] : localStorage.getItem('9').split("$-$")[0] 
-        
+    ionViewWillEnter(): void {
+        this.stS
+        .getString('9')
+        .then((result) => {
+            this.productTitle = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     
 }

@@ -17,7 +17,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     `],
     providers: [MessageService],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
 
     valCheck: string[] = ['remember'];
 
@@ -30,22 +30,11 @@ export class LoginComponent implements OnInit {
 
 
 
-    ngOnInit(): void {
-        localStorage.removeItem('role');
-        localStorage.removeItem('email');
-        localStorage.removeItem('name');
-        localStorage.removeItem('user_id');
-        this.http.allLanguage().subscribe(
-            (res: any) => {
-                if (res.con) {
-                    this.Language = res.data;
-                    let l = this.Language.length;
-                    for (let i: any = 0; i < l; i++) {
-                        localStorage.setItem(`${i}`, `${this.Language[i].en}$-$${this.Language[i].mm}`);
-                    }
-                }
-            }
-        )
+    ionViewWillEnter(): void {
+        this.http.removeString('user_id');
+        this.http.removeString('role');
+        this.http.removeString('email');
+        this.http.removeString('name');
     };
 
     login() {
@@ -53,39 +42,77 @@ export class LoginComponent implements OnInit {
             email: this.email,
             password: this.password
         }
-        this.http.loginUser(obj).subscribe(
-            (res: any) => {
-                if (res.con) {
-                    this.msgService.add({ key: 'tst', severity: 'success', summary: JSON.stringify(res.msg), detail: 'Login Successful' });
-                    localStorage.setItem('role', res.data.role);
-                    localStorage.setItem('email', res.data.email);
-                    localStorage.setItem('name', res.data.name);
-                    localStorage.setItem('user_id', res.data.user_id);
-                    if (res.data.role == 'Admin') {
-                        this.http.searchSystem(res.data.user_id).subscribe(
-                            (ress: any) => {
-                                if (ress.con) {
-                                    // console.log(ress)
-                                    if (ress.data.lang == 'en') {
-                                        localStorage.setItem('language', 'en')
-                                    } else if (ress.data.lang == 'mm') {
-                                        localStorage.setItem('language', 'mm')
-                                    }
-                                }
-                            },
-                            (error: any) => {
-                                this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error), detail: 'Internet Server Error' })
-                            }
-                        )
-                        this.router.navigateByUrl('/');
-                    }
-                } else {
-                    this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Login Error' })
-                }
-            },
-            (err: any) => {
-                this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err), detail: 'Internet Server Error' })
-            }
-        )
+        this.loginUser(obj);
     }
+
+    loginUser(obj: any) {
+        this.http.loginUser(obj).subscribe(
+            (res: any) => this.handleLoginResponse(res),
+            (err: any) => this.handleError(err, 'Internet Server Error')
+        );
+    }
+    
+    handleLoginResponse(res: any) {
+        if (res.con) {
+            this.msgService.add({ key: 'tst', severity: 'success', summary: JSON.stringify(res.msg), detail: 'Login Successful' });
+            this.storeUserData(res.data);
+            this.router.navigateByUrl('/');
+            
+            if (res.data.role === 'Admin') {
+                this.handleAdminLogin(res.data.user_id);
+            }
+        } else {
+            this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Login Error' });
+        }
+    }
+    
+    storeUserData(data: any) {
+        this.http.setString('user_id', String(data.user_id));
+        this.http.setString('role', String(data.role));
+        this.http.setString('email', String(data.email));
+        this.http.setString('name', String(data.name));
+    }
+    
+    handleAdminLogin(userId: string) {
+        this.http.searchSystem(userId).subscribe(
+            (ressl: any) => this.handleSearchSystemResponse(ressl),
+            (error: any) => this.handleError(error, 'Internet Server Error')
+        );
+    }
+    
+    handleSearchSystemResponse(ressl: any) {
+        if (ressl.con) {
+            console.log(ressl);
+            this.loadAllLanguages(ressl.data.lang);
+        }
+    }
+    
+    loadAllLanguages(userLang: string) {
+        this.http.allLanguage().subscribe(
+            (resss: any) => this.handleAllLanguageResponse(resss, userLang),
+            (error: any) => this.handleError(error, 'Internet Server Error')
+        );
+    }
+    
+    handleAllLanguageResponse(resss: any, userLang: string) {
+        if (resss.con) {
+            this.Language = resss.data;
+            this.storeLanguages(userLang);
+        }
+    }
+    
+    storeLanguages(userLang: string) {
+        let length = this.Language.length;
+        for (let i = 0; i < length; i++) {
+            console.log(this.Language[i]);
+            if (userLang === 'en' || userLang === 'mm') {
+                this.http.setString(`${i}`, `${this.Language[i][userLang]}`);
+            }
+        }
+    }
+    
+    handleError(error: any, detail: string) {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error), detail });
+    }
+    
 }

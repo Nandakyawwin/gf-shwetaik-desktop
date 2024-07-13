@@ -94,7 +94,7 @@ export class TablesComponent {
     this.formGroup = new FormGroup({
       tableName: new FormControl('', Validators.required),
       code: new FormControl('', Validators.required)
-    });
+    })
 
     this.http.allTable().subscribe(
       (res: any) => {
