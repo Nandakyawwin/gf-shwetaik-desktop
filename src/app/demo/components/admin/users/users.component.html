@@ -1,5 +1,14 @@
 
-<div class="grid">
+<div class="grid" *ngIf="userMange">
+	<div class="col-12 xl:col-12">
+		<div class="col-23 xl:col-12">
+			<div class="card">
+				Sorry, You can't access on that page
+			</div>
+		</div>
+	</div>
+</div>
+<div class="grid" *ngIf="!userMange">
 	<div class="col-12 xl:col-12">
 		<div class="col-23 xl:col-12">
 			<div class="card">

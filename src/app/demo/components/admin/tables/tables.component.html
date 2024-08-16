@@ -6,9 +6,9 @@
 				<h5>Tables</h5>
 				<p-toast key="tst"></p-toast>
 				<div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
-					<button pButton type="button" label="New Table" icon="pi pi-plus-circle" class="mr-2" (click)="openDialogs()"></button>
-					<button pButton type="button" label="New Data" icon="pi pi-plus-circle" class="mr-2" (click)="openDialog()"></button>
-					<button pButton type="button" [disabled]="Btnfetch" label="Data Fetch" icon="pi pi-database" class="ml-2 p-button-info" (click)="dataFetch()" ></button>
+					<button pButton type="button" *ngIf="tableManage" label="New Table" icon="pi pi-plus-circle" class="mr-2" (click)="openDialogs()"></button>
+					<button pButton type="button" *ngIf="tableInsert" label="New Data" icon="pi pi-plus-circle" class="mr-2" (click)="openDialog()"></button>
+					<button pButton type="button" *ngIf="tableFetch" [disabled]="Btnfetch" label="Data Fetch" icon="pi pi-database" class="ml-2 p-button-info" (click)="dataFetch()" ></button>
 					<button pButton type="button" label="Data Insert" icon="pi pi-database" class="ml-2 p-button-help" (click)="dataInsert()"></button>
 				</div>
 				<p-tabView [(activeIndex)]="tableIndex" [scrollable]="true" (onChange)="onTabChange($event)">

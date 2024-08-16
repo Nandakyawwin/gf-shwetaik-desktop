@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StService } from '../../service/st.service';
 
 @Component({
     templateUrl: './documentation.component.html',
@@ -7,12 +8,29 @@ import { Component, OnInit } from '@angular/core';
 export class DocumentationComponent implements OnInit{ 
 
     username = '';
-    constructor() { }
+    role: any;
+    constructor(private ST: StService,) { }
     
 
 
     ngOnInit(): void {
-        this.username = localStorage.getItem('name');
+        this.ST
+        .getString('name')
+        .then((result) => {
+           this.username = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        this.ST
+        .getString('role')
+        .then((result) => {
+           this.role = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
 }

@@ -81,11 +81,81 @@ export class SystemComponent {
 
   selectedLang: any;
 
+  userMange: any;
+
   constructor(private http: StService,private msgService: MessageService) { }
 
 
 
   ngOnInit(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.userMange = ress[0].userManage;
+          
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+
+    this.http.allUser().subscribe(
+      (res: any) => {
+        let User = res.data;
+        this.Users = User.reverse();
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+
+    this.http.allSystem().subscribe(
+      (res: any) => {
+        let System = res.data;
+        this.Systems = System.reverse();
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+
+    this.http.allRole().subscribe(
+      (res: any) => {
+        let Role = res.data;
+        this.Roles = Role.reverse();
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+  }
+
+  ionViewWillEnter(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.userMange = ress[0].userManage;
+          
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
 
     this.http.allUser().subscribe(

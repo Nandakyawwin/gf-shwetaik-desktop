@@ -1,4 +1,4 @@
-import { AfterViewInit, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { StService } from '../demo/service/st.service';
@@ -7,7 +7,7 @@ import { StService } from '../demo/service/st.service';
     selector: 'app-menu',
     templateUrl: './app.menu.component.html'
 })
-export class AppMenuComponent implements AfterViewInit{
+export class AppMenuComponent implements OnInit{
 
     model: any[] = [];
 
@@ -25,12 +25,19 @@ export class AppMenuComponent implements AfterViewInit{
      i9:any;
      i10:any;
      i11:any;
-
-
+    userManage: any;
+    roleManage: any;
+    languageManage: any;
+    tableManage: any;
+    colorManage: any;
+    filterManage: any;
+    tableSync: any;
+    tableFetch: any;
+    tableInsert: any;
 
     constructor(public layoutService: LayoutService,private http: StService) { }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this.http
         .getString('12')
         .then((result) => {
@@ -95,7 +102,10 @@ export class AppMenuComponent implements AfterViewInit{
                 {
                     label: this.i,
                     items: [
-                        { label: this.i1 }
+                        {
+                            label: this.i1, icon: 'pi pi-palette',
+                            routerLink: ['/']
+                        }
                     ]
                 },
                 {
@@ -103,19 +113,23 @@ export class AppMenuComponent implements AfterViewInit{
                     items: [
                         {
                             label: this.i3, icon: 'pi pi-user',
-                            routerLink: ['/admin/users']
+                            routerLink: ['/admin/users'],
+                            canAx : this.userManage
                         },
                         {
                             label: this.i4, icon: 'pi pi-sitemap',
-                            routerLink: ['/admin/roles']
+                            routerLink: ['/admin/roles'],
+                            canAx : this.roleManage
                         },
                         {
                             label: this.i5, icon: 'pi pi-cog',
-                            routerLink: ['/admin/systems']
+                            routerLink: ['/admin/systems'],
+                            canAx : this.userManage
                         },
                         {
                             label: this.i6, icon: 'pi pi-filter',
-                            routerLink: ['/admin/filters']
+                            routerLink: ['/admin/filters'],
+                            canAx : this.filterManage
                         },
                     ]
                 },
@@ -124,11 +138,13 @@ export class AppMenuComponent implements AfterViewInit{
                     items: [
                         {
                             label: this.i8, icon: 'pi pi-server',
-                            routerLink: ['/admin/tables']
+                            routerLink: ['/admin/tables'],
+                            canAx : this.tableManage
                         },
                         {
                             label: this.i9, icon: 'pi pi-language',
-                            routerLink: ['/admin/languages']
+                            routerLink: ['/admin/languages'],
+                            canAx : this.languageManage
                         }
                     ]
                 },
@@ -142,11 +158,7 @@ export class AppMenuComponent implements AfterViewInit{
                     ]
                 }
             ];
-
-        console.log(this.i1)
-
-
-        console.log(this.model)
+            console.log(this.model)
         })
         .catch((error) => {
           console.log(error);
@@ -212,29 +224,5 @@ export class AppMenuComponent implements AfterViewInit{
         .catch((error) => {
           console.log(error);
         });
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-
-        
-
-        
-
-        
-
-        
-
-        
-
     }
 }

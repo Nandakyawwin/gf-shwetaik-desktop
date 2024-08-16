@@ -48,11 +48,31 @@ export class UsersComponent implements OnInit{
 
   password: any;
 
+  userMange: any;
+
   constructor(private http: StService,private msgService: MessageService) { }
   
 
 
   ngOnInit(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.userMange = ress[0].userManage;
+          
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
     this.http.allUser().subscribe(
       (response: any) => {
         let Users = response.data;
@@ -72,6 +92,47 @@ export class UsersComponent implements OnInit{
       }
     )
   }
+
+
+  ionViewWillEnter(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.userMange = ress[0].userManage;
+          
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    this.http.allUser().subscribe(
+      (response: any) => {
+        let Users = response.data;
+        this.Users = Users.reverse();
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+
+    this.http.allRole().subscribe(
+      (res: any) => {
+        this.Roles = res.data;
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+  }
+
 
   showErrorViaToast() {
     this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });

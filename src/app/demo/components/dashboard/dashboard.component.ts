@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem, Message, MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { StService } from '../../service/st.service';
-import { Router } from '@angular/router';
+import { Router } from '@angular/router'
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -15,11 +15,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     items!: MenuItem[];
 
+    Tables  = 0;
+
     products!: Product[];
 
-    Users: any = 0;
+    loading = false;
 
-    Roles: any = 0;
+    l1 = false;
+
+    l2 = false;
+
+    Users = 0;
+
+    Langs = 0;
+
+    Roles = 0;
 
     chartData: any;
 
@@ -36,7 +46,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
         this.ST
         .getString('role')
         .then((result) => {
@@ -72,19 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .catch((error) => {
           console.log(error);
         });
-        this.ST.allUser().subscribe(
-            (res: any) => {
-                this.Users = res.length;
-            },
-            (error: any) => {
-                this.msg.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-            }
-        );
-        this.ST.allRole().subscribe(
-            (res: any) => {
-                this.Roles = res.length;
-            }
-        )
+        this.all();
         this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
 
@@ -94,6 +91,100 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ];
     }
 
+    ionViewWillEnter() {
+        this.ST
+        .getString('role')
+        .then((result) => {
+            let role = result;
+            alert(role)
+        if (role == null || role == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        this.ST
+        .getString('name')
+        .then((result) => {
+           let role = result;
+        if (role == null || role == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        this.ST
+        .getString('email')
+        .then((result) => {
+           let role = result;
+        if (role == null || role == undefined) {
+            this.router.navigate(['/auth/login']);
+        }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        this.all();
+        this.initChart();
+        this.productService.getProductsSmall().then(data => this.products = data);
+
+        this.items = [
+            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
+            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
+        ];
+    }
+
+
+    all() {
+        this.loading = true;
+        this.ST.allUser().subscribe(
+            (res: any) => {
+                this.Users = res.length;
+                this.l1 = true;
+            },
+            (error: any) => {
+                this.l1 = false;
+                this.msg.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+            }
+        );
+
+        this.ST.allTable().subscribe(
+            (res: any) => {
+                this.Tables = res.data.length;
+                this.l1 = true;
+            },
+            (error: any) => {
+                this.l1 = false;
+                this.msg.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+            }
+        );
+
+        this.ST.allLanguage().subscribe(
+            (res: any) => {
+                this.Langs = res.data.length;
+                this.l1 = true;
+            },
+            (error: any) => {
+                this.l1 = false;
+                this.msg.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+            }
+        );
+
+        this.ST.allRole().subscribe(
+            (res: any) => {
+                this.Roles = res.length;
+                this.l2= true;
+            },
+            (error: any) => {
+                this.l2 = false;
+                this.msg.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+            }
+        )
+    }
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');

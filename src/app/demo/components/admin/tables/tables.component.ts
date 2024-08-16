@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
-
+import { Capacitor } from '@capacitor/core';
 @Component({
   selector: 'app-tables',
   providers: [MessageService,TableService],
@@ -86,9 +86,120 @@ export class TablesComponent {
 
   tname: any;
   
-  constructor(private http: StService,private msgService: MessageService,private fb: FormBuilder) { }
+  userMange: any;
+
+  tableManage: any;
+
+  tableFetch: any;
+
+  tableInsert: any;
+
+  sert: any;
+
+  constructor(private http: StService, private msgService: MessageService, private fb: FormBuilder) {
+    let plat = Capacitor.getPlatform();
+    if (plat === 'android') {
+      this.sert = true;
+    }
+   }
 
   ngOnInit(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.tableManage = ress[0].tableManage;
+          this.tableFetch = ress[0].tableFetch;
+          this.tableInsert = ress[0].tableInsert;
+          
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+
+    this.keys = [];
+    this.datas = [];
+    this.formGroup = new FormGroup({
+      tableName: new FormControl('', Validators.required),
+      code: new FormControl('', Validators.required)
+    })
+
+    this.http.allTable().subscribe(
+      (res: any) => {
+        let Tables = res.data;
+        this.Tables = Tables.reverse();
+        this.keys = Object.keys(this.Tables[0]);
+        let table1 = this.Tables[0].tableName;
+        this.selectTableName = table1;
+        this.tname = table1;
+        this.http.getList(String(table1)).subscribe(
+          (res:any)=>{
+            console.log(res)
+            if (res.message === "Record Not Found") {
+              this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
+            } else {
+              this.datas = res;
+              this.keys = Object.keys(this.datas[0]);
+              console.log(this.keys);
+              this.formGroup = this.fb.group({});
+              this.keys.forEach(key => {
+                this.formGroup.addControl(key, this.fb.control(''));
+              });
+              let obj = {
+                tName: this.tname,
+                data: this.datas
+              }
+              this.http.dataSync(obj).subscribe(
+                (res: any) => {
+                  if (res) {
+                    this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
+                    this.Btnfetch = true;
+                  }
+                }
+              )
+            }
+          },
+          (err:any)=>{
+            console.log(err);
+          }
+        )
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+  }
+
+  ionViewWillEnter(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.tableManage = ress[0].tableManage;
+          this.tableFetch = ress[0].tableFetch;
+          this.tableInsert = ress[0].tableInsert;
+          
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+
     this.keys = [];
     this.datas = [];
     this.formGroup = new FormGroup({

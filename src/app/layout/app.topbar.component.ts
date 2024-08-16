@@ -2,12 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { StService } from '../demo/service/st.service';
-
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
-export class AppTopBarComponent{
+export class AppTopBarComponent implements OnInit{
 
     items!: MenuItem[];
 
@@ -23,10 +22,11 @@ export class AppTopBarComponent{
 
     langBool = false;
 
-    constructor(public layoutService: LayoutService,private stS : StService) { 
+
+    constructor(public layoutService: LayoutService, private stS: StService) { 
     }
 
-    ionViewWillEnter(): void {
+    ngOnInit(): void {
         this.stS
         .getString('9')
         .then((result) => {
