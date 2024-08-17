@@ -6,7 +6,7 @@ import { StService } from 'src/app/demo/service/st.service';
 import { Capacitor } from '@capacitor/core';
 @Component({
   selector: 'app-tables',
-  providers: [MessageService,TableService],
+  providers: [MessageService, TableService],
   templateUrl: './tables.component.html',
   styleUrl: './tables.component.scss'
 })
@@ -14,15 +14,15 @@ export class TablesComponent {
 
   selectedProduct: any;
 
-  code:any
+  description: any
 
   Tables: any;
 
   tableIndex = 0;
 
-  kk:any;
+  kk: any;
 
-  fetch:any;
+  fetch: any;
 
   role_id: any;
 
@@ -51,7 +51,7 @@ export class TablesComponent {
   selectedRole: any;
 
   submitted = false;
-  
+
   addOrUpdate = false;
 
   rows = 10;
@@ -76,16 +76,16 @@ export class TablesComponent {
 
   password: any;
 
-  keys:any;
+  keys: any;
 
-  datas :any;
+  datas: any;
 
   selectTableName: any;
 
   Btnfetch = false;
 
   tname: any;
-  
+
   userMange: any;
 
   tableManage: any;
@@ -101,35 +101,35 @@ export class TablesComponent {
     if (plat === 'android') {
       this.sert = true;
     }
-   }
+  }
 
   ngOnInit(): void {
     this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.tableManage = ress[0].tableManage;
-          this.tableFetch = ress[0].tableFetch;
-          this.tableInsert = ress[0].tableInsert;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .getString('role_id')
+      .then((result) => {
+        this.http.searchSystem(result).subscribe(
+          (res: any) => {
+            let ress = res.data.reverse();
+            this.tableManage = ress[0].tableManage;
+            this.tableFetch = ress[0].tableFetch;
+            this.tableInsert = ress[0].tableInsert;
+
+          },
+          (error: any) => {
+            this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
 
     this.keys = [];
     this.datas = [];
     this.formGroup = new FormGroup({
       tableName: new FormControl('', Validators.required),
-      code: new FormControl('', Validators.required)
+      description: new FormControl('', Validators.required)
     })
 
     this.http.allTable().subscribe(
@@ -141,7 +141,7 @@ export class TablesComponent {
         this.selectTableName = table1;
         this.tname = table1;
         this.http.getList(String(table1)).subscribe(
-          (res:any)=>{
+          (res: any) => {
             console.log(res)
             if (res.message === "Record Not Found") {
               this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
@@ -155,7 +155,8 @@ export class TablesComponent {
               });
               let obj = {
                 tName: this.tname,
-                data: this.datas
+                data: this.datas,
+                color_id: 1
               }
               this.http.dataSync(obj).subscribe(
                 (res: any) => {
@@ -167,7 +168,7 @@ export class TablesComponent {
               )
             }
           },
-          (err:any)=>{
+          (err: any) => {
             console.log(err);
           }
         )
@@ -180,31 +181,31 @@ export class TablesComponent {
 
   ionViewWillEnter(): void {
     this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.tableManage = ress[0].tableManage;
-          this.tableFetch = ress[0].tableFetch;
-          this.tableInsert = ress[0].tableInsert;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .getString('role_id')
+      .then((result) => {
+        this.http.searchSystem(result).subscribe(
+          (res: any) => {
+            let ress = res.data.reverse();
+            this.tableManage = ress[0].tableManage;
+            this.tableFetch = ress[0].tableFetch;
+            this.tableInsert = ress[0].tableInsert;
+
+          },
+          (error: any) => {
+            this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
 
     this.keys = [];
     this.datas = [];
     this.formGroup = new FormGroup({
       tableName: new FormControl('', Validators.required),
-      code: new FormControl('', Validators.required)
+      description: new FormControl('', Validators.required)
     })
 
     this.http.allTable().subscribe(
@@ -216,7 +217,7 @@ export class TablesComponent {
         this.selectTableName = table1;
         this.tname = table1;
         this.http.getList(String(table1)).subscribe(
-          (res:any)=>{
+          (res: any) => {
             console.log(res)
             if (res.message === "Record Not Found") {
               this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
@@ -242,7 +243,7 @@ export class TablesComponent {
               )
             }
           },
-          (err:any)=>{
+          (err: any) => {
             console.log(err);
           }
         )
@@ -256,12 +257,12 @@ export class TablesComponent {
   showErrorViaToast() {
     this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
   }
-  
+
   pageChange(event) {
     this.first = event.first;
     this.rows = event.rows;
   }
-  
+
   openDialog() {
     this.productDialog = true;
   }
@@ -271,9 +272,9 @@ export class TablesComponent {
     this.submitted = false;
     this.tableName = '';
     this.table_id = '';
-    this.code = '';
+    this.description = '';
   }
-  
+
   saveProduct() {
 
     this.disabled = true;
@@ -281,7 +282,7 @@ export class TablesComponent {
 
     let obj = {
       tableName: this.tableName,
-      code:  this.code
+      description: this.description
     };
 
     this.http.saveTable(obj).subscribe(
@@ -290,7 +291,7 @@ export class TablesComponent {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
           this.tableName = '';
           this.table_id = '';
-          this.code = '';
+          this.description = '';
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
@@ -323,7 +324,7 @@ export class TablesComponent {
   };
 
   onRowUnselect(event: any) {
-  console.log(event);
+    console.log(event);
   };
 
   updateProduct() {
@@ -407,9 +408,9 @@ export class TablesComponent {
     this.datas = [];
     this.keys = [];
     this.http.getList(String(tableData)).subscribe(
-      (res:any)=>{
+      (res: any) => {
         console.log(res);
-    this.Btnfetch = false;
+        this.Btnfetch = false;
         this.datas = res;
         this.keys = Object.keys(this.datas[0]);
         this.formGroup = this.fb.group({});
@@ -428,9 +429,9 @@ export class TablesComponent {
             }
           }
         )
-    
+
       },
-      (err:any)=>{
+      (err: any) => {
         console.log(err);
       }
     )
@@ -454,7 +455,7 @@ export class TablesComponent {
       tName: this.selectTableName
     }
     this.http.datafromServer(obj).subscribe(
-      (res:any)=>{
+      (res: any) => {
         this.fetch = res;
         this.kk = Object.keys(this.fetch[0]);
         this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data Fetch Success' })
@@ -489,7 +490,8 @@ export class TablesComponent {
 
     let obj = {
       tableName: this.formGroup.value.tableName,
-      code: this.formGroup.value.code
+      description: this.formGroup.value.description,
+      color_id: 1
     };
 
     this.http.saveTable(obj).subscribe(
@@ -498,8 +500,8 @@ export class TablesComponent {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
           this.tableName = '';
           this.formGroup.controls.tableName.reset('');
-          this.formGroup.controls.code.reset('');
-          this.code = '';
+          this.formGroup.controls.description.reset('');
+          this.description = '';
           this.table_id = '';
           this.productDialogs = false;
           this.submitted = false;
@@ -513,7 +515,7 @@ export class TablesComponent {
               let table1 = this.Tables[0].tableName;
               this.tname = table1;
               this.http.getList(String(table1)).subscribe(
-                (res:any)=>{
+                (res: any) => {
                   console.log(res)
                   this.datas = res;
                   this.keys = Object.keys(this.datas[0]);
@@ -525,16 +527,16 @@ export class TablesComponent {
                     tName: this.tname,
                     data: this.datas
                   }
-                this.http.dataSync(obj).subscribe(
-                  (res:any)=>{
-                    if(res){
-                      this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+                  this.http.dataSync(obj).subscribe(
+                    (res: any) => {
+                      if (res) {
+                        this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+                      }
                     }
-                  }
-                )
-      
+                  )
+
                 },
-                (err:any)=>{
+                (err: any) => {
                   console.log(err);
                 }
               )
