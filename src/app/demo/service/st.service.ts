@@ -22,6 +22,14 @@ export class StService {
     )
   };
 
+  allUserV1() {
+    return this.http.get(this.BASEURL + 'api/v_1/all/user').pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
   loginUser(obj: any) {
     let url = this.BASEURL + 'login/user';
     return this.http.post(url, obj).pipe(
