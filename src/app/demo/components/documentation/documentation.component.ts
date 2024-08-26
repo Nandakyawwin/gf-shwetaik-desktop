@@ -9,7 +9,7 @@ export class DocumentationComponent implements OnInit{
 
     username = '';
   role: any;
-  port: any = '8080';
+  port: any;
   DCF: any = `C:\\eStream\\SQLAccounting\\Share\\Default.DCF`;
   portInput = true;
   DCFBool = true;
@@ -36,6 +36,15 @@ export class DocumentationComponent implements OnInit{
         .getString('role')
         .then((result) => {
            this.role = result;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    
+        this.ST
+        .getString('port')
+        .then((result) => {
+          this.port = result;
         })
         .catch((error) => {
           console.log(error);

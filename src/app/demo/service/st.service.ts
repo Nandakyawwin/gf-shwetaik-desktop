@@ -335,8 +335,8 @@ export class StService {
   // ******* FILTER *******
 
 
-  getList(table: any) {
-    let url = `http://localhost:8080/getARC.php?table=${table}`
+  getList(table: any,port:any) {
+    let url = `http://localhost${port}/getARC.php?table=${table}`
     return this.http.get(url).pipe(
       map(
         response => response
@@ -344,8 +344,8 @@ export class StService {
     )
   }
 
-  addData(obj: any) {
-    let url = `http://localhost:8080/add_customer.php`;
+  addData(obj: any,port:any) {
+    let url = `http://localhost${port}/add_customer.php`;
     return this.http.post(url, obj).pipe(
       map(
         response => response

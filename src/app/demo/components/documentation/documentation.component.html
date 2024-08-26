@@ -3,6 +3,6 @@
     <p>&nbsp;</p>
     <h5>Name : <b>{{username}}</b></h5>
     <h5>Role : <b>{{role}}</b></h5>
-    <h5>Server Port : <input type="number" [disabled]="portInput" [(ngModel)]="port">&nbsp;&nbsp;&nbsp;<span><i class="pi pi-pencil" *ngIf="edit" (click)="portfunc()" style="color: slateblue"></i><i class="pi pi-check" (click)="portfunc()" *ngIf="conn" style="color: rgb(36, 255, 94)"></i></span></h5>
-    <h5>DCF Path : <input type="text" [disabled]="DCFBool" [(ngModel)]="DCF">&nbsp;&nbsp;&nbsp;<span><i class="pi pi-pencil" *ngIf="editDCF" (click)="DCFfunc()" style="color: slateblue"></i><i class="pi pi-check" (click)="DCFfunc()" *ngIf="connDCF" style="color: rgb(36, 255, 94)"></i></span></h5>
+    <h5>Server Port : <input type="text" [disabled]="portInput" [(ngModel)]="port">&nbsp;&nbsp;&nbsp;<span><i class="pi pi-pencil" *ngIf="edit" (click)="portfunc()" style="color: slateblue"></i><i class="pi pi-check" (click)="portfunc()" *ngIf="conn" style="color: rgb(36, 255, 94)"></i></span></h5>
+    <h5>DCF Path : <input type="text" [disabled]="true" [(ngModel)]="DCF">&nbsp;&nbsp;&nbsp;<span><i class="pi pi-pencil" *ngIf="editDCF" (click)="DCFfunc()" style="color: slateblue"></i><i class="pi pi-check" (click)="DCFfunc()" *ngIf="connDCF" style="color: rgb(36, 255, 94)"></i></span></h5>
 </div>
