@@ -21,6 +21,8 @@ export class FilterComponent {
 
   colorManage: boolean = false;
 
+  choosingColumn_id: any;
+
   filterManage: boolean = false;
 
   tableSync: boolean = false;
@@ -73,6 +75,8 @@ export class FilterComponent {
 
   Tables: any;
 
+  CC:any;
+
   name: any;
 
   phone: any;
@@ -95,48 +99,14 @@ export class FilterComponent {
 
   constructor(private http: StService, private msgService: MessageService) { }
 
-
-
   ngOnInit(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].filterManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    this.allCC()
 
-
-    this.http.allUser().subscribe(
+    this.http.allTable().subscribe(
       (res: any) => {
-        let User = res.data;
-        this.Users = User.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        this.Tables = res.data;
       }
     )
-
-    this.http.allFilter().subscribe(
-      (res: any) => {
-        let System = res.data;
-        this.Systems = System.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
     this.http.allRole().subscribe(
       (res: any) => {
         let Role = res.data;
@@ -147,87 +117,6 @@ export class FilterComponent {
       }
     )
 
-    this.http.allTable().subscribe(
-      (res: any) => {
-        let Table = res.data;
-        this.Tables = Table.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-  }
-
-  ionViewWillEnter(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].filterManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-
-    this.http.allUser().subscribe(
-      (res: any) => {
-        let User = res.data;
-        this.Users = User.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allFilter().subscribe(
-      (res: any) => {
-        let System = res.data;
-        this.Systems = System.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allRole().subscribe(
-      (res: any) => {
-        let Role = res.data;
-        this.Roles = Role.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allTable().subscribe(
-      (res: any) => {
-        let Table = res.data;
-        this.Tables = Table.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-  }
-
-  showErrorViaToast() {
-    this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
-  }
-
-  pageChange(event) {
-    this.first = event.first;
-    this.rows = event.rows;
   }
 
   openDialog() {
@@ -274,48 +163,18 @@ export class FilterComponent {
   }
 
   saveProduct() {
-
     this.disabled = true;
     this.submitted = true;
-
     let obj = {
-      roleName: this.selectedRole.roleName,
-      user_id: this.selectedUsers.user_id,
+      role_id: this.selectedRole.role_id,
       tableName: this.selectedTable.tableName,
-      value: this.value,
-      key: this.key
+      name: this.key
     };
-    this.http.saveFilter(obj).subscribe(
+    this.http.saveCC(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Create Successfully' });
-          this.selectedRole = '';
-          this.selectedUsers = '';
-          this.selectedTable = '';
-          this.value = '';
-          this.key = '';
-          this.userManage = false;
-          this.roleManage = false;
-          this.languageManage = false;
-          this.tableManage = false;
-          this.colorManage = false;
-          this.filterManage = false;
-          this.tableSync = false;
-          this.tableFetch = false;
-          this.tableInsert = false;
-          this.productDialog = false;
-          this.submitted = false;
-          this.disabled = false;
-
-          this.http.allFilter().subscribe(
-            (res: any) => {
-              let System = res.data;
-              this.Systems = System.reverse();
-            },
-            (error: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-            }
-          )
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Create Successfully' });
+          this.dialogClose("Save");
         }
       },
       (err: any) => {
@@ -328,49 +187,26 @@ export class FilterComponent {
   onRowSelect(event: any) {
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.selectedRole = this.Roles.find(role => role.roleName === event.data.roleName);
-    this.selectedTable = this.Tables.find(table => table.tableName === event.data.tableName);
-    this.selectedUsers = this.Users.find(user => user.user_id == event.data.user_id);
-    this.value = event.data.value;
-    this.key = event.data.key
-    this.filterID = event.data.filter_id;
+    let data = event.data;
+    this.selectedRole = data.role;
+    this.key = data.name;
+    this.selectedTable = this.Tables.find(lang => lang.tableName === event.data.tableName);
+    this.choosingColumn_id = data.choosingColumn_id
   };
 
   updateProduct() {
-
     this.submitted = true;
-
     let obj = {
-      roleName: this.selectedRole.roleName,
-      user_id: this.selectedUsers.user_id,
+      role_id: this.selectedRole.role_id,
       tableName: this.selectedTable.tableName,
-      value: this.value,
-      key: this.key
+      name: this.key,
+      choosingColumn_id: this.choosingColumn_id
     };
-    this.http.updateFilter(obj).subscribe(
+    this.http.updateCC(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Update Successfully' });
-          this.selectedRole = '';
-          this.selectedUsers = '';
-          this.selectedTable = '';
-          this.value = '';
-          this.key = '';
-          this.productDialog = false;
-          this.submitted = false;
-          this.addOrUpdate = false;
-
-          this.http.allFilter().subscribe(
-            (res: any) => {
-              if (res.con) {
-                let System = res.data;
-                this.Systems = System.reverse();
-              }
-            },
-            (err: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
-            }
-          )
+          this.dialogClose("Update");
         }
       }
     )
@@ -378,41 +214,74 @@ export class FilterComponent {
 
   deleteProduct(obj: any) {
     this.deleteProductDialog = true;
-    this.systemOption_id = obj;
+    this.choosingColumn_id = obj;
   }
 
   confirmDelete() {
     let obj = {
-      systemOption_id: this.systemOption_id
+      choosingColumn_id: this.choosingColumn_id
     }
-    this.http.deleteFilter(obj).subscribe(
+    this.http.deleteCC(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Delete Successfully' });
-          this.deleteProductDialog = false;
-          this.selectedRole = '';
-          this.selectedUsers = '';
-          this.selectedTable = '';
-          this.key = '';
-          this.value = '';
-          this.productDialog = false;
-          this.submitted = false;
-          this.addOrUpdate = false;
-          this.productDialog = false;
-          this.submitted = false;
-          this.addOrUpdate = false;
-          this.http.allFilter().subscribe(
-            (res: any) => {
-              if (res.con) {
-                let System = res.data;
-                this.Systems = System.reverse();
-              }
-            },
-            (err: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
-            }
-          )
+          this.allCC();
+          this.dialogClose("Delete");
         };
+      },
+      (err: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+      }
+    )
+  }
+
+  dialogClose(type: any) {
+    
+    if (type === "Update") {
+
+      this.submitted = false;
+      this.productDialog = false;
+      this.addOrUpdate = false;
+      this.disabled = false;
+      this.allCC();
+
+    }
+    else if (type === "Save")
+    {
+
+      this.productDialog = false;
+      this.submitted = false;
+      this.addOrUpdate = false;
+      this.disabled = false;
+      this.allCC();
+
+    }
+    else if (type === "Delete")
+    {
+      this.deleteProductDialog = false;
+      this.productDialog = false;
+      this.submitted = false;
+      this.addOrUpdate = false;
+      this.productDialog = false;
+      this.submitted = false;
+      this.addOrUpdate = false;
+      this.allCC();
+
+    }
+    this.productDialog = false;
+  }
+
+  dialogError() {
+    this.productDialog = true;
+  }
+
+  allCC() {
+    this.http.allCC().subscribe(
+      (res: any) => {
+        if (res.con) {
+          let System = res.data;
+          this.CC = System.reverse();
+        }
       },
       (err: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });

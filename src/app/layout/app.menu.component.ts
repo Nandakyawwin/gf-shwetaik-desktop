@@ -141,10 +141,10 @@ export class AppMenuComponent implements OnInit{
                                     label: this.i19, icon: 'pi pi-list',
                                     routerLink: ['/admin/lists'],
                                 },
-                                {
-                                    label: this.i18, icon: 'pi pi-megaphone',
-                                    routerLink: ['/admin/ann'],
-                                },
+                                // {
+                                //     label: this.i18, icon: 'pi pi-megaphone',
+                                //     routerLink: ['/admin/ann'],
+                                // },
                             ]
                         },
                         {
@@ -174,8 +174,6 @@ export class AppMenuComponent implements OnInit{
                     ];
                 })
             })
-
-            console.log(this.model)
         })
         .catch((error) => {
           console.log(error);

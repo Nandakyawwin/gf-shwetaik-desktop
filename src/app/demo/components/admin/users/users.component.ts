@@ -14,6 +14,10 @@ export class UsersComponent implements OnInit{
 
   first: any = 0;
 
+  lang:any;
+
+  Lang = [{ lang: "en" }, { lang: "mm" }];
+
   userName: any;
 
   disabled: boolean = false;
@@ -22,12 +26,14 @@ export class UsersComponent implements OnInit{
 
   deleteProductDialog: boolean = false;
 
+  selectedLang: any;
+
   formGroup: any;
 
   selectedRole: any;
 
   submitted: boolean = false;
-  
+
   addOrUpdate: boolean = false;
 
   rows = 10;
@@ -51,27 +57,10 @@ export class UsersComponent implements OnInit{
   userMange: any;
 
   constructor(private http: StService,private msgService: MessageService) { }
-  
+
 
 
   ngOnInit(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].userManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 
     this.http.allUser().subscribe(
       (response: any) => {
@@ -82,6 +71,12 @@ export class UsersComponent implements OnInit{
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
       }
     )
+
+   this.http.allUserV1().subscribe(
+       (res:any)=>{
+           // console.log(res);
+      }
+   )
 
     this.http.allRole().subscribe(
       (res: any) => {
@@ -102,7 +97,7 @@ export class UsersComponent implements OnInit{
         (res: any) => {
           let ress = res.data.reverse();
           this.userMange = ress[0].userManage;
-          
+
         },
         (error: any) => {
           this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -133,22 +128,11 @@ export class UsersComponent implements OnInit{
     )
   }
 
-
-  showErrorViaToast() {
-    this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
-  }
-  
-  pageChange(event) {
-    this.first = event.first;
-    this.rows = event.rows;
-  }
-  
   openDialog() {
     this.productDialog = true;
   }
 
   hideDialog() {
-
     this.productDialog = false;
     this.submitted = false;
     this.name = '';
@@ -159,9 +143,8 @@ export class UsersComponent implements OnInit{
     this.userName = '';
     this.user_id = '';
   }
-  
-  saveProduct() {
 
+  saveProduct() {
     this.disabled = true;
     this.submitted = true;
 
@@ -169,8 +152,9 @@ export class UsersComponent implements OnInit{
       name: this.name,
       email: this.email,
       password: this.password,
-      role: this.selectedRole.roleName,
-      phone: this.phone
+      role_id: this.selectedRole.role_id,
+      phone: this.phone,
+      lang: this.lang
     };
 
     this.http.saveUser(obj).subscribe(
@@ -206,16 +190,15 @@ export class UsersComponent implements OnInit{
 
   onRowSelect(event: any) {
     console.log(event)
-    console.log(this.selectedRole)
     this.productDialog = true;
     this.addOrUpdate = true;
     this.name = event.data.name;
     this.email = event.data.email;
-    this.selectedRole = this.Roles.find(role => role.roleName === event.data.role);
+    this.selectedRole = event.data.role;
     this.phone = event.data.phone;
+    this.selectedLang = this.Lang.find(lang=> lang.lang === event.data.lang);
     this.userName = event.data.userName;
     this.user_id = event.data.user_id;
-
   };
 
   onRowUnselect(event: any) {
@@ -230,10 +213,13 @@ export class UsersComponent implements OnInit{
       name: this.name,
       email: this.email,
       phone: this.phone,
-      role: this.selectedRole.roleName,
+      role_id: this.selectedRole.role_id,
       userName: this.userName,
-      user_id: this.user_id
+      user_id: this.user_id,
+      lang: this.selectedLang.lang
     };
+
+    console.log(obj)
 
     this.http.updateUser(obj).subscribe(
       (res: any) => {

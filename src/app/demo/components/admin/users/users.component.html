@@ -1,62 +1,61 @@
-
-<div class="grid" *ngIf="userMange">
+<div class="grid">
 	<div class="col-12 xl:col-12">
 		<div class="col-23 xl:col-12">
 			<div class="card">
-				Sorry, You can't access on that page
-			</div>
-		</div>
-	</div>
-</div>
-<div class="grid" *ngIf="!userMange">
-	<div class="col-12 xl:col-12">
-		<div class="col-23 xl:col-12">
-			<div class="card">
-				<h5>Users</h5>
+				<h5>
+                    <b>
+                        Users
+                    </b>
+                </h5>
 				<p-toast key="tst"></p-toast>
-				<div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
-					<button pButton type="button" label="New" icon="pi pi-plus" class="mr-2" (click)="openDialog()"></button>
-				</div>
+                    <div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
+                        <button pButton type="button" label="New" icon="pi pi-plus" class="mr-2" (click)="openDialog()"></button>
+                    </div>
 
-				<p-table
-					#dt
-					[value]="Users"
-					[paginator]="true"
-					[rows]="5"
-					responsiveLayout="scroll"
-					[tableStyle]="{'min-width': '50rem'}"
-					[rowsPerPageOptions]="[5, 10, 20,40,80,100]"
-					selectionMode="single"
-					[(selection)]="selectedProduct"
-					(onRowSelect)="onRowSelect($event)" 
-    				(onRowUnselect)="onRowUnselect($event)" 
-				>
-					<ng-template pTemplate="header">
-						<tr>
-							<th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-							<th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-							<th pSortableColumn="userName">Username <p-sortIcon field="userName"></p-sortIcon></th>
-							<th pSortableColumn="user_id">User ID <p-sortIcon field="user_id"></p-sortIcon></th>
-							<th pSortableColumn="phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
-							<th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
-						</tr>
-					</ng-template>
-					<ng-template pTemplate="body" let-user>
-						<tr [pSelectableRow]="user">
-							<td>{{ user.name }}</td>
-							<td>{{ user.email }}</td>
-							<td>{{ user.userName }}</td>
-							<td>{{ user.user_id }}</td>
-							<td>{{ user.phone }}</td>
-							<td>{{ user.role }}</td>
-							<td>
-								<div class="flex">
-									<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(user.user_id)"></button>
-								</div>
-							</td>
-						</tr>
-					</ng-template>
-				</p-table>
+				<div class="card">
+                    <p-table
+                        #dt
+                        [value]="Users"
+                        [paginator]="true"
+                        [rows]="5"
+                        responsiveLayout="scroll"
+                        [tableStyle]="{'min-width': '50rem'}"
+                        [rowsPerPageOptions]="[5, 10, 20,40,80,100]"
+                        selectionMode="single"
+                        [(selection)]="selectedProduct"
+                        (onRowSelect)="onRowSelect($event)"
+                        (onRowUnselect)="onRowUnselect($event)"
+                    >
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                                <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                                <th pSortableColumn="userName">Username <p-sortIcon field="userName"></p-sortIcon></th>
+                                <th pSortableColumn="user_id">User ID <p-sortIcon field="user_id"></p-sortIcon></th>
+                                <th pSortableColumn="phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
+                                <th pSortableColumn="lang">Language <p-sortIcon field="lang"></p-sortIcon></th>
+                                <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-user>
+                            <tr [pSelectableRow]="user">
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.userName }}</td>
+                                <td>{{ user.user_id }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>{{ user.lang }}</td>
+                                <td>{{ user.role.roleName }}</td>
+                                <td>
+                                    <div class="flex">
+                                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(user.user_id)"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
 			</div>
 			<p-dialog [(visible)]="productDialog" [maximizable]="true" [style]="{width: '450px'}"[modal]="true" class="p-fluid">
 				<ng-template pTemplate="header">
@@ -72,17 +71,33 @@
 						</div>
 						<div class="field">
 							<label for="email">Email</label>
-							<input 
-								type="email" 
-								pInputText id="email" 
-								[(ngModel)]="email" 
-								required 
-								autofocus 
+							<input
+								type="email"
+								pInputText id="email"
+								[(ngModel)]="email"
+								required
+								autofocus
 								[ngClass]="{'ng-invalid ng-dirty' : submitted && !email}"
 								#emailModel="ngModel"
 							/>
 							<small class="ng-dirty ng-invalid" *ngIf="submitted && !email">Email is required.</small>
 							<small class="ng-dirty ng-invalid" *ngIf="submitted && emailModel.errors?.email">Invalid email format.</small>
+						</div>
+						<div class="field">
+							<label for="lang">Display Language</label>
+							<p-dropdown
+								[options]="Lang"
+								[(ngModel)]="selectedLang"
+								optionLabel="lang"
+								[filter]="true"
+								filterBy="lang"
+								id="lang"
+								[showClear]="true"
+								placeholder="Select display language"
+								[ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedLang}"
+								>
+							</p-dropdown>
+							<small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedLang">Display Language is required.</small>
 						</div>
 						<div class="field" *ngIf="addOrUpdate">
 							<label for="userName">Username</label>
@@ -91,7 +106,7 @@
 						</div>
 						<div class="field">
 							<label for="role">Role</label>
-							<p-dropdown 
+							<p-dropdown
 								[options]="Roles"
 								[(ngModel)]="selectedRole"
 								optionLabel="roleName"
@@ -111,13 +126,13 @@
 							<small class="ng-dirty ng-invalid" *ngIf="submitted && !email">Phone Number is required.</small>
 						</div>
 						<div class="field" *ngIf="!addOrUpdate">
-							<label for="password">Password</label>
+							<label>Password</label>
 							<p-password [(ngModel)]="password" [ngClass]="{'ng-invalid ng-dirty' : submitted && !password}" [toggleMask]="true"></p-password>
 							<small class="ng-dirty ng-invalid" *ngIf="submitted && !password">Password is required.</small>
 						</div>
 					</form>
 				</ng-template>
-				<ng-template pTemplate="footer">   
+				<ng-template pTemplate="footer">
 					<button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
 					<button pButton pRipple label="Save" *ngIf="!addOrUpdate" icon="pi pi-check" class="p-button-text" [disabled]="disabled" (click)="saveProduct()"></button>
 					<button pButton pRipple label="Update" icon="pi pi-check" *ngIf="addOrUpdate" class="p-button-text" [disabled]="disabled" (click)="updateProduct()"></button>

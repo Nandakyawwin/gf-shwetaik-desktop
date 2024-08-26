@@ -88,25 +88,6 @@ export class SystemComponent {
 
 
   ngOnInit(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].userManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-
     this.http.allUser().subscribe(
       (res: any) => {
         let User = res.data;
@@ -146,7 +127,7 @@ export class SystemComponent {
         (res: any) => {
           let ress = res.data.reverse();
           this.userMange = ress[0].userManage;
-          
+
         },
         (error: any) => {
           this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -296,9 +277,8 @@ export class SystemComponent {
   onRowSelect(event: any) {
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.selectedRole = this.Roles.find(role => role.roleName === event.data.roleName);
+    this.selectedRole = event.data.role.roleName;
     this.userManage = event.data.userManage;
-    this.selectedUsers = this.Users.find(user => user.user_id == event.data.user_id);
     this.roleManage = event.data.roleManage;
     this.languageManage = event.data.languageManage;
     this.tableManage = event.data.tableManage;
@@ -308,7 +288,7 @@ export class SystemComponent {
     this.tableFetch = event.data.tableFetch;
     this.tableInsert = event.data.tableInsert;
     this.systemOption_id = event.data.systemOption_id;
-    this.selectedLang = this.Lang.find(lang=> lang.lang === event.data.lang);
+    console.log(this.selectedRole)
   };
 
   updateProduct() {
@@ -318,7 +298,7 @@ export class SystemComponent {
     let obj = {
       roleName: this.selectedRole.roleName,
       userManage: this.userManage,
-        user_id : this.selectedUsers.user_id,
+      user_id : this.selectedUsers.user_id,
       roleManage: this.roleManage,
       languageManage: this.languageManage,
       tableManage: this.tableManage,
@@ -335,7 +315,6 @@ export class SystemComponent {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Update Successfully' });
           this.selectedRole = '';
-          this.selectedUsers = '';
           this.userManage = false;
           this.roleManage = false;
           this.languageManage = false;

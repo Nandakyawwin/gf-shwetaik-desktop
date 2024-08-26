@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
         this.http.setString('name', String(data.name));
         this.http.setString('userName', String(data.userName));
         this.http.setString('lang', String(data.lang));
+        this.http.setString('port', String('8080'));
         this.langs = data.lang;
     }
 

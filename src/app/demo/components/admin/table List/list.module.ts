@@ -22,36 +22,40 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ListComponent } from './list.component';
+import {ArrayToPipeStringPipe} from "../../../../array-to-pipe-string.pipe";
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @NgModule({
   declarations: [ListComponent],
-  imports: [
-    CommonModule,
-    ListRoutingModule,
-    ButtonModule,
-    RippleModule,
-    SplitButtonModule,
-    ToggleButtonModule,
-    ToolbarModule,
-    MessageModule,
-    MessagesModule,
-    ToastModule,
-    PasswordModule,
-    MessagesModule,
-    MessageModule,
-    ButtonModule,
-    ToastModule,
-    InputTextModule,
-    FormsModule,
-    InputNumberModule,
-    TableModule,
-    DialogModule,
-    InputTextareaModule,
-    RadioButtonModule,
-    DropdownModule,
-    BreadcrumbModule,
-    CheckboxModule
-  ]
+    imports: [
+        CommonModule,
+        ListRoutingModule,
+        ButtonModule,
+        RippleModule,
+        MultiSelectModule,
+        SplitButtonModule,
+        ToggleButtonModule,
+        ToolbarModule,
+        MessageModule,
+        MessagesModule,
+        ToastModule,
+        PasswordModule,
+        MessagesModule,
+        MessageModule,
+        ButtonModule,
+        ToastModule,
+        InputTextModule,
+        FormsModule,
+        InputNumberModule,
+        TableModule,
+        DialogModule,
+        InputTextareaModule,
+        RadioButtonModule,
+        DropdownModule,
+        BreadcrumbModule,
+        CheckboxModule,
+        ArrayToPipeStringPipe
+    ]
 })
 export class ListModule { }

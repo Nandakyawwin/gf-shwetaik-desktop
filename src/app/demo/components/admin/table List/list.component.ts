@@ -13,6 +13,10 @@ export class ListComponent {
 
   userManage: boolean = false;
 
+  cities: any;
+
+  selectedCities: any;
+
   roleManage: boolean = false;
 
   languageManage: boolean = false;
@@ -98,39 +102,12 @@ export class ListComponent {
 
 
   ngOnInit(): void {
-    this.http
-      .getString('user_id')
-      .then((result) => {
-        this.http.searchSystem(result).subscribe(
-          (res: any) => {
-            let ress = res.data.reverse();
-            this.userMange = ress[0].filterManage;
 
-          },
-          (error: any) => {
-            this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-          }
-        )
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-
+    this.allList();
     this.http.allUser().subscribe(
       (res: any) => {
         let User = res.data;
         this.Users = User.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allFilter().subscribe(
-      (res: any) => {
-        let System = res.data;
-        this.Systems = System.reverse();
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -150,68 +127,7 @@ export class ListComponent {
     this.http.allTable().subscribe(
       (res: any) => {
         let Table = res.data;
-        this.Tables = Table.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-  }
-
-  ionViewWillEnter(): void {
-    this.http
-      .getString('user_id')
-      .then((result) => {
-        this.http.searchSystem(result).subscribe(
-          (res: any) => {
-            let ress = res.data.reverse();
-            this.userMange = ress[0].filterManage;
-
-          },
-          (error: any) => {
-            this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-          }
-        )
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-
-    this.http.allUser().subscribe(
-      (res: any) => {
-        let User = res.data;
-        this.Users = User.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allFilter().subscribe(
-      (res: any) => {
-        let System = res.data;
-        this.Systems = System.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allRole().subscribe(
-      (res: any) => {
-        let Role = res.data;
-        this.Roles = Role.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
-    this.http.allTable().subscribe(
-      (res: any) => {
-        let Table = res.data;
+        this.cities = Table;
         this.Tables = Table.reverse();
       },
       (error: any) => {
@@ -234,40 +150,11 @@ export class ListComponent {
     if (this.productDialog == false) {
       this.productDialog = true;
       this.addOrUpdate = false;
-      this.selectedRole = '';
-      this.selectedTable = '';
-      this.selectedUsers = '';
-      this.key = '';
-      this.value = '';
-      this.userManage = false;
-      this.roleManage = false;
-      this.languageManage = false;
-      this.tableManage = false;
-      this.colorManage = false;
-      this.filterManage = false;
-      this.tableSync = false;
-      this.tableFetch = false;
-      this.tableInsert = false;
     }
   }
 
   hideDialog() {
 
-    this.productDialog = false;
-    this.submitted = false;
-    this.roleName = '';
-    this.key = '';
-    this.value = '';
-    this.selectedTable = '';
-    this.userManage = false;
-    this.roleManage = false;
-    this.languageManage = false;
-    this.tableManage = false;
-    this.colorManage = false;
-    this.filterManage = false;
-    this.tableSync = false;
-    this.tableFetch = false;
-    this.tableInsert = false;
     this.productDialog = false;
     this.submitted = false;
     this.addOrUpdate = false;
@@ -278,48 +165,26 @@ export class ListComponent {
     this.disabled = true;
     this.submitted = true;
 
+    let tableN = this.selectedCities.map(e => {
+      return e.tableName
+    })
     let obj = {
-      roleName: this.selectedRole.roleName,
-      user_id: this.selectedUsers.user_id,
-      tableName: this.selectedTable.tableName,
-      value: this.value,
-      key: this.key
+      role_id: this.selectedRole.role_id,
+      list: JSON.stringify(tableN)
     };
-    this.http.saveFilter(obj).subscribe(
+    this.http.saveLists(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Create Successfully' });
-          this.selectedRole = '';
-          this.selectedUsers = '';
-          this.selectedTable = '';
-          this.value = '';
-          this.key = '';
-          this.userManage = false;
-          this.roleManage = false;
-          this.languageManage = false;
-          this.tableManage = false;
-          this.colorManage = false;
-          this.filterManage = false;
-          this.tableSync = false;
-          this.tableFetch = false;
-          this.tableInsert = false;
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
 
-          this.http.allFilter().subscribe(
-            (res: any) => {
-              let System = res.data;
-              this.Systems = System.reverse();
-            },
-            (error: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-            }
-          )
+          this.allList();
         }
       },
       (err: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+        this.error(err, false);
         this.disabled = false;
       }
     )
@@ -347,10 +212,10 @@ export class ListComponent {
       value: this.value,
       key: this.key
     };
-    this.http.updateFilter(obj).subscribe(
+    this.http.updateList(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Update Successfully' });
+          this.error(res, true);
           this.selectedRole = '';
           this.selectedUsers = '';
           this.selectedTable = '';
@@ -359,18 +224,7 @@ export class ListComponent {
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-
-          this.http.allFilter().subscribe(
-            (res: any) => {
-              if (res.con) {
-                let System = res.data;
-                this.Systems = System.reverse();
-              }
-            },
-            (err: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
-            }
-          )
+          this.allList();
         }
       }
     )
@@ -385,10 +239,10 @@ export class ListComponent {
     let obj = {
       systemOption_id: this.systemOption_id
     }
-    this.http.deleteFilter(obj).subscribe(
+    this.http.deleteList(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Delete Successfully' });
+          this.error(res, true);
           this.deleteProductDialog = false;
           this.selectedRole = '';
           this.selectedUsers = '';
@@ -401,22 +255,34 @@ export class ListComponent {
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allFilter().subscribe(
-            (res: any) => {
-              if (res.con) {
-                let System = res.data;
-                this.Systems = System.reverse();
-              }
-            },
-            (err: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
-            }
-          )
+          this.allList();
         };
       },
       (err: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+        this.error(err,false);
       }
     )
+  }
+
+
+  allList() {
+    this.http.allLists().subscribe(
+      (res: any) => {
+          console.log(res);
+          let s = res.data;
+          this.Systems = s.reverse();
+    },
+    (error: any) => {
+      this.error(error,false);
+    }
+  )
+  }
+
+  error(e: any,status:any) {
+    if (status == true) {
+      this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Successfully' });
+    } else {
+      this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(e.name), detail: 'Internet Server Error' })
+    }
   }
 }

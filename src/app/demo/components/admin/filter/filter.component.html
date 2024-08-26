@@ -1,47 +1,39 @@
-
-<div class="grid" *ngIf="!userMange">
-	<div class="col-12 xl:col-12">
-		<div class="col-23 xl:col-12">
-			<div class="card">
-				Sorry, You can't access on that page
-			</div>
-		</div>
-	</div>
-</div>
-<div class="grid" *ngIf="userMange">
+<div class="grid">
     <div class="col-12 xl:col-12">
         <div class="col-23 xl:col-12">
             <div class="card">
-                <h5>Choosing Column</h5>
+                <h5>
+                    <b>
+                        Choosing Columns
+                    </b>
+                </h5>
                 <p-toast key="tst"></p-toast>
                 <div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
                     <button pButton type="button" label="New" icon="pi pi-plus" class="mr-2"
                         (click)="openDialog()"></button>
                 </div>
-                <p-table #dt [value]="Systems" [paginator]="true" [rows]="5" responsiveLayout="scroll"
+                <p-table #dt [value]="CC" [paginator]="true" [rows]="5" responsiveLayout="scroll"
                     [tableStyle]="{'min-width': '70rem'}" [rowsPerPageOptions]="[5, 10, 20,40,80,100]"
                     selectionMode="single" [resizableColumns]="true" [(selection)]="selectedProduct"
                     (onRowSelect)="onRowSelect($event)">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="key">Table Name <p-sortIcon field="key"></p-sortIcon></th>
-                            <th pSortableColumn="value">Value <p-sortIcon field="value"></p-sortIcon></th>
-                            <th pSortableColumn="role_id">Role Name <p-sortIcon field="role_id"></p-sortIcon></th>
-                            <th pSortableColumn="user_id">Roles <p-sortIcon field="user_id"></p-sortIcon></th>
+                            <th pSortableColumn="name">Column Name <p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="tableName">Table Name <p-sortIcon field="tableName"></p-sortIcon></th>
+                            <th pSortableColumn="roleName">Role Name <p-sortIcon field="roleName"></p-sortIcon></th>
                             <th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-system>
                         <tr [pSelectableRow]="system">
-                            <td>{{ system.key }}</td>
-                            <td>{{ system.value }}</td>
-                            <td>{{ system.roleName }}</td>
-                            <td>{{ system.user_id }}</td>
+                            <td>{{ system.name }}</td>
+                            <td>{{ system.tableName }}</td>
+                            <td>{{ system.role.roleName }}</td>
                             <td>{{ system.createAt | date }}</td>
                             <td>
                                 <div class="flex">
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                                        (click)="deleteProduct(system.filter_id)"></button>
+                                        (click)="deleteProduct(system.choosingColumn_id)"></button>
                                 </div>
                             </td>
                         </tr>
@@ -51,24 +43,16 @@
             <p-dialog [(visible)]="productDialog" [maximizable]="true" [style]="{width: '450px'}" [modal]="true"
                 class="p-fluid">
                 <ng-template pTemplate="header">
-                    <span *ngIf="!addOrUpdate"><b>Add New Filter</b></span>
-                    <span *ngIf="addOrUpdate"><b>Edit SFilter</b></span>
+                    <span *ngIf="!addOrUpdate"><b>Add New Choosing Colunm</b></span>
+                    <span *ngIf="addOrUpdate"><b>Edit Choosing Colunm</b></span>
                 </ng-template>
                 <ng-template pTemplate="content">
                     <form [formGroup]="formGroup">
-
                         <div class="field">
-                            <label for="key">Key ( eg: COMPANY2)</label>
+                            <label for="key">Column Name ( eg: COMPANY2)</label>
                             <input type="text" pInputText id="key" [(ngModel)]="key" required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !key}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !key">Key is required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="value">Value ( eg: New Company)</label>
-                            <input type="text" pInputText id="value" [(ngModel)]="value" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !value}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !value">Value is required.</small>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !key">Column Name is required.</small>
                         </div>
 
                         <div class="field">
@@ -90,17 +74,6 @@
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedRole}">
                             </p-dropdown>
                             <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is
-                                required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="user_id">User ID</label>
-                            <p-dropdown [options]="Users" [(ngModel)]="selectedUsers" optionLabel="user_id"
-                                [filter]="true" filterBy="user_id" id="user_id" [showClear]="true"
-                                placeholder="Select User"
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedUsers}">
-                            </p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedUsers">User is
                                 required.</small>
                         </div>
 

@@ -18,19 +18,15 @@
                     (onRowSelect)="onRowSelect($event)">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="key">Table Name <p-sortIcon field="key"></p-sortIcon></th>
-                            <th pSortableColumn="value">Value <p-sortIcon field="value"></p-sortIcon></th>
-                            <th pSortableColumn="role_id">Role Name <p-sortIcon field="role_id"></p-sortIcon></th>
-                            <th pSortableColumn="user_id">Roles <p-sortIcon field="user_id"></p-sortIcon></th>
+                            <th pSortableColumn="list">Table List <p-sortIcon field="list"></p-sortIcon></th>
+                            <th pSortableColumn="roleName">Role <p-sortIcon field="roleName"></p-sortIcon></th>
                             <th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-system>
                         <tr [pSelectableRow]="system">
-                            <td>{{ system.key }}</td>
-                            <td>{{ system.value }}</td>
-                            <td>{{ system.roleName }}</td>
-                            <td>{{ system.user_id }}</td>
+                            <td>{{ system.list | arrayToPipeString }}</td>
+                            <td>{{ system.role.roleName }}</td>
                             <td>{{ system.createAt | date }}</td>
                             <td>
                                 <div class="flex">
@@ -45,35 +41,21 @@
             <p-dialog [(visible)]="productDialog" [maximizable]="true" [style]="{width: '450px'}" [modal]="true"
                 class="p-fluid">
                 <ng-template pTemplate="header">
-                    <span *ngIf="!addOrUpdate"><b>Add New Filter</b></span>
-                    <span *ngIf="addOrUpdate"><b>Edit SFilter</b></span>
+                    <span *ngIf="!addOrUpdate"><b>Add New Lists</b></span>
+                    <span *ngIf="addOrUpdate"><b>Edit Lists</b></span>
                 </ng-template>
                 <ng-template pTemplate="content">
                     <form [formGroup]="formGroup">
 
                         <div class="field">
-                            <label for="key">Key ( eg: COMPANY2)</label>
-                            <input type="text" pInputText id="key" [(ngModel)]="key" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !key}" />
+                            <label for="key">Table Lists</label>
+                            <p-multiSelect 
+                            [options]="cities" 
+                            [(ngModel)]="selectedCities" 
+                            [filter]="true" 
+                            optionLabel="tableName" 
+                            placeholder="Select Table" />
                             <small class="ng-dirty ng-invalid" *ngIf="submitted && !key">Key is required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="value">Value ( eg: New Company)</label>
-                            <input type="text" pInputText id="value" [(ngModel)]="value" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !value}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !value">Value is required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="role">Table Name</label>
-                            <p-dropdown [options]="Tables" [(ngModel)]="selectedTable" optionLabel="tableName"
-                                [filter]="true" filterBy="tableName" id="table" [showClear]="true"
-                                placeholder="Select Table"
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedTable}">
-                            </p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedTable">Table is
-                                required.</small>
                         </div>
 
                         <div class="field">
@@ -84,17 +66,6 @@
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedRole}">
                             </p-dropdown>
                             <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is
-                                required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="user_id">User ID</label>
-                            <p-dropdown [options]="Users" [(ngModel)]="selectedUsers" optionLabel="user_id"
-                                [filter]="true" filterBy="user_id" id="user_id" [showClear]="true"
-                                placeholder="Select User"
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedUsers}">
-                            </p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedUsers">User is
                                 required.</small>
                         </div>
 
