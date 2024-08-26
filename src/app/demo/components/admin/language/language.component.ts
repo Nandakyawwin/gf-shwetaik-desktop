@@ -5,7 +5,7 @@ import { StService } from 'src/app/demo/service/st.service';
 
 @Component({
   selector: 'app-language',
-  providers: [MessageService,TableService],
+  providers: [MessageService, TableService],
   templateUrl: './language.component.html',
   styleUrl: './language.component.scss'
 })
@@ -34,7 +34,7 @@ export class LanguageComponent {
   selectedRole: any;
 
   submitted: boolean = false;
-  
+
   addOrUpdate: boolean = false;
 
   rows = 10;
@@ -62,29 +62,11 @@ export class LanguageComponent {
   Languages: any;
 
   userMange: any;
-  constructor(private http: StService,private msgService: MessageService) { }
-  
+  constructor(private http: StService, private msgService: MessageService) { }
+
 
 
   ngOnInit(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].languageManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
     this.http.allLanguage().subscribe(
       (res: any) => {
         let Languages = res.data;
@@ -98,22 +80,21 @@ export class LanguageComponent {
 
   ionViewWillEnter(): void {
     this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].languageManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .getString('user_id')
+      .then((result) => {
+        this.http.searchSystem(result).subscribe(
+          (res: any) => {
+            let ress = res.data.reverse();
+            this.userMange = ress[0].languageManage;
+          },
+          (error: any) => {
+            this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     this.http.allLanguage().subscribe(
       (res: any) => {
@@ -129,12 +110,12 @@ export class LanguageComponent {
   showErrorViaToast() {
     this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
   }
-  
+
   pageChange(event) {
     this.first = event.first;
     this.rows = event.rows;
   }
-  
+
   openDialog() {
     if (this.productDialog == false) {
       this.productDialog = true;
@@ -154,7 +135,7 @@ export class LanguageComponent {
     this.language_id = '';
     console.log("dd")
   }
-  
+
   saveProduct() {
 
     this.disabled = true;
@@ -206,7 +187,7 @@ export class LanguageComponent {
   };
 
   onRowUnselect(event: any) {
-  console.log(event);
+    console.log(event);
   };
 
   updateProduct() {

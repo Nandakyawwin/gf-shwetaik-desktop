@@ -12,10 +12,69 @@ export class StService {
   BASEURL = environment.BASEURL;
   constructor(private http: HttpClient) { }
 
+
+    // Choosing Columns
+
+    allCC(){
+      return this.http.get(this.BASEURL + 'all/CC').pipe(
+          map(data => data)
+      )
+    }
+  
+  saveCC(obj: any) {
+    let url = this.BASEURL + 'save/CC';
+    return this.http.post(url, obj).pipe(
+      map(
+        res => res
+        )
+      )
+  }
+  
+  updateCC(obj: any) {
+    let url = this.BASEURL + 'update/CC';
+    return this.post(url, obj).pipe(
+      map(
+        res => res
+        )
+      )
+    }
+
+  deleteCC(id: any) {
+    let url = this.BASEURL + 'delete/CC';
+    return this.post(url, id);
+  }
+
+  allLists() {
+    let url = this.BASEURL + 'all/list';
+    return this.get(url);
+    }
+  
+  updateList(obj) {
+    let url = this.BASEURL + 'update/list';
+    return this.post(url, obj);
+  }
+
+  saveLists(obj) {
+    let url = this.BASEURL + 'save/list';
+    return this.post(url, obj);
+  }
+
+  deleteList(id) {
+    let url = this.BASEURL + 'delete/list';
+    return this.post(url, id);
+  }
   // ******* USER *******
 
   allUser() {
     return this.http.get(this.BASEURL + 'all/user').pipe(
+      map(
+        response => response
+      )
+    )
+  };
+
+  allUserV1() {
+    return this.http.get(this.BASEURL + 'api/v_1/all/user').pipe(
       map(
         response => response
       )
@@ -352,5 +411,21 @@ export class StService {
         reject(error);
       }
     });
+  }
+
+  post(url:any, obj:any) {
+    return this.http.post(url, obj).pipe(
+      map(
+        res => res
+      )
+    )
+  }
+
+  get(url:any) {
+    return this.http.get(url).pipe(
+      map(
+        res => res
+      )
+    )
   }
 }

@@ -1,17 +1,12 @@
-<div class="grid" *ngIf="!userMange">
+<div class="grid">
 	<div class="col-12 xl:col-12">
 		<div class="col-23 xl:col-12">
 			<div class="card">
-				Sorry, You can't access on that page
-			</div>
-		</div>
-	</div>
-</div>
-<div class="grid" *ngIf="userMange">
-	<div class="col-12 xl:col-12">
-		<div class="col-23 xl:col-12">
-			<div class="card">
-				<h5>Roles</h5>
+				<h5>
+                    <b>
+                        Roles
+                    </b>
+                </h5>
 				<p-toast key="tst"></p-toast>
 				<div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
 					<button pButton type="button" label="New" icon="pi pi-plus" class="mr-2" (click)="openDialog()"></button>
@@ -27,8 +22,8 @@
 					[rowsPerPageOptions]="[5, 10, 20,40,80,100]"
 					selectionMode="single"
 					[(selection)]="selectedProduct"
-					(onRowSelect)="onRowSelect($event)" 
-    				(onRowUnselect)="onRowUnselect($event)" 
+					(onRowSelect)="onRowSelect($event)"
+    				(onRowUnselect)="onRowUnselect($event)"
 				>
 					<ng-template pTemplate="header">
 						<tr>
@@ -63,7 +58,7 @@
 						</div>
 					</form>
 				</ng-template>
-				<ng-template pTemplate="footer">   
+				<ng-template pTemplate="footer">
 					<button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
 					<button pButton pRipple label="Save" *ngIf="!addOrUpdate" icon="pi pi-check" class="p-button-text" [disabled]="disabled" (click)="saveProduct()"></button>
 					<button pButton pRipple label="Update" icon="pi pi-check" *ngIf="addOrUpdate" class="p-button-text" [disabled]="disabled" (click)="updateProduct()"></button>

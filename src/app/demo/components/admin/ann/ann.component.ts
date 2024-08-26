@@ -4,12 +4,12 @@ import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
 
 @Component({
-  selector: 'app-system',
-  providers: [MessageService,TableService],
-  templateUrl: './system.component.html',
-  styleUrl: './system.component.scss'
+  selector: 'app-filter',
+  providers: [MessageService, TableService],
+  templateUrl: './ann.component.html',
+  styleUrl: './ann.component.scss'
 })
-export class SystemComponent {
+export class AnnComponent {
 
   userManage: boolean = false;
 
@@ -51,6 +51,14 @@ export class SystemComponent {
 
   selectedRole: any;
 
+  selectedTable: any;
+
+  key: any;
+
+  filterID: any;
+
+  value: any;
+
   submitted: boolean = false;
 
   addOrUpdate: boolean = false;
@@ -62,6 +70,8 @@ export class SystemComponent {
   Users: any;
 
   Roles: any;
+
+  Tables: any;
 
   name: any;
 
@@ -83,11 +93,12 @@ export class SystemComponent {
 
   userMange: any;
 
-  constructor(private http: StService,private msgService: MessageService) { }
+  constructor(private http: StService, private msgService: MessageService) { }
 
 
 
   ngOnInit(): void {
+
     this.http.allUser().subscribe(
       (res: any) => {
         let User = res.data;
@@ -98,7 +109,7 @@ export class SystemComponent {
       }
     )
 
-    this.http.allSystem().subscribe(
+    this.http.allFilter().subscribe(
       (res: any) => {
         let System = res.data;
         this.Systems = System.reverse();
@@ -117,26 +128,37 @@ export class SystemComponent {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
       }
     )
+
+    this.http.allTable().subscribe(
+      (res: any) => {
+        let Table = res.data;
+        this.Tables = Table.reverse();
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+
   }
 
   ionViewWillEnter(): void {
     this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].userManage;
+      .getString('user_id')
+      .then((result) => {
+        this.http.searchSystem(result).subscribe(
+          (res: any) => {
+            let ress = res.data.reverse();
+            this.userMange = ress[0].filterManage;
 
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+          },
+          (error: any) => {
+            this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+          }
+        )
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
 
     this.http.allUser().subscribe(
@@ -149,7 +171,7 @@ export class SystemComponent {
       }
     )
 
-    this.http.allSystem().subscribe(
+    this.http.allFilter().subscribe(
       (res: any) => {
         let System = res.data;
         this.Systems = System.reverse();
@@ -168,6 +190,17 @@ export class SystemComponent {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
       }
     )
+
+    this.http.allTable().subscribe(
+      (res: any) => {
+        let Table = res.data;
+        this.Tables = Table.reverse();
+      },
+      (error: any) => {
+        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+      }
+    )
+
   }
 
   showErrorViaToast() {
@@ -184,7 +217,10 @@ export class SystemComponent {
       this.productDialog = true;
       this.addOrUpdate = false;
       this.selectedRole = '';
+      this.selectedTable = '';
       this.selectedUsers = '';
+      this.key = '';
+      this.value = '';
       this.userManage = false;
       this.roleManage = false;
       this.languageManage = false;
@@ -202,6 +238,9 @@ export class SystemComponent {
     this.productDialog = false;
     this.submitted = false;
     this.roleName = '';
+    this.key = '';
+    this.value = '';
+    this.selectedTable = '';
     this.userManage = false;
     this.roleManage = false;
     this.languageManage = false;
@@ -223,26 +262,20 @@ export class SystemComponent {
 
     let obj = {
       roleName: this.selectedRole.roleName,
-        user_id : this.selectedUsers.user_id,
-      userManage: this.userManage,
-      roleManage: this.roleManage,
-      languageManage: this.languageManage,
-      tableManage: this.tableManage,
-      colorManage: this.colorManage,
-      filterManage: this.filterManage,
-      tableSync: this.tableSync,
-      tableFetch: this.tableFetch,
-      tableInsert: this.tableInsert,
-      lang: this.selectedLang.lang
-
+      user_id: this.selectedUsers.user_id,
+      tableName: this.selectedTable.tableName,
+      value: this.value,
+      key: this.key
     };
-
-    this.http.saveSystem(obj).subscribe(
+    this.http.saveFilter(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Create Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Create Successfully' });
           this.selectedRole = '';
           this.selectedUsers = '';
+          this.selectedTable = '';
+          this.value = '';
+          this.key = '';
           this.userManage = false;
           this.roleManage = false;
           this.languageManage = false;
@@ -256,7 +289,7 @@ export class SystemComponent {
           this.submitted = false;
           this.disabled = false;
 
-          this.http.allSystem().subscribe(
+          this.http.allFilter().subscribe(
             (res: any) => {
               let System = res.data;
               this.Systems = System.reverse();
@@ -277,18 +310,12 @@ export class SystemComponent {
   onRowSelect(event: any) {
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.selectedRole = event.data.role.roleName;
-    this.userManage = event.data.userManage;
-    this.roleManage = event.data.roleManage;
-    this.languageManage = event.data.languageManage;
-    this.tableManage = event.data.tableManage;
-    this.colorManage = event.data.colorManage;
-    this.filterManage = event.data.filterManage;
-    this.tableSync = event.data.tableSync;
-    this.tableFetch = event.data.tableFetch;
-    this.tableInsert = event.data.tableInsert;
-    this.systemOption_id = event.data.systemOption_id;
-    console.log(this.selectedRole)
+    this.selectedRole = this.Roles.find(role => role.roleName === event.data.roleName);
+    this.selectedTable = this.Tables.find(table => table.tableName === event.data.tableName);
+    this.selectedUsers = this.Users.find(user => user.user_id == event.data.user_id);
+    this.value = event.data.value;
+    this.key = event.data.key
+    this.filterID = event.data.filter_id;
   };
 
   updateProduct() {
@@ -297,47 +324,25 @@ export class SystemComponent {
 
     let obj = {
       roleName: this.selectedRole.roleName,
-      userManage: this.userManage,
-      user_id : this.selectedUsers.user_id,
-      roleManage: this.roleManage,
-      languageManage: this.languageManage,
-      tableManage: this.tableManage,
-      colorManage: this.colorManage,
-      filterManage: this.filterManage,
-      tableSync: this.tableSync,
-      tableFetch: this.tableFetch,
-      tableInsert: this.tableInsert,
-      systemOption_id: this.systemOption_id,
-      lang: this.selectedLang.lang
+      user_id: this.selectedUsers.user_id,
+      tableName: this.selectedTable.tableName,
+      value: this.value,
+      key: this.key
     };
-    this.http.updateSystem(obj).subscribe(
+    this.http.updateFilter(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Update Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Update Successfully' });
           this.selectedRole = '';
-          this.userManage = false;
-          this.roleManage = false;
-          this.languageManage = false;
-          this.tableManage = false;
-          this.colorManage = false;
-          this.filterManage = false;
-          this.tableSync = false;
-          this.tableFetch = false;
-          this.tableInsert = false;
-          this.userManage = false;
-          this.roleManage = false;
-          this.languageManage = false;
-          this.tableManage = false;
-          this.colorManage = false;
-          this.filterManage = false;
-          this.tableSync = false;
-          this.tableFetch = false;
-          this.tableInsert = false;
+          this.selectedUsers = '';
+          this.selectedTable = '';
+          this.value = '';
+          this.key = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
 
-          this.http.allSystem().subscribe(
+          this.http.allFilter().subscribe(
             (res: any) => {
               if (res.con) {
                 let System = res.data;
@@ -362,38 +367,23 @@ export class SystemComponent {
     let obj = {
       systemOption_id: this.systemOption_id
     }
-    this.http.deleteSystem(obj).subscribe(
+    this.http.deleteFilter(obj).subscribe(
       (res: any) => {
         if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'System Option Delete Successfully' });
+          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Delete Successfully' });
           this.deleteProductDialog = false;
           this.selectedRole = '';
           this.selectedUsers = '';
-          this.userManage = false;
-          this.roleManage = false;
-          this.languageManage = false;
-          this.tableManage = false;
-          this.colorManage = false;
-          this.filterManage = false;
-          this.tableSync = false;
-          this.tableFetch = false;
-          this.tableInsert = false;
-          this.userManage = false;
-          this.roleManage = false;
-          this.languageManage = false;
-          this.tableManage = false;
-          this.colorManage = false;
-          this.filterManage = false;
-          this.tableSync = false;
-          this.tableFetch = false;
-          this.tableInsert = false;
+          this.selectedTable = '';
+          this.key = '';
+          this.value = '';
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
           this.productDialog = false;
           this.submitted = false;
           this.addOrUpdate = false;
-          this.http.allSystem().subscribe(
+          this.http.allFilter().subscribe(
             (res: any) => {
               if (res.con) {
                 let System = res.data;

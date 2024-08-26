@@ -32,7 +32,7 @@ export class RoleComponent {
   selectedRole: any;
 
   submitted: boolean = false;
-  
+
   addOrUpdate: boolean = false;
 
   rows = 10;
@@ -56,57 +56,10 @@ export class RoleComponent {
   userMange: any;
 
   constructor(private http: StService,private msgService: MessageService) { }
-  
+
 
 
   ngOnInit(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].roleManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-    this.http.allRole().subscribe(
-      (res: any) => {
-        let Roles = res.data;
-        this.Roles = Roles.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-  }
-
-  ionViewWillEnter(): void {
-    this.http
-    .getString('user_id')
-    .then((result) => {
-      this.http.searchSystem(result).subscribe(
-        (res: any) => {
-          let ress = res.data.reverse();
-          this.userMange = ress[0].roleManage;
-          
-        },
-        (error: any) => {
-          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 
     this.http.allRole().subscribe(
       (res: any) => {
@@ -123,12 +76,12 @@ export class RoleComponent {
   showErrorViaToast() {
     this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
   }
-  
+
   pageChange(event) {
     this.first = event.first;
     this.rows = event.rows;
   }
-  
+
   openDialog() {
     if (this.productDialog == false) {
       this.productDialog = true;
@@ -145,7 +98,7 @@ export class RoleComponent {
     this.roleName = '';
     this.role_id = '';
   }
-  
+
   saveProduct() {
 
     this.disabled = true;

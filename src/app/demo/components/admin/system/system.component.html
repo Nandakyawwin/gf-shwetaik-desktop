@@ -1,14 +1,4 @@
-
-<div class="grid" *ngIf="!userMange">
-	<div class="col-12 xl:col-12">
-		<div class="col-23 xl:col-12">
-			<div class="card">
-				Sorry, You can't access on that page
-			</div>
-		</div>
-	</div>
-</div>
-<div class="grid" *ngIf="userMange">
+<div class="grid">
 	<div class="col-12 xl:col-12">
 		<div class="col-23 xl:col-12">
 			<div class="card">
@@ -34,7 +24,6 @@
 					<ng-template pTemplate="header">
 						<tr>
 							<th pSortableColumn="roleName">Role <p-sortIcon field="roleName"></p-sortIcon></th>
-                            <th pSortableColumn="user_id">User ID <p-sortIcon field="user_id"></p-sortIcon></th>
 							<th pSortableColumn="userManage">User Management <p-sortIcon field="userManage"></p-sortIcon></th>
 							<th pSortableColumn="roleMannage">Role Management <p-sortIcon field="roleMannage"></p-sortIcon></th>
 							<th pSortableColumn="languageManage">Language Management <p-sortIcon field="languageManage"></p-sortIcon></th>
@@ -44,14 +33,12 @@
 							<th pSortableColumn="tableSync">Table Sync <p-sortIcon field="tableSync"></p-sortIcon></th>
 							<th pSortableColumn="tableFetch">Table from Cloud <p-sortIcon field="tableFetch"></p-sortIcon></th>
 							<th pSortableColumn="tableInsert">Table Insert <p-sortIcon field="tableInsert"></p-sortIcon></th>
-							<th pSortableColumn="lang">Display Language <p-sortIcon field="lang"></p-sortIcon></th>
 							<th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
 						</tr>
 					</ng-template>
 					<ng-template pTemplate="body" let-system>
 						<tr [pSelectableRow]="system">
-							<td>{{ system.roleName }}</td>
-                            <td>{{ system.user_id }}</td>
+							<td>{{ system.role.roleName }}</td>
 							<td>{{ system.userManage }}</td>
 							<td>{{ system.roleManage }}</td>
 							<td>{{ system.languageManage }}</td>
@@ -61,7 +48,6 @@
 							<td>{{ system.tableSync }}</td>
 							<td>{{ system.tableFetch }}</td>
 							<td>{{ system.tableInsert }}</td>
-							<td>{{ system.lang }}</td>
 							<td>{{ system.createAt | date }}</td>
 							<td>
 								<div class="flex">
@@ -94,40 +80,6 @@
 								>
 							</p-dropdown>
 							<small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is required.</small>
-						</div>
-
-                        <div class="field">
-                            <label for="user_id">User ID</label>
-                            <p-dropdown
-                                [options]="Users"
-                                [(ngModel)]="selectedUsers"
-                                optionLabel="user_id"
-                                [filter]="true"
-                                filterBy="user_id"
-                                id="user_id"
-                                [showClear]="true"
-                                placeholder="Select User"
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedUsers}"
-                            >
-                            </p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedUsers">User is required.</small>
-                        </div>
-
-                        <div class="field">
-							<label for="lang">Display Language</label>
-							<p-dropdown
-								[options]="Lang"
-								[(ngModel)]="selectedLang"
-								optionLabel="lang"
-								[filter]="true"
-								filterBy="lang"
-								id="lang"
-								[showClear]="true"
-								placeholder="Select display language"
-								[ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedLang}"
-								>
-							</p-dropdown>
-							<small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedLang">Display Language is required.</small>
 						</div>
 
                         <div class="field flex align-items-center gap-2">

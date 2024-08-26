@@ -38,11 +38,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
 
     constructor(private productService: ProductService, public layoutService: LayoutService,private ST : StService,private msg: MessageService,private router: Router) {
-        this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+        // this.subscription = this.layoutService.configUpdate$
+        // .pipe(debounceTime(25))
+        // .subscribe((config) => {
+        //     this.initChart();
+        // });
     }
 
     ngOnInit() {
@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
         this.all();
         this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
+        // this.productService.getProductsSmall().then(data => this.products = data);
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
@@ -130,7 +130,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
         this.all();
         this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
+        // this.productService.getProductsSmall().then(data => this.products = data);
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },

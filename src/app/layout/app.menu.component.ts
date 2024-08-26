@@ -24,7 +24,9 @@ export class AppMenuComponent implements OnInit{
      i8:any;
      i9:any;
      i10:any;
-     i11:any;
+    i11: any;
+    i18: any;
+    i19: any;
     userManage: any;
     roleManage: any;
     languageManage: any;
@@ -98,67 +100,80 @@ export class AppMenuComponent implements OnInit{
         .getString('16')
         .then((result) => {
             this.i11 = result;
-            this.model = [
-                {
-                    label: this.i,
-                    items: [
+            this.http.getString('19').then((res) => {
+                this.i18 = res;
+                this.http.getString('18').then((res) => {
+                    this.i19 = res;
+                    this.model = [
                         {
-                            label: this.i1, icon: 'pi pi-palette',
-                            routerLink: ['/']
+                            label: this.i,
+                            items: [
+                                {
+                                    label: this.i1, icon: 'pi pi-palette',
+                                    routerLink: ['/']
+                                }
+                            ]
+                        },
+                        {
+                            label: this.i2,
+                            items: [
+                                {
+                                    label: this.i3, icon: 'pi pi-user',
+                                    routerLink: ['/admin/users'],
+                                    canAx : this.userManage
+                                },
+                                {
+                                    label: this.i4, icon: 'pi pi-sitemap',
+                                    routerLink: ['/admin/roles'],
+                                    canAx : this.roleManage
+                                },
+                                {
+                                    label: this.i5, icon: 'pi pi-cog',
+                                    routerLink: ['/admin/systems'],
+                                    canAx : this.userManage
+                                },
+                                {
+                                    label: this.i6, icon: 'pi pi-filter',
+                                    routerLink: ['/admin/filters'],
+                                    canAx : this.filterManage
+                                },
+                                {
+                                    label: this.i19, icon: 'pi pi-list',
+                                    routerLink: ['/admin/lists'],
+                                },
+                                // {
+                                //     label: this.i18, icon: 'pi pi-megaphone',
+                                //     routerLink: ['/admin/ann'],
+                                // },
+                            ]
+                        },
+                        {
+                            label: this.i7,
+                            items: [
+                                {
+                                    label: this.i8, icon: 'pi pi-server',
+                                    routerLink: ['/admin/tables'],
+                                    canAx : this.tableManage
+                                },
+                                {
+                                    label: this.i9, icon: 'pi pi-language',
+                                    routerLink: ['/admin/languages'],
+                                    canAx : this.languageManage
+                                }
+                            ]
+                        },
+                        {
+                            label: this.i10,
+                            items: [
+                                {
+                                    label: this.i11, icon: 'pi pi-sign-out',
+                                    routerLink: ['/auth/login']
+                                 }
+                            ]
                         }
-                    ]
-                },
-                {
-                    label: this.i2,
-                    items: [
-                        {
-                            label: this.i3, icon: 'pi pi-user',
-                            routerLink: ['/admin/users'],
-                            canAx : this.userManage
-                        },
-                        {
-                            label: this.i4, icon: 'pi pi-sitemap',
-                            routerLink: ['/admin/roles'],
-                            canAx : this.roleManage
-                        },
-                        {
-                            label: this.i5, icon: 'pi pi-cog',
-                            routerLink: ['/admin/systems'],
-                            canAx : this.userManage
-                        },
-                        {
-                            label: this.i6, icon: 'pi pi-filter',
-                            routerLink: ['/admin/filters'],
-                            canAx : this.filterManage
-                        },
-                    ]
-                },
-                {
-                    label: this.i7,
-                    items: [
-                        {
-                            label: this.i8, icon: 'pi pi-server',
-                            routerLink: ['/admin/tables'],
-                            canAx : this.tableManage
-                        },
-                        {
-                            label: this.i9, icon: 'pi pi-language',
-                            routerLink: ['/admin/languages'],
-                            canAx : this.languageManage
-                        }
-                    ]
-                },
-                {
-                    label: this.i10,
-                    items: [
-                        {
-                            label: this.i11, icon: 'pi pi-sign-out',
-                            routerLink: ['/auth/login']
-                         }
-                    ]
-                }
-            ];
-            console.log(this.model)
+                    ];
+                })
+            })
         })
         .catch((error) => {
           console.log(error);
