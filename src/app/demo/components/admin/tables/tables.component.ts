@@ -140,38 +140,40 @@ export class TablesComponent {
         let table1 = this.Tables[0].tableName;
         this.selectTableName = table1;
         this.tname = table1;
-        this.http.getList(String(table1)).subscribe(
-          (res: any) => {
-            console.log(res)
-            if (res.message === "Record Not Found") {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
-            } else {
-              this.datas = res;
-              this.keys = Object.keys(this.datas[0]);
-              console.log(this.keys);
-              this.formGroup = this.fb.group({});
-              this.keys.forEach(key => {
-                this.formGroup.addControl(key, this.fb.control(''));
-              });
-              let obj = {
-                tName: this.tname,
-                data: this.datas,
-                color_id: 1
-              }
-              this.http.dataSync(obj).subscribe(
-                (res: any) => {
-                  if (res) {
-                    this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
-                    this.Btnfetch = true;
-                  }
+        this.http.getString('port').then(result => {
+          this.http.getList(String(table1),result).subscribe(
+            (res: any) => {
+              console.log(res)
+              if (res.message === "Record Not Found") {
+                this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
+              } else {
+                this.datas = res;
+                this.keys = Object.keys(this.datas[0]);
+                console.log(this.keys);
+                this.formGroup = this.fb.group({});
+                this.keys.forEach(key => {
+                  this.formGroup.addControl(key, this.fb.control(''));
+                });
+                let obj = {
+                  tName: this.tname,
+                  data: this.datas,
+                  color_id: 1
                 }
-              )
+                this.http.dataSync(obj).subscribe(
+                  (res: any) => {
+                    if (res) {
+                      this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
+                      this.Btnfetch = true;
+                    }
+                  }
+                )
+              }
+            },
+            (err: any) => {
+              console.log(err);
             }
-          },
-          (err: any) => {
-            console.log(err);
-          }
-        )
+          )
+        })
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -216,37 +218,39 @@ export class TablesComponent {
         let table1 = this.Tables[0].tableName;
         this.selectTableName = table1;
         this.tname = table1;
-        this.http.getList(String(table1)).subscribe(
-          (res: any) => {
-            console.log(res)
-            if (res.message === "Record Not Found") {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
-            } else {
-              this.datas = res;
-              this.keys = Object.keys(this.datas[0]);
-              console.log(this.keys);
-              this.formGroup = this.fb.group({});
-              this.keys.forEach(key => {
-                this.formGroup.addControl(key, this.fb.control(''));
-              });
-              let obj = {
-                tName: this.tname,
-                data: this.datas
-              }
-              this.http.dataSync(obj).subscribe(
-                (res: any) => {
-                  if (res) {
-                    this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
-                    this.Btnfetch = true;
-                  }
+        this.http.getString('port').then(result => {
+          this.http.getList(String(table1),result).subscribe(
+            (res: any) => {
+              console.log(res)
+              if (res.message === "Record Not Found") {
+                this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
+              } else {
+                this.datas = res;
+                this.keys = Object.keys(this.datas[0]);
+                console.log(this.keys);
+                this.formGroup = this.fb.group({});
+                this.keys.forEach(key => {
+                  this.formGroup.addControl(key, this.fb.control(''));
+                });
+                let obj = {
+                  tName: this.tname,
+                  data: this.datas
                 }
-              )
+                this.http.dataSync(obj).subscribe(
+                  (res: any) => {
+                    if (res) {
+                      this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
+                      this.Btnfetch = true;
+                    }
+                  }
+                )
+              }
+            },
+            (err: any) => {
+              console.log(err);
             }
-          },
-          (err: any) => {
-            console.log(err);
-          }
-        )
+          )
+        })
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -407,34 +411,36 @@ export class TablesComponent {
     this.selectTableName = tableData;
     this.datas = [];
     this.keys = [];
-    this.http.getList(String(tableData)).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.Btnfetch = false;
-        this.datas = res;
-        this.keys = Object.keys(this.datas[0]);
-        this.formGroup = this.fb.group({});
-        this.keys.forEach(key => {
-          this.formGroup.addControl(key, this.fb.control(''));
-        });
-        let obj = {
-          tName: tableData,
-          data: this.datas
-        }
-        this.http.dataSync(obj).subscribe(
-          (res: any) => {
-            if (res) {
-              this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
-              this.UIFetch = true;
-            }
+    this.http.getString('port').then(result => {
+      this.http.getList(String(tableData),result).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.Btnfetch = false;
+          this.datas = res;
+          this.keys = Object.keys(this.datas[0]);
+          this.formGroup = this.fb.group({});
+          this.keys.forEach(key => {
+            this.formGroup.addControl(key, this.fb.control(''));
+          });
+          let obj = {
+            tName: tableData,
+            data: this.datas
           }
-        )
-
-      },
-      (err: any) => {
-        console.log(err);
-      }
-    )
+          this.http.dataSync(obj).subscribe(
+            (res: any) => {
+              if (res) {
+                this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+                this.UIFetch = true;
+              }
+            }
+          )
+  
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      )
+    })
 
   }
 
@@ -471,14 +477,16 @@ export class TablesComponent {
     let obj = {
       tName: this.selectTableName,
     }
-    this.http.addData(obj).subscribe(
-      (res: any) => {
-        this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data Insert Success' })
-      },
-      (err: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: "error", detail: 'Data Insert Failed!' });
-      }
-    )
+    this.http.getString('port').then(result => {
+      this.http.addData(obj,result).subscribe(
+        (res: any) => {
+          this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data Insert Success' })
+        },
+        (err: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: "error", detail: 'Data Insert Failed!' });
+        }
+      )
+    })
   }
   openDialogs() {
     this.productDialogs = true;
@@ -514,30 +522,34 @@ export class TablesComponent {
               this.keys = Object.keys(this.Tables[0]);
               let table1 = this.Tables[0].tableName;
               this.tname = table1;
-              this.http.getList(String(table1)).subscribe(
-                (res: any) => {
-                  console.log(res)
-                  this.datas = res;
-                  this.keys = Object.keys(this.datas[0]);
-                  this.formGroup = this.fb.group({});
-                  this.keys.forEach(key => {
-                    this.formGroup.addControl(key, this.fb.control(''));
-                  });
-                  let obj = {
-                    tName: this.tname,
-                    data: this.datas
-                  }
-                  this.http.dataSync(obj).subscribe(
+              this.http.getString('port').then(
+                result => {
+                  this.http.getList(String(table1),result).subscribe(
                     (res: any) => {
-                      if (res) {
-                        this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+                      console.log(res)
+                      this.datas = res;
+                      this.keys = Object.keys(this.datas[0]);
+                      this.formGroup = this.fb.group({});
+                      this.keys.forEach(key => {
+                        this.formGroup.addControl(key, this.fb.control(''));
+                      });
+                      let obj = {
+                        tName: this.tname,
+                        data: this.datas
                       }
+                      this.http.dataSync(obj).subscribe(
+                        (res: any) => {
+                          if (res) {
+                            this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+                          }
+                        }
+                      )
+    
+                    },
+                    (err: any) => {
+                      console.log(err);
                     }
                   )
-
-                },
-                (err: any) => {
-                  console.log(err);
                 }
               )
             },
