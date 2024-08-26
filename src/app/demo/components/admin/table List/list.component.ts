@@ -69,7 +69,7 @@ export class ListComponent {
 
   rows = 10;
 
-  systemOption_id: any;
+  tableList_id: any;
 
   Users: any;
 
@@ -232,12 +232,12 @@ export class ListComponent {
 
   deleteProduct(obj: any) {
     this.deleteProductDialog = true;
-    this.systemOption_id = obj;
+    this.tableList_id = obj;
   }
 
   confirmDelete() {
     let obj = {
-      systemOption_id: this.systemOption_id
+      tableList_id: this.tableList_id
     }
     this.http.deleteList(obj).subscribe(
       (res: any) => {
