@@ -11,8 +11,6 @@
 						class="mr-2" (click)="openDialog()"></button>
 					<button pButton type="button" *ngIf="tableFetch" [disabled]="Btnfetch" label="Data Fetch"
 						icon="pi pi-database" class="ml-2 p-button-info" (click)="dataFetch()"></button>
-					<button pButton type="button" label="Data Insert" icon="pi pi-database" class="ml-2 p-button-help"
-						(click)="dataInsert()"></button>
 				</div>
 				<p-tabView [(activeIndex)]="tableIndex" [scrollable]="true" (onChange)="onTabChange($event)">
 					<p-tabPanel *ngFor="let tab of Tables" [header]="tab.tableName">

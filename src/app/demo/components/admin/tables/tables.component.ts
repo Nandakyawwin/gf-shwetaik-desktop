@@ -140,8 +140,7 @@ export class TablesComponent {
         let table1 = this.Tables[0].tableName;
         this.selectTableName = table1;
         this.tname = table1;
-        this.http.getString('port').then(result => {
-          this.http.getList(String(table1),result).subscribe(
+          this.http.allDataTable(String(table1)).subscribe(
             (res: any) => {
               console.log(res)
               if (res.message === "Record Not Found") {
@@ -154,26 +153,12 @@ export class TablesComponent {
                 this.keys.forEach(key => {
                   this.formGroup.addControl(key, this.fb.control(''));
                 });
-                let obj = {
-                  tName: this.tname,
-                  data: this.datas,
-                  color_id: 1
-                }
-                this.http.dataSync(obj).subscribe(
-                  (res: any) => {
-                    if (res) {
-                      this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
-                      this.Btnfetch = true;
-                    }
-                  }
-                )
               }
             },
             (err: any) => {
               console.log(err);
             }
           )
-        })
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -218,8 +203,7 @@ export class TablesComponent {
         let table1 = this.Tables[0].tableName;
         this.selectTableName = table1;
         this.tname = table1;
-        this.http.getString('port').then(result => {
-          this.http.getList(String(table1),result).subscribe(
+          this.http.allDataTable(String(table1)).subscribe(
             (res: any) => {
               console.log(res)
               if (res.message === "Record Not Found") {
@@ -232,25 +216,12 @@ export class TablesComponent {
                 this.keys.forEach(key => {
                   this.formGroup.addControl(key, this.fb.control(''));
                 });
-                let obj = {
-                  tName: this.tname,
-                  data: this.datas
-                }
-                this.http.dataSync(obj).subscribe(
-                  (res: any) => {
-                    if (res) {
-                      this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' });
-                      this.Btnfetch = true;
-                    }
-                  }
-                )
               }
             },
             (err: any) => {
               console.log(err);
             }
           )
-        })
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -411,8 +382,7 @@ export class TablesComponent {
     this.selectTableName = tableData;
     this.datas = [];
     this.keys = [];
-    this.http.getString('port').then(result => {
-      this.http.getList(String(tableData),result).subscribe(
+      this.http.allDataTable(String(tableData)).subscribe(
         (res: any) => {
           console.log(res);
           this.Btnfetch = false;
@@ -422,25 +392,11 @@ export class TablesComponent {
           this.keys.forEach(key => {
             this.formGroup.addControl(key, this.fb.control(''));
           });
-          let obj = {
-            tName: tableData,
-            data: this.datas
-          }
-          this.http.dataSync(obj).subscribe(
-            (res: any) => {
-              if (res) {
-                this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
-                this.UIFetch = true;
-              }
-            }
-          )
-  
         },
         (err: any) => {
           console.log(err);
         }
       )
-    })
 
   }
 
@@ -469,9 +425,6 @@ export class TablesComponent {
     )
   }
 
-  dataInsert() {
-
-  }
 
   insert() {
     let obj = {
