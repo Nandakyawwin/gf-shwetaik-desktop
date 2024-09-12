@@ -428,4 +428,13 @@ export class StService {
       )
     )
   }
+
+  allDataTable(url: any) {
+    let urls = `https://st.golden-future.org/table/ss/${url}`;
+    return this.http.get(urls).pipe(
+      map(
+        res => res
+      )
+    )
+  }
 }
