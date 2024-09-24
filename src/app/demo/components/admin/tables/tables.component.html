@@ -121,18 +121,18 @@
 					<form [formGroup]="formGroup">
 						<div class="field">
 							<label for="tableName">Table Name (eg: From SQL : AR_CUSTOMER )</label>
-							<input type="text" pInputText id="tableName" formControlName="tableName" required autofocus
-								[ngClass]="{'ng-invalid ng-dirty' : submitted && !formGroup.controls.tableName.valid}" />
+							<input type="text" pInputText id="tableName" [(ngModel)]="tableName" required autofocus
+								[ngClass]="{'ng-invalid ng-dirty' : submitted && !tableName}" />
 							<small class="ng-dirty ng-invalid"
-								*ngIf="submitted && !formGroup.controls.tableName.valid">Table Name is required.</small>
+								*ngIf="submitted && !tableName">Table Name is required.</small>
 						</div>
 						<div class="field">
 							<label for="description">Table Description </label>
-							<input type="text" pInputText id="description" formControlName="description" required
+							<input type="text" pInputText id="description" [(ngModel)]="description" required
 								autofocus
-								[ngClass]="{'ng-invalid ng-dirty' : submitted && !formGroup.controls.description.valid}" />
+								[ngClass]="{'ng-invalid ng-dirty' : submitted && !description}" />
 							<small class="ng-dirty ng-invalid"
-								*ngIf="submitted && !formGroup.controls.description.valid">Table Description is
+								*ngIf="submitted && !description">Table Description is
 								required.</small>
 						</div>
 					</form>

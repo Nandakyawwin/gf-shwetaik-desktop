@@ -222,7 +222,7 @@ export class SystemComponent {
     this.submitted = true;
 
     let obj = {
-      roleName: this.selectedRole.roleName,
+      role_id: this.selectedRole.role_id,
         user_id : this.selectedUsers.user_id,
       userManage: this.userManage,
       roleManage: this.roleManage,
@@ -233,7 +233,6 @@ export class SystemComponent {
       tableSync: this.tableSync,
       tableFetch: this.tableFetch,
       tableInsert: this.tableInsert,
-      lang: this.selectedLang.lang
 
     };
 
@@ -277,7 +276,7 @@ export class SystemComponent {
   onRowSelect(event: any) {
     this.productDialog = true;
     this.addOrUpdate = true;
-    this.selectedRole = event.data.role.roleName;
+    this.selectedRole = event.data.role;
     this.userManage = event.data.userManage;
     this.roleManage = event.data.roleManage;
     this.languageManage = event.data.languageManage;
@@ -296,9 +295,8 @@ export class SystemComponent {
     this.submitted = true;
 
     let obj = {
-      roleName: this.selectedRole.roleName,
+      role_id: this.selectedRole.role_id,
       userManage: this.userManage,
-      user_id : this.selectedUsers.user_id,
       roleManage: this.roleManage,
       languageManage: this.languageManage,
       tableManage: this.tableManage,
@@ -308,7 +306,6 @@ export class SystemComponent {
       tableFetch: this.tableFetch,
       tableInsert: this.tableInsert,
       systemOption_id: this.systemOption_id,
-      lang: this.selectedLang.lang
     };
     this.http.updateSystem(obj).subscribe(
       (res: any) => {

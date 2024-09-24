@@ -67,6 +67,24 @@ export class LanguageComponent {
 
 
   ngOnInit(): void {
+    this.http
+    .getString('user_id')
+    .then((result) => {
+      this.http.searchSystem(result).subscribe(
+        (res: any) => {
+          let ress = res.data.reverse();
+          this.userMange = ress[0].languageManage;
+        },
+        (error: any) => {
+          this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+        }
+      )
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    
     this.http.allLanguage().subscribe(
       (res: any) => {
         let Languages = res.data;

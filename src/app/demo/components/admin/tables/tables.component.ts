@@ -127,10 +127,6 @@ export class TablesComponent {
 
     this.keys = [];
     this.datas = [];
-    this.formGroup = new FormGroup({
-      tableName: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required)
-    })
 
     this.http.allTable().subscribe(
       (res: any) => {
@@ -190,10 +186,6 @@ export class TablesComponent {
 
     this.keys = [];
     this.datas = [];
-    this.formGroup = new FormGroup({
-      tableName: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required)
-    })
 
     this.http.allTable().subscribe(
       (res: any) => {
@@ -450,73 +442,76 @@ export class TablesComponent {
     this.submitted = true;
 
     let obj = {
-      tableName: this.formGroup.value.tableName,
-      description: this.formGroup.value.description,
+      tableName: this.tableName,
+      description: this.description,
       color_id: 1
     };
 
-    this.http.saveTable(obj).subscribe(
-      (res: any) => {
-        if (res.con) {
-          this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
-          this.tableName = '';
-          this.formGroup.controls.tableName.reset('');
-          this.formGroup.controls.description.reset('');
-          this.description = '';
-          this.table_id = '';
-          this.productDialogs = false;
-          this.submitted = false;
-          this.disabled = false;
-
-          this.http.allTable().subscribe(
-            (res: any) => {
-              let Tables = res.data;
-              this.Tables = Tables.reverse();
-              this.keys = Object.keys(this.Tables[0]);
-              let table1 = this.Tables[0].tableName;
-              this.tname = table1;
-              this.http.getString('port').then(
-                result => {
-                  this.http.getList(String(table1),result).subscribe(
-                    (res: any) => {
-                      console.log(res)
-                      this.datas = res;
-                      this.keys = Object.keys(this.datas[0]);
-                      this.formGroup = this.fb.group({});
-                      this.keys.forEach(key => {
-                        this.formGroup.addControl(key, this.fb.control(''));
-                      });
-                      let obj = {
-                        tName: this.tname,
-                        data: this.datas
-                      }
-                      this.http.dataSync(obj).subscribe(
-                        (res: any) => {
-                          if (res) {
-                            this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
-                          }
-                        }
-                      )
+    console.log(obj);
     
-                    },
-                    (err: any) => {
-                      console.log(err);
-                    }
-                  )
-                }
-              )
-            },
-            (error: any) => {
-              this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-            }
-          )
-        }
-      },
-      (err: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
-        this.disabled = false;
-      }
-    )
+
+    // this.http.saveTable(obj).subscribe(
+    //   (res: any) => {
+    //     if (res.con) {
+    //       this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
+    //       this.tableName = '';
+    //       this.formGroup.controls.tableName.reset('');
+    //       this.formGroup.controls.description.reset('');
+    //       this.description = '';
+    //       this.table_id = '';
+    //       this.productDialogs = false;
+    //       this.submitted = false;
+    //       this.disabled = false;
+
+    //       this.http.allTable().subscribe(
+    //         (res: any) => {
+    //           let Tables = res.data;
+    //           this.Tables = Tables.reverse();
+    //           this.keys = Object.keys(this.Tables[0]);
+    //           let table1 = this.Tables[0].tableName;
+    //           this.tname = table1;
+    //           this.http.getString('port').then(
+    //             result => {
+    //               this.http.getList(String(table1),result).subscribe(
+    //                 (res: any) => {
+    //                   console.log(res)
+    //                   this.datas = res;
+    //                   this.keys = Object.keys(this.datas[0]);
+    //                   this.formGroup = this.fb.group({});
+    //                   this.keys.forEach(key => {
+    //                     this.formGroup.addControl(key, this.fb.control(''));
+    //                   });
+    //                   let obj = {
+    //                     tName: this.tname,
+    //                     data: this.datas
+    //                   }
+    //                   this.http.dataSync(obj).subscribe(
+    //                     (res: any) => {
+    //                       if (res) {
+    //                         this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data sync Success' })
+    //                       }
+    //                     }
+    //                   )
+    
+    //                 },
+    //                 (err: any) => {
+    //                   console.log(err);
+    //                 }
+    //               )
+    //             }
+    //           )
+    //         },
+    //         (error: any) => {
+    //           this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
+    //         }
+    //       )
+    //     }
+    //   },
+    //   (err: any) => {
+    //     this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+    //     this.disabled = false;
+    //   }
+    // )
   };
 
 
