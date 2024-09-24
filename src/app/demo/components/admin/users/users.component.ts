@@ -154,7 +154,7 @@ export class UsersComponent implements OnInit{
       password: this.password,
       role_id: this.selectedRole.role_id,
       phone: this.phone,
-      lang: this.lang
+      lang: this.selectedLang.lang
     };
 
     this.http.saveUser(obj).subscribe(

@@ -13,31 +13,31 @@ export class StService {
   constructor(private http: HttpClient) { }
 
 
-    // Choosing Columns
+  // Choosing Columns
 
-    allCC(){
-      return this.http.get(this.BASEURL + 'all/CC').pipe(
-          map(data => data)
-      )
-    }
-  
+  allCC() {
+    return this.http.get(this.BASEURL + 'all/CC').pipe(
+      map(data => data)
+    )
+  }
+
   saveCC(obj: any) {
     let url = this.BASEURL + 'save/CC';
     return this.http.post(url, obj).pipe(
       map(
         res => res
-        )
       )
+    )
   }
-  
+
   updateCC(obj: any) {
     let url = this.BASEURL + 'update/CC';
     return this.post(url, obj).pipe(
       map(
         res => res
-        )
       )
-    }
+    )
+  }
 
   deleteCC(id: any) {
     let url = this.BASEURL + 'delete/CC';
@@ -47,8 +47,8 @@ export class StService {
   allLists() {
     let url = this.BASEURL + 'all/list';
     return this.get(url);
-    }
-  
+  }
+
   updateList(obj) {
     let url = this.BASEURL + 'update/list';
     return this.post(url, obj);
@@ -335,7 +335,7 @@ export class StService {
   // ******* FILTER *******
 
 
-  getList(table: any,port:any) {
+  getList(table: any, port: any) {
     let url = `http://localhost${port}/getARC.php?table=${table}`
     return this.http.get(url).pipe(
       map(
@@ -344,7 +344,7 @@ export class StService {
     )
   }
 
-  addData(obj: any,port:any) {
+  addData(obj: any, port: any) {
     let url = `http://localhost${port}/add_customer.php`;
     return this.http.post(url, obj).pipe(
       map(
@@ -413,7 +413,7 @@ export class StService {
     });
   }
 
-  post(url:any, obj:any) {
+  post(url: any, obj: any) {
     return this.http.post(url, obj).pipe(
       map(
         res => res
@@ -421,7 +421,7 @@ export class StService {
     )
   }
 
-  get(url:any) {
+  get(url: any) {
     return this.http.get(url).pipe(
       map(
         res => res
@@ -437,4 +437,26 @@ export class StService {
       )
     )
   }
+
+
+  allPriceCode() {
+    let url = this.BASEURL + 'all/pcode';
+    return this.get(url);
+  }
+
+  updatePriceCode(obj) {
+    let url = this.BASEURL + 'update/pcode';
+    return this.post(url, obj);
+  }
+
+  savePriceCode(obj) {
+    let url = this.BASEURL + 'save/pcode';
+    return this.post(url, obj);
+  }
+
+  deletePriceCode(id) {
+    let url = this.BASEURL + 'delete/pcode';
+    return this.post(url, id);
+  }
+
 }
