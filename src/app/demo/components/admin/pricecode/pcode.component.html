@@ -45,7 +45,7 @@
                             <td>{{ system.seven }}</td>
                             <td>{{ system.eight }}</td>
                             <td>{{ system.nine }}</td>
-                            <td>{{ system.ten }}</td>
+                            <td>{{ system.zero }}</td>
                             <td>{{ system.role.roleName }}</td>
                             <td><i class="pi pi-circle-fill"
                                     [ngClass]="{'green-class': system.active, 'red-class': !system.active}"></i></td>
@@ -145,9 +145,9 @@
 
                         <div class="field">
                             <label for="en">10</label>
-                            <input type="text" pInputText id="en" [(ngModel)]="ten" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !ten}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !ten">10 is
+                            <input type="text" pInputText id="en" [(ngModel)]="zero" required autofocus
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !zero}" />
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !zero">10 is
                                 required.</small>
                         </div>
 
