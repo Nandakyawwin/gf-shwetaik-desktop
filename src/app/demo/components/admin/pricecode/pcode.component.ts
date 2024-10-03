@@ -56,7 +56,7 @@ export class PcodeComponent {
 
   nine: any;
 
-  ten: any;
+  zero: any;
 
   role_id: any;
 
@@ -232,7 +232,7 @@ export class PcodeComponent {
       seven: this.seven,
       eight: this.eight,
       nine: this.nine,
-      ten: this.ten,
+      zero: this.zero,
       active: this.selectedStatus.status,
       role_id: this.selectedRole.role_id
     };
