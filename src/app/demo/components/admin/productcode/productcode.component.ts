@@ -106,7 +106,7 @@ export class ProductcodeComponent {
 
   rows = 10;
 
-  ProductCode_id: any;
+  Product_Code_id: any;
 
   Users: any;
 
@@ -257,6 +257,10 @@ export class ProductcodeComponent {
           this.productDialog = false;
           this.submitted = false;
           this.disabled = false;
+          this.code = '';
+          this.selectLocation = '';
+          this.qty = '';
+          this.selectedRole = '';
 
           this.allList();
         }
@@ -310,13 +314,14 @@ export class ProductcodeComponent {
 
   deleteProduct(obj: any) {
     this.deleteProductDialog = true;
-    this.ProductCode_id = obj;
+    this.Product_Code_id = obj;
   }
 
   confirmDelete() {
     let obj = {
-      ProductCode_id: this.ProductCode_id
+      Product_Code_id: this.Product_Code_id
     }
+    console.log(obj)
     this.http.deleteProductCode(obj).subscribe(
       (res: any) => {
         if (res.con) {
