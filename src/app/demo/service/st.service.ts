@@ -439,6 +439,27 @@ export class StService {
   }
 
 
+  allProductCode() {
+    let url = this.BASEURL + 'all/productCode';
+    return this.get(url);
+  }
+
+  updateProductCode(obj) {
+    let url = this.BASEURL + 'update/productCode';
+    return this.post(url, obj);
+  }
+
+  saveProductCode(obj) {
+    let url = this.BASEURL + 'save/productCode';
+    return this.post(url, obj);
+  }
+
+  deleteProductCode(id) {
+    let url = this.BASEURL + 'delete/productCode';
+    return this.post(url, id);
+  }
+
+
   allPriceCode() {
     let url = this.BASEURL + 'all/pcode';
     return this.get(url);
@@ -457,6 +478,11 @@ export class StService {
   deletePriceCode(id) {
     let url = this.BASEURL + 'delete/pcode';
     return this.post(url, id);
+  }
+
+  location() {
+    let url = 'https://st.golden-future.org/table/ss/ST_LOCATION';
+    return this.get(url);
   }
 
 }

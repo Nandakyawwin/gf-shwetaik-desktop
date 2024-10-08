@@ -6,7 +6,7 @@ import { StService } from '../demo/service/st.service';
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
-export class AppTopBarComponent implements OnInit{
+export class AppTopBarComponent implements OnInit {
 
     items!: MenuItem[];
 
@@ -23,18 +23,11 @@ export class AppTopBarComponent implements OnInit{
     langBool = false;
 
 
-    constructor(public layoutService: LayoutService, private stS: StService) { 
+    constructor(public layoutService: LayoutService, private stS: StService) {
     }
 
     ngOnInit(): void {
-        this.stS
-        .getString('9')
-        .then((result) => {
-            this.productTitle = result;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        this.productTitle = localStorage.getItem('9');
     }
-    
+
 }
