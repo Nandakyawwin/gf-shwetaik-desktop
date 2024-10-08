@@ -131,7 +131,7 @@ export class LoginComponent implements OnInit {
         console.log(userLang)
         for (let i = 0; i < length; i++) {
             if (userLang === 'en' || userLang === 'mm') {
-                this.http.setString(`${i}`, `${this.Language[i][userLang]}`);
+                localStorage.setItem(`${i}`, `${this.Language[i][userLang]}`)
                 c = i;
             }
         }
