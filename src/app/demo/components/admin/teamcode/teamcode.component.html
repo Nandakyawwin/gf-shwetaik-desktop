@@ -18,24 +18,19 @@
                     <ng-template pTemplate="header">
                         <tr>
                             <th pSortableColumn="code">CODE<p-sortIcon field="code"></p-sortIcon></th>
-                            <th pSortableColumn="CODE">L Code<p-sortIcon field="CODE"></p-sortIcon></th>
-                            <th pSortableColumn="DESCRIPTION">L Description<p-sortIcon field="DESCRIPTION"></p-sortIcon>
-                            </th>
-                            <th pSortableColumn="QTY">QTY<p-sortIcon field="QTY"></p-sortIcon></th>
+                            <th pSortableColumn="roleName">Team<p-sortIcon field="roleName"></p-sortIcon></th>
                             <th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-system>
                         <tr [pSelectableRow]="system">
                             <td>{{ system.code }}</td>
-                            <td>{{ system.location.CODE }}</td>
-                            <td>{{ system.location.DESCRIPTION }}</td>
-                            <td>{{ system.QTY }}</td>
+                            <td>{{ system.role.roleName }}</td>
                             <td>{{ system.createAt | date }}</td>
                             <td>
                                 <div class="flex">
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                                        (click)="deleteProduct(system.Product_Code_id)"></button>
+                                        (click)="deleteProduct(system.TeamCode_id)"></button>
                                 </div>
                             </td>
                         </tr>
@@ -45,36 +40,28 @@
             <p-dialog [(visible)]="productDialog" [maximizable]="true" [style]="{width: '450px'}" [modal]="true"
                 class="p-fluid">
                 <ng-template pTemplate="header">
-                    <span *ngIf="!addOrUpdate"><b>Add New Product Codes</b></span>
-                    <span *ngIf="addOrUpdate"><b>Edit Product Code</b></span>
+                    <span *ngIf="!addOrUpdate"><b>Add New Team Codes</b></span>
+                    <span *ngIf="addOrUpdate"><b>Edit Team Code</b></span>
                 </ng-template>
                 <ng-template pTemplate="content">
                     <form [formGroup]="formGroup">
 
                         <div class="field">
-                            <label for="en">Product Codes</label>
+                            <label for="en">Team Codes</label>
                             <p-chips [(ngModel)]="code" required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !code}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !code">Product Codes are
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !code">Team Codes are
                                 required.</small>
                         </div>
 
                         <div class="field">
-                            <label for="role">Location</label>
-                            <p-dropdown [options]="location" [(ngModel)]="selectLocation" optionLabel="DESCRIPTION"
-                                [filter]="true" filterBy="DESCRIPTION" id="role" [showClear]="true"
-                                placeholder="Select Location"
-                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectLocation}">
+                            <label for="role">Role</label>
+                            <p-dropdown [options]="Roles" [(ngModel)]="selectedRole" optionLabel="roleName"
+                                [filter]="true" filterBy="roleName" id="role" [showClear]="true"
+                                placeholder="Select Role"
+                                [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedRole}">
                             </p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectLocation">Location is
-                                required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="en">Quantity</label>
-                            <input type="number" placeholder="Quantity" pInputText id="en" [(ngModel)]="qty" required
-                                autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !qty}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !qty">Quantity is
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is
                                 required.</small>
                         </div>
 
