@@ -5,12 +5,12 @@ import { DecryptService } from 'src/app/demo/service/decrypt.service';
 import { StService } from 'src/app/demo/service/st.service';
 
 @Component({
-  selector: 'app-productcode',
+  selector: 'app-teamcode',
   providers: [MessageService, TableService],
-  templateUrl: './productcode.component.html',
-  styleUrl: './productcode.component.scss'
+  templateUrl: './teamcode.component.html',
+  styleUrl: './teamcode.component.scss'
 })
-export class ProductcodeComponent {
+export class TeamcodeComponent {
 
   userManage: boolean = false;
 
@@ -70,7 +70,7 @@ export class ProductcodeComponent {
 
   first: any = 0;
 
-  title = localStorage.getItem('21');
+  title = localStorage.getItem('23');
 
   active = [
     { status: true }, { status: false }
@@ -154,16 +154,6 @@ export class ProductcodeComponent {
       }
     )
 
-    this.http.location().subscribe(
-      (res: any) => {
-        let User = res;
-        this.location = User.reverse();
-      },
-      (error: any) => {
-        this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
-      }
-    )
-
     this.http.allRole().subscribe(
       (res: any) => {
         let Role = res.data;
@@ -213,7 +203,7 @@ export class ProductcodeComponent {
   statusA() {
     this.i = !this.i;
     if (this.i) {
-      this.http.allProductCode().subscribe(
+      this.http.allTeamCode().subscribe(
         (res: any) => {
           let s = res.data;
           let d = s.reverse();
@@ -225,7 +215,7 @@ export class ProductcodeComponent {
         }
       )
     } else {
-      this.http.allProductCode().subscribe(
+      this.http.allTeamCode().subscribe(
         (res: any) => {
           let s = res.data;
           this.Systems = s.reverse();
@@ -244,15 +234,10 @@ export class ProductcodeComponent {
 
     let obj = {
       code: String(this.code),
-      location: {
-        CODE: this.selectLocation.CODE,
-        DESCRIPTION: this.selectLocation.DESCRIPTION
-      },
-      QTY: this.qty,
       role_id: this.selectedRole.role_id
     };
     console.log(obj);
-    this.http.saveProductCode(obj).subscribe(
+    this.http.saveTeamCode(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Filter Create Successfully' });
@@ -296,7 +281,7 @@ export class ProductcodeComponent {
       value: this.value,
       key: this.key
     };
-    this.http.updateProductCode(obj).subscribe(
+    this.http.updateTeamCode(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.error(res, true);
@@ -321,10 +306,10 @@ export class ProductcodeComponent {
 
   confirmDelete() {
     let obj = {
-      Product_Code_id: this.Product_Code_id
+      TeamCode_id: this.Product_Code_id
     }
     console.log(obj)
-    this.http.deleteProductCode(obj).subscribe(
+    this.http.deleteTeamCode(obj).subscribe(
       (res: any) => {
         if (res.con) {
           this.error(res, true);
@@ -351,7 +336,7 @@ export class ProductcodeComponent {
 
 
   allList() {
-    this.http.allProductCode().subscribe(
+    this.http.allTeamCode().subscribe(
       (res: any) => {
         let s = res.data;
         this.Systems = s.reverse();

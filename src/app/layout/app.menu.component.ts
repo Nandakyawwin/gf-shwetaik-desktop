@@ -279,6 +279,10 @@ export class AppMenuComponent implements OnInit {
             label: localStorage.getItem('21'), icon: 'pi pi-barcode',
             routerLink: ['/admin/productcode'],
           },
+          {
+            label: localStorage.getItem('23'), icon: 'pi pi-barcode',
+            routerLink: ['/admin/teamcode'],
+          },
         ]
       },
       {

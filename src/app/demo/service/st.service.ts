@@ -459,6 +459,26 @@ export class StService {
     return this.post(url, id);
   }
 
+  allTeamCode() {
+    let url = this.BASEURL + 'all/teamCode';
+    return this.get(url);
+  }
+
+  updateTeamCode(obj) {
+    let url = this.BASEURL + 'update/teamCode';
+    return this.post(url, obj);
+  }
+
+  saveTeamCode(obj) {
+    let url = this.BASEURL + 'save/teamCode';
+    return this.post(url, obj);
+  }
+
+  deleteTeamCode(id) {
+    let url = this.BASEURL + 'delete/teamCode';
+    return this.post(url, id);
+  }
+
 
   allPriceCode() {
     let url = this.BASEURL + 'all/pcode';
