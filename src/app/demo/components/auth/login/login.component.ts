@@ -70,13 +70,7 @@ export class LoginComponent implements OnInit {
         if (res.con) {
             this.msgService.add({ key: 'tst', severity: 'success', summary: JSON.stringify(res.msg), detail: 'Login Successful' });
             this.storeUserData(res.data);
-            console.log("Hello", res.data.role.roleName);
-            if (res.data.role.roleName !== 'admin') {
-                alert(res.data.role.roleName);
-                this.handleAdminLogin(res.data.role_id);
-            } else {
-                this.handleAdminLogin(res.data.role_id);
-            }
+            this.handleAdminLogin(res.data);
         } else {
             this.msgService.add({ key: 'tst', severity: 'error', summary: 'Error Message', detail: 'Login Error' });
         }
@@ -84,12 +78,11 @@ export class LoginComponent implements OnInit {
 
     storeUserData(data: any) {
         this.http.setString('user_id', String(data.user_id));
-        this.http.setString('role', String(data.role.roleName));
-        this.http.setString('role_id', String(data.role_id));
         this.http.setString('email', String(data.email));
         this.http.setString('name', String(data.name));
         this.http.setString('userName', String(data.userName));
         this.http.setString('lang', String(data.lang));
+        this.http.setString('_id', String(data._id));
         this.http.setString('port', String('8080'));
         this.langs = data.lang;
     }
@@ -136,6 +129,7 @@ export class LoginComponent implements OnInit {
             }
         }
         if ((c + 1) == length) {
+            this.router.navigateByUrl('/');
             this.http
                 .getString('roleName')
                 .then((result) => {

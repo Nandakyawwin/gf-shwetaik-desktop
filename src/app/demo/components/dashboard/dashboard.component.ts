@@ -9,13 +9,13 @@ import { Router } from '@angular/router'
 
 @Component({
     templateUrl: './dashboard.component.html',
-    providers : [MessageService]
+    providers: [MessageService]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
     items!: MenuItem[];
 
-    Tables  = 0;
+    Tables = 0;
 
     products!: Product[];
 
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService,private ST : StService,private msg: MessageService,private router: Router) {
+    constructor(private productService: ProductService, public layoutService: LayoutService, private ST: StService, private msg: MessageService, private router: Router) {
         // this.subscription = this.layoutService.configUpdate$
         // .pipe(debounceTime(25))
         // .subscribe((config) => {
@@ -46,41 +46,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.ST
-        .getString('role')
-        .then((result) => {
-           let role = result;
-        if (role == null || role == undefined) {
-            this.router.navigate(['/auth/login']);
-        }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-        this.ST
-        .getString('name')
-        .then((result) => {
-           let role = result;
-        if (role == null || role == undefined) {
-            this.router.navigate(['/auth/login']);
-        }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-        this.ST
-        .getString('email')
-        .then((result) => {
-           let role = result;
-        if (role == null || role == undefined) {
-            this.router.navigate(['/auth/login']);
-        }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
         this.all();
         this.initChart();
         // this.productService.getProductsSmall().then(data => this.products = data);
@@ -91,52 +56,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ];
     }
 
-    ionViewWillEnter() {
-        this.ST
-        .getString('role')
-        .then((result) => {
-            let role = result;
-            alert(role)
-        if (role == null || role == undefined) {
-            this.router.navigate(['/auth/login']);
-        }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-        this.ST
-        .getString('name')
-        .then((result) => {
-           let role = result;
-        if (role == null || role == undefined) {
-            this.router.navigate(['/auth/login']);
-        }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-        this.ST
-        .getString('email')
-        .then((result) => {
-           let role = result;
-        if (role == null || role == undefined) {
-            this.router.navigate(['/auth/login']);
-        }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        this.all();
-        this.initChart();
-        // this.productService.getProductsSmall().then(data => this.products = data);
-
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
-    }
 
 
     all() {
@@ -177,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.ST.allRole().subscribe(
             (res: any) => {
                 this.Roles = res.length;
-                this.l2= true;
+                this.l2 = true;
             },
             (error: any) => {
                 this.l2 = false;
