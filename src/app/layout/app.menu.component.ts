@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { StService } from '../demo/service/st.service';
+import { DynamicGuard } from '../auths.guard';
 
 @Component({
   selector: 'app-menu',
@@ -250,10 +251,12 @@ export class AppMenuComponent implements OnInit {
           {
             label: localStorage.getItem('1'), icon: 'pi pi-user',
             routerLink: ['/admin/users'],
+            canActivate: [DynamicGuard], data: { task: 'User' }
           },
           {
             label: localStorage.getItem('0'), icon: 'pi pi-sitemap',
             routerLink: ['/admin/roles'],
+            canActivate: [DynamicGuard], data: { task: 'Role' }
           },
           // {
           //   label: localStorage.getItem('3'), icon: 'pi pi-cog',
@@ -263,14 +266,17 @@ export class AppMenuComponent implements OnInit {
           {
             label: localStorage.getItem('4'), icon: 'pi pi-filter',
             routerLink: ['/admin/filters'],
+            canActivate: [DynamicGuard], data: { task: 'Choosing Column' }
           },
           {
             label: localStorage.getItem('18'), icon: 'pi pi-list',
             routerLink: ['/admin/transfer'],
+            canActivate: [DynamicGuard], data: { task: 'Transfer' }
           },
           {
             label: localStorage.getItem('19'), icon: 'pi pi-tags',
             routerLink: ['/admin/pcodes'],
+            canActivate: [DynamicGuard], data: { task: 'Price Code' }
           },
           // {
           //   label: localStorage.getItem('21'), icon: 'pi pi-barcode',
@@ -279,6 +285,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: localStorage.getItem('23'), icon: 'pi pi-barcode',
             routerLink: ['/admin/teamcode'],
+            canActivate: [DynamicGuard], data: { task: 'Team Code' }
           },
         ]
       },
@@ -288,10 +295,12 @@ export class AppMenuComponent implements OnInit {
           {
             label: localStorage.getItem('5'), icon: 'pi pi-server',
             routerLink: ['/admin/tables'],
+            canActivate: [DynamicGuard], data: { task: 'Table' }
           },
           {
             label: localStorage.getItem('6'), icon: 'pi pi-language',
             routerLink: ['/admin/languages'],
+            canActivate: [DynamicGuard], data: { task: 'Language' }
           }
         ]
       },
