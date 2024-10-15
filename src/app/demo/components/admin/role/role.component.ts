@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
@@ -13,9 +14,13 @@ export class RoleComponent {
 
   selectedProduct: any;
 
+  tasks: any;
+
   role_id: any;
 
   roleid: any;
+
+  plist: any;
 
   sole = false;
 
@@ -30,6 +35,8 @@ export class RoleComponent {
   productDialog: boolean = false;
 
   deleteProductDialog: boolean = false;
+
+  editCRUDDialog: boolean = false;
 
   CRUD: any;
 
@@ -63,7 +70,40 @@ export class RoleComponent {
 
   userMange: any;
 
-  constructor(private http: StService, private msgService: MessageService) { }
+  Per: any;
+
+  constructor(private http: StService, private msgService: MessageService, private router: Router) {
+    this.plist = this.http.task;
+    console.log(this.plist);
+
+    this.http.getString('user_id').then((result) => {
+      console.log(result);
+      this.http.findRoleListByUserId({ user_id: Number(result) }).subscribe(
+        (res: any) => {
+          // console.log(res);
+          res.data.map((item: any) => {
+            // console.log(item);
+            this.http.findPermission({ role_id: item.role.role_id }).subscribe(
+              (result: any) => {
+                if (result.length > 0) {
+                  let dat = result.data;
+                  let L = dat.filter((i: any) => i.task == 'Role');
+                  console.log(L)
+                  this.Per = L;
+
+                  console.log(this.Per);
+                  if (!this.Per[0].read) {
+                    alert('You Don\'t have read access');
+                    // this.router.navigateByUrl('/');
+                  }
+                }
+              }
+            )
+          })
+        }
+      )
+    })
+  }
 
 
 
@@ -105,6 +145,35 @@ export class RoleComponent {
     this.submitted = false;
     this.roleName = '';
     this.role_id = '';
+  }
+
+  saveProductCRUD() {
+    let obj = {
+      task: this.tasks.list,
+      read: true,
+      update: true,
+      create: true,
+      delete: true,
+      role_id: this.roleid
+    }
+    console.log(obj);
+    this.http.savePermission(obj).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.editCRUDDialog = false;
+        this.allPermission();
+      }
+    )
+  }
+
+  allPermission() {
+    this.http.findPermission({ role_id: this.roleid }).subscribe(
+      (resp: any) => {
+        if (resp) {
+          this.CRUD = resp.data;
+        }
+      }
+    )
   }
 
   saveProduct() {
@@ -161,6 +230,10 @@ export class RoleComponent {
       }
     )
   };
+
+  onRowSelectCRUD() {
+    this.editCRUDDialog = true;
+  }
 
 
   onUpdateChange(role: any) {

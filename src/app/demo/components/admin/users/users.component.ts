@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
@@ -62,7 +63,37 @@ export class UsersComponent implements OnInit {
 
   userofroleList: any;
 
-  constructor(private http: StService, private msgService: MessageService) { }
+  Per: any;
+
+  constructor(private http: StService, private msgService: MessageService, private router: Router) {
+    this.http.getString('user_id').then((result) => {
+      console.log(result);
+      this.http.findRoleListByUserId({ user_id: Number(result) }).subscribe(
+        (res: any) => {
+          // console.log(res);
+          res.data.map((item: any) => {
+            // console.log(item);
+            this.http.findPermission({ role_id: item.role.role_id }).subscribe(
+              (result: any) => {
+                if (result.length > 0) {
+                  let dat = result.data;
+                  let L = dat.filter((i: any) => i.task == 'User');
+                  console.log(L)
+                  this.Per = L;
+
+                  console.log(this.Per);
+                  if (!this.Per[0].read) {
+                    alert('You Don\'t have read access');
+                    this.router.navigateByUrl('/');
+                  }
+                }
+              }
+            )
+          })
+        }
+      )
+    })
+  }
 
 
 

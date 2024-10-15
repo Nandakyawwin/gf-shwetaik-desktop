@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Storage } from '@capacitor/storage';
 
@@ -10,6 +10,18 @@ import { Storage } from '@capacitor/storage';
 export class StService {
 
   BASEURL = environment.BASEURL;
+  permissions: any;
+  task = [
+    { list: 'User' },
+    { list: 'Role' },
+    { list: 'Choosing Column' },
+    { list: 'Transfer' },
+    { list: 'Price Code' },
+    { list: 'Team Code' },
+    { list: 'Table' },
+    { list: 'Language' },
+    { list: 'Permission' }
+  ]
   constructor(private http: HttpClient) { }
 
 
@@ -25,6 +37,42 @@ export class StService {
     return this.http.post(url, obj).pipe(
       map(data => data)
     )
+  }
+
+  savePermission(obj) {
+    let url = this.BASEURL + 'save/permission';
+    return this.http.post(url, obj).pipe(
+      map(data => data)
+    )
+  }
+
+  // Store permissions
+  setPermissions(permissions: any[]): void {
+    permissions.forEach(permission => {
+      this.permissions[permission.task.toLowerCase()] = permission;
+    });
+  }
+
+  // Retrieve permissions for a specific task
+  getPermissionsForTask(task: string): any {
+    return this.permissions[task.toLowerCase()];
+  }
+
+  // Check specific actions based on task
+  canRead(task: string): boolean {
+    return this.permissions[task.toLowerCase()]?.read;
+  }
+
+  canCreate(task: string): boolean {
+    return this.permissions[task.toLowerCase()]?.create;
+  }
+
+  canUpdate(task: string): boolean {
+    return this.permissions[task.toLowerCase()]?.update;
+  }
+
+  canDelete(task: string): boolean {
+    return this.permissions[task.toLowerCase()]?.delete;
   }
 
   // Choosing Columns

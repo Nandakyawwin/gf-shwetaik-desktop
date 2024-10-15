@@ -8,7 +8,8 @@
 					</b>
 				</h5>
 				<p-toast key="tst"></p-toast>
-				<div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
+				<div class="p-toolbar-group-right mb-3" *ngIf="Per[0].create"
+					style="display: flex; justify-content: flex-end; width: 100%;">
 					<button pButton type="button" label="New" icon="pi pi-plus" class="mr-2"
 						(click)="openDialog()"></button>
 				</div>
@@ -34,10 +35,10 @@
 								<td>{{ user.lang }}</td>
 								<td>
 									<div class="flex gap-2">
-										<button pButton pRipple icon="pi pi-pencil"
+										<button *ngIf="Per[0].update" pButton pRipple icon="pi pi-pencil"
 											class="p-button-rounded p-button-primary"
 											(click)="editProduct(user)"></button>
-										<button pButton pRipple icon="pi pi-trash"
+										<button *ngIf="Per[0].delete" pButton pRipple icon="pi pi-trash"
 											class="p-button-rounded p-button-danger"
 											(click)="deleteProduct(user.user_id)"></button>
 									</div>
