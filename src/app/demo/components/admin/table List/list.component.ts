@@ -128,6 +128,7 @@ export class ListComponent {
       (res: any) => {
         let Table = res.data;
         this.cities = Table;
+        console.log(this.cities);
         this.Tables = Table.reverse();
       },
       (error: any) => {
@@ -259,26 +260,26 @@ export class ListComponent {
         };
       },
       (err: any) => {
-        this.error(err,false);
+        this.error(err, false);
       }
     )
   }
 
 
   allList() {
-    this.http.allLists().subscribe(
+    this.http.allTransfer().subscribe(
       (res: any) => {
-          console.log(res);
-          let s = res.data;
-          this.Systems = s.reverse();
-    },
-    (error: any) => {
-      this.error(error,false);
-    }
-  )
+        console.log(res);
+        let s = res.data;
+        this.Systems = s.reverse();
+      },
+      (error: any) => {
+        this.error(error, false);
+      }
+    )
   }
 
-  error(e: any,status:any) {
+  error(e: any, status: any) {
     if (status == true) {
       this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'Successfully' });
     } else {

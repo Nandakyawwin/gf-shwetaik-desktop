@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'languages', data: { breadcrumb: 'Button' }, loadChildren: () => import('./language/language.module').then(m => m.LanguageModule) },
   { path: 'tables', data: { breadcrumb: 'Button' }, loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
   { path: 'filters', data: { breadcrumb: 'Button' }, loadChildren: () => import('./filter/filter.module').then(m => m.FilterModule) },
-  { path: 'lists', data: { breadcrumb: 'Button' }, loadChildren: () => import('./table List/list.module').then(m => m.ListModule) },
+  { path: 'transfer', data: { breadcrumb: 'Button' }, loadChildren: () => import('./table List/list.module').then(m => m.ListModule) },
   { path: 'pcodes', data: { breadcrumb: 'Button' }, loadChildren: () => import('./pricecode/pcode.module').then(m => m.PcodeModule) },
   { path: 'productcode', data: { breadcrumb: 'Button' }, loadChildren: () => import('./productcode/productcode.module').then(m => m.ProductcodeModule) },
   { path: 'teamcode', data: { breadcrumb: 'Button' }, loadChildren: () => import('./teamcode/teamcode.module').then(m => m.TeamcodeModule) },

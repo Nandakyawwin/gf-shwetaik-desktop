@@ -5,7 +5,7 @@ import { StService } from 'src/app/demo/service/st.service';
 
 @Component({
   selector: 'app-role',
-  providers: [MessageService,TableService],
+  providers: [MessageService, TableService],
   templateUrl: './role.component.html',
   styleUrl: './role.component.scss'
 })
@@ -14,6 +14,10 @@ export class RoleComponent {
   selectedProduct: any;
 
   role_id: any;
+
+  roleid: any;
+
+  sole = false;
 
   first: any = 0;
 
@@ -27,6 +31,8 @@ export class RoleComponent {
 
   deleteProductDialog: boolean = false;
 
+  CRUD: any;
+
   formGroup: any;
 
   selectedRole: any;
@@ -34,6 +40,8 @@ export class RoleComponent {
   submitted: boolean = false;
 
   addOrUpdate: boolean = false;
+
+  editDialog = false;
 
   rows = 10;
 
@@ -55,7 +63,7 @@ export class RoleComponent {
 
   userMange: any;
 
-  constructor(private http: StService,private msgService: MessageService) { }
+  constructor(private http: StService, private msgService: MessageService) { }
 
 
 
@@ -136,17 +144,52 @@ export class RoleComponent {
     )
   };
 
-  onRowSelect(event: any) {
-    console.log(event)
-    this.productDialog = true;
-    this.addOrUpdate = true;
-    this.roleName = event.data.roleName;
-    this.role_id = event.data.role_id;
+  back() {
+    this.sole = !this.sole;
+  }
 
+  onRowSelect(event: any) {
+    this.sole = !this.sole;
+    console.log(event)
+    this.roleid = event.data.role_id;
+    this.http.findPermission({ role_id: event.data.role_id }).subscribe(
+      (res: any) => {
+        console.log(res);
+        if (res.con) {
+          this.CRUD = res.data;
+        }
+      }
+    )
   };
 
+
+  onUpdateChange(role: any) {
+    console.log('Update status changed for role:', role);
+    this.http.updatePermission(role).subscribe(
+      (res: any) => {
+        if (res.con) {
+          this.http.findPermission({ role_id: this.roleid }).subscribe(
+            (res: any) => {
+              console.log(res);
+              if (res.con) {
+                this.CRUD = res.data;
+              }
+            }
+          )
+        }
+      }
+    )
+  }
+
+  editProduct(event: any) {
+    this.editDialog = true;
+    this.addOrUpdate = true;
+    this.roleName = event.roleName;
+    this.role_id = event.role_id;
+  }
+
   onRowUnselect(event: any) {
-  console.log(event);
+    console.log(event);
   };
 
   updateProduct() {

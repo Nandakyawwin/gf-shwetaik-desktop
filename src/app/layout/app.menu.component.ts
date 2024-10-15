@@ -250,35 +250,32 @@ export class AppMenuComponent implements OnInit {
           {
             label: localStorage.getItem('1'), icon: 'pi pi-user',
             routerLink: ['/admin/users'],
-            canAx: this.userManage
           },
           {
             label: localStorage.getItem('0'), icon: 'pi pi-sitemap',
             routerLink: ['/admin/roles'],
-            canAx: this.roleManage
           },
-          {
-            label: localStorage.getItem('3'), icon: 'pi pi-cog',
-            routerLink: ['/admin/systems'],
-            canAx: this.userManage
-          },
+          // {
+          //   label: localStorage.getItem('3'), icon: 'pi pi-cog',
+          //   routerLink: ['/admin/systems'],
+          //   canAx: this.userManage
+          // },
           {
             label: localStorage.getItem('4'), icon: 'pi pi-filter',
             routerLink: ['/admin/filters'],
-            canAx: this.filterManage
           },
           {
             label: localStorage.getItem('18'), icon: 'pi pi-list',
-            routerLink: ['/admin/lists'],
+            routerLink: ['/admin/transfer'],
           },
           {
             label: localStorage.getItem('19'), icon: 'pi pi-tags',
             routerLink: ['/admin/pcodes'],
           },
-          {
-            label: localStorage.getItem('21'), icon: 'pi pi-barcode',
-            routerLink: ['/admin/productcode'],
-          },
+          // {
+          //   label: localStorage.getItem('21'), icon: 'pi pi-barcode',
+          //   routerLink: ['/admin/productcode'],
+          // },
           {
             label: localStorage.getItem('23'), icon: 'pi pi-barcode',
             routerLink: ['/admin/teamcode'],
@@ -291,12 +288,10 @@ export class AppMenuComponent implements OnInit {
           {
             label: localStorage.getItem('5'), icon: 'pi pi-server',
             routerLink: ['/admin/tables'],
-            canAx: this.tableManage
           },
           {
             label: localStorage.getItem('6'), icon: 'pi pi-language',
             routerLink: ['/admin/languages'],
-            canAx: this.languageManage
           }
         ]
       },

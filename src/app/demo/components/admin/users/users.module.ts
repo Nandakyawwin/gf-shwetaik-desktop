@@ -22,6 +22,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PasswordModule } from 'primeng/password';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ChipModule } from 'primeng/chip';
 
 
 @NgModule({
@@ -30,8 +32,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     CommonModule,
     UsersRoutingModule,
     ButtonModule,
-		RippleModule,
-		SplitButtonModule,
+    RippleModule,
+    SplitButtonModule,
     ToggleButtonModule,
     ToolbarModule,
     MessageModule,
@@ -39,9 +41,9 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     ToastModule,
     PasswordModule,
     MessagesModule,
-		MessageModule,
-		ButtonModule,
-		ToastModule,
+    MessageModule,
+    ButtonModule,
+    ToastModule,
     InputTextModule,
     FormsModule,
     InputNumberModule,
@@ -50,7 +52,9 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     InputTextareaModule,
     RadioButtonModule,
     DropdownModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    MultiSelectModule,
+    ChipModule
   ]
 })
 export class UsersModule { }

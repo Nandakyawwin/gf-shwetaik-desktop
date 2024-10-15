@@ -13,6 +13,20 @@ export class StService {
   constructor(private http: HttpClient) { }
 
 
+  findPermission(role_id) {
+    let url = this.BASEURL + 'find/permission';
+    return this.http.post(url, role_id).pipe(
+      map(data => data)
+    )
+  }
+
+  updatePermission(obj) {
+    let url = this.BASEURL + 'update/permission';
+    return this.http.post(url, obj).pipe(
+      map(data => data)
+    )
+  }
+
   // Choosing Columns
 
   allCC() {
@@ -49,6 +63,11 @@ export class StService {
     return this.get(url);
   }
 
+  allTransfer() {
+    let url = this.BASEURL + 'all/transfer';
+    return this.get(url);
+  }
+
   updateList(obj) {
     let url = this.BASEURL + 'update/list';
     return this.post(url, obj);
@@ -73,6 +92,15 @@ export class StService {
     )
   };
 
+  findRoleListByUserId(id: any) {
+    let url = this.BASEURL + 'find/roleList';
+    return this.http.post(url, id).pipe(
+      map(
+        response => response
+      )
+    )
+  }
+
   allUserV1() {
     return this.http.get(this.BASEURL + 'api/v_1/all/user').pipe(
       map(
@@ -80,6 +108,24 @@ export class StService {
       )
     )
   };
+
+  saveRoleList(obj: any) {
+    let url = this.BASEURL + 'save/roleList';
+    return this.http.post(url, obj).pipe(
+      map(
+        response => response
+      )
+    )
+  }
+
+  deleteRoleList(id: any) {
+    let url = this.BASEURL + 'delete/roleList';
+    return this.http.post(url, id).pipe(
+      map(
+        response => response
+      )
+    )
+  }
 
   loginUser(obj: any) {
     let url = this.BASEURL + 'login/user';
