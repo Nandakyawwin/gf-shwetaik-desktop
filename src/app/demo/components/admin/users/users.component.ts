@@ -222,6 +222,7 @@ export class UsersComponent implements OnInit {
 
 
   onRoleChange(event: any) {
+    console.log(event)
     const newSelection = event.value; // Current selection from the multi-select
     let fil = this.roleLists.map((roleList: any) => roleList.role_id); // Extract role_ids from roleLists
 
@@ -245,12 +246,12 @@ export class UsersComponent implements OnInit {
       this.http.deleteRoleList(ids).subscribe(
         (res: any) => {
           console.log('Role removed:', res);
-          window.location.reload();
+          // window.location.reload();
           // Optionally update roleLists here after deletion
         },
         (error: any) => {
           console.error('Error deleting role:', error);
-          window.location.reload();
+          // window.location.reload();
         }
       );
     }
@@ -263,7 +264,7 @@ export class UsersComponent implements OnInit {
         .getString('user_id')
         .then((result) => {
           let newRole = {
-            user_id: result, // Assuming you have the userId in the component
+            user_id: this.user_id, // Assuming you have the userId in the component
             role_id: selectedRoles[0].role_id
           };
 
