@@ -258,34 +258,15 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/admin/roles'],
             canActivate: [DynamicGuard], data: { task: 'Role' }
           },
-          // {
-          //   label: localStorage.getItem('3'), icon: 'pi pi-cog',
-          //   routerLink: ['/admin/systems'],
-          //   canAx: this.userManage
-          // },
           {
             label: localStorage.getItem('4'), icon: 'pi pi-filter',
             routerLink: ['/admin/filters'],
             canActivate: [DynamicGuard], data: { task: 'Choosing Column' }
           },
           {
-            label: localStorage.getItem('18'), icon: 'pi pi-list',
-            routerLink: ['/admin/transfer'],
-            canActivate: [DynamicGuard], data: { task: 'Transfer' }
-          },
-          {
             label: localStorage.getItem('19'), icon: 'pi pi-tags',
             routerLink: ['/admin/pcodes'],
             canActivate: [DynamicGuard], data: { task: 'Price Code' }
-          },
-          // {
-          //   label: localStorage.getItem('21'), icon: 'pi pi-barcode',
-          //   routerLink: ['/admin/productcode'],
-          // },
-          {
-            label: localStorage.getItem('23'), icon: 'pi pi-barcode',
-            routerLink: ['/admin/teamcode'],
-            canActivate: [DynamicGuard], data: { task: 'Team Code' }
           },
         ]
       },

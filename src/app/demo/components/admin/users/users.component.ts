@@ -13,6 +13,11 @@ export class UsersComponent implements OnInit {
 
   selectedProduct: any;
 
+  create: any;
+  update: any;
+  delete: any;
+  view: any;
+
   first: any = 0;
 
   roleLists: any;
@@ -80,6 +85,10 @@ export class UsersComponent implements OnInit {
                   let L = dat.filter((i: any) => i.task == 'User');
                   console.log(L)
                   this.Per = L;
+                  this.update = this.Per[0].update;
+                  this.create = this.Per[0].create;
+                  this.delete = this.Per[0].delete;
+
 
                   console.log(this.Per);
                   if (!this.Per[0].read) {
@@ -190,6 +199,13 @@ export class UsersComponent implements OnInit {
 
   openDialog() {
     this.productDialog = true;
+    this.name = '';
+    this.email = '';
+    this.phone = '';
+    this.selectedRole = '';
+    this.password = '';
+    this.userName = '';
+    this.user_id = '';
   }
 
   hideDialog() {

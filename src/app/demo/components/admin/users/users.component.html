@@ -8,7 +8,7 @@
 					</b>
 				</h5>
 				<p-toast key="tst"></p-toast>
-				<div class="p-toolbar-group-right mb-3" *ngIf="Per[0].create"
+				<div class="p-toolbar-group-right mb-3" *ngIf="create"
 					style="display: flex; justify-content: flex-end; width: 100%;">
 					<button pButton type="button" label="New" icon="pi pi-plus" class="mr-2"
 						(click)="openDialog()"></button>
@@ -25,6 +25,7 @@
 								<th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
 								<th pSortableColumn="phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
 								<th pSortableColumn="lang">Language <p-sortIcon field="lang"></p-sortIcon></th>
+								<th>Action</th>
 							</tr>
 						</ng-template>
 						<ng-template pTemplate="body" let-user>
@@ -35,10 +36,10 @@
 								<td>{{ user.lang }}</td>
 								<td>
 									<div class="flex gap-2">
-										<button *ngIf="Per[0].update" pButton pRipple icon="pi pi-pencil"
+										<button *ngIf="update" pButton pRipple icon="pi pi-pencil"
 											class="p-button-rounded p-button-primary"
 											(click)="editProduct(user)"></button>
-										<button *ngIf="Per[0].delete" pButton pRipple icon="pi pi-trash"
+										<button *ngIf="delete" pButton pRipple icon="pi pi-trash"
 											class="p-button-rounded p-button-danger"
 											(click)="deleteProduct(user.user_id)"></button>
 									</div>

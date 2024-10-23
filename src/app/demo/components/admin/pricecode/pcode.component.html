@@ -8,7 +8,8 @@
                     </b>
                 </h5>
                 <p-toast key="tst"></p-toast>
-                <div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
+                <div *ngIf="create" class="p-toolbar-group-right mb-3"
+                    style="display: flex; justify-content: flex-end; width: 100%;">
                     <button pButton type="button" label="New" icon="pi pi-plus" class="mr-2"
                         (click)="openDialog()"></button>
                     <button pButton type="button" label="Active" icon="pi pi-circle-fill" class="mr-2 p-button-success"
@@ -28,8 +29,8 @@
                             <th pSortableColumn="7">7<p-sortIcon field="7"></p-sortIcon></th>
                             <th pSortableColumn="8">8<p-sortIcon field="8"></p-sortIcon></th>
                             <th pSortableColumn="9">9<p-sortIcon field="9"></p-sortIcon></th>
-                            <th pSortableColumn="10">10<p-sortIcon field="10"></p-sortIcon></th>
-                            <th pSortableColumn="roleName">Role<p-sortIcon field="roleName"></p-sortIcon></th>
+                            <th pSortableColumn="10">0<p-sortIcon field="10"></p-sortIcon></th>
+                            <th pSortableColumn="priceTag">PriceTag<p-sortIcon field="priceTag"></p-sortIcon></th>
                             <th pSortableColumn="active">Active <p-sortIcon field="active"></p-sortIcon></th>
                             <th pSortableColumn="createAt">CreateAt <p-sortIcon field="createAt"></p-sortIcon></th>
                         </tr>
@@ -46,13 +47,14 @@
                             <td>{{ system.eight }}</td>
                             <td>{{ system.nine }}</td>
                             <td>{{ system.zero }}</td>
-                            <td>{{ system.role.roleName }}</td>
+                            <td>{{ system.priceTag }}</td>
                             <td><i class="pi pi-circle-fill"
                                     [ngClass]="{'green-class': system.active, 'red-class': !system.active}"></i></td>
                             <td>{{ system.createAt | date }}</td>
                             <td>
                                 <div class="flex">
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                    <button *ngIf="delete" pButton pRipple icon="pi pi-trash"
+                                        class="p-button-rounded p-button-danger"
                                         (click)="deleteProduct(system.pricecode_id)"></button>
                                 </div>
                             </td>
@@ -152,13 +154,12 @@
                         </div>
 
                         <div class="field">
-                            <label for="role">Role</label>
-                            <p-dropdown [options]="Roles" [(ngModel)]="selectedRole" optionLabel="roleName"
-                                [filter]="true" filterBy="roleName" id="role" [showClear]="true"
-                                placeholder="Select Role"
+                            <label for="role">PriceTag</label>
+                            <p-dropdown [options]="Roles" [(ngModel)]="selectedRole" optionLabel="CODE" [filter]="true"
+                                filterBy="CODE" id="role" [showClear]="true" placeholder="Select PriceTag"
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !selectedRole}">
                             </p-dropdown>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">Role is
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !selectedRole">PriceTag is
                                 required.</small>
                         </div>
 

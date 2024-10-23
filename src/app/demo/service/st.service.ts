@@ -20,7 +20,14 @@ export class StService {
     { list: 'Team Code' },
     { list: 'Table' },
     { list: 'Language' },
-    { list: 'Permission' }
+    { list: 'Permission' },
+    { list: 'Stock-Mobile' },
+    { list: 'Login-Mobile' },
+    { list: 'QR-Mobile' },
+    { list: 'Search-Mobile' },
+    { list: 'Transfer-Mobile' },
+    { list: 'Transfer-Approve-Mobile' },
+    { list: 'Password-Change-Mobile' },
   ]
   constructor(private http: HttpClient) { }
 
@@ -596,6 +603,11 @@ export class StService {
 
   location() {
     let url = 'https://st.golden-future.org/table/ss/ST_LOCATION';
+    return this.get(url);
+  }
+
+  priceTag() {
+    let url = 'https://st.golden-future.org/table/ss/ST_PRICETAG';
     return this.get(url);
   }
 

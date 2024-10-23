@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { DecryptService } from 'src/app/demo/service/decrypt.service';
@@ -116,6 +117,10 @@ export class PcodeComponent {
 
   email: any;
 
+  create: any;
+  update: any;
+  delete: any;
+
   password: any;
 
   Systems: any;
@@ -126,7 +131,40 @@ export class PcodeComponent {
 
   userMange: any;
 
-  constructor(private http: StService, private msgService: MessageService, private decrypt: DecryptService) {
+  Per: any;
+
+  constructor(private http: StService, private msgService: MessageService, private decrypt: DecryptService, private router: Router) {
+    this.http.getString('user_id').then((result) => {
+      console.log(result);
+      this.http.findRoleListByUserId({ user_id: Number(result) }).subscribe(
+        (res: any) => {
+          // console.log(res);
+          res.data.map((item: any) => {
+            // console.log(item);
+            this.http.findPermission({ role_id: item.role.role_id }).subscribe(
+              (result: any) => {
+                if (result.length > 0) {
+                  let dat = result.data;
+                  let L = dat.filter((i: any) => i.task == 'Price Code');
+                  console.log(L)
+                  this.Per = L;
+                  this.update = this.Per[0].update;
+                  this.create = this.Per[0].create;
+                  this.delete = this.Per[0].delete;
+
+
+                  console.log(this.Per);
+                  if (!this.Per[0].read) {
+                    alert('You Don\'t have read access');
+                    this.router.navigateByUrl('/');
+                  }
+                }
+              }
+            )
+          })
+        }
+      )
+    })
   }
 
 
@@ -144,9 +182,9 @@ export class PcodeComponent {
       }
     )
 
-    this.http.allRole().subscribe(
+    this.http.priceTag().subscribe(
       (res: any) => {
-        let Role = res.data;
+        let Role = res;
         this.Roles = Role.reverse();
       },
       (error: any) => {
@@ -234,7 +272,7 @@ export class PcodeComponent {
       nine: this.nine,
       zero: this.zero,
       active: this.selectedStatus.status,
-      role_id: this.selectedRole.role_id
+      priceTag: this.selectedRole.CODE
     };
     console.log(obj);
     this.http.savePriceCode(obj).subscribe(

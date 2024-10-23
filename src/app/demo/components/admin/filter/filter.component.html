@@ -9,7 +9,7 @@
                 </h5>
                 <p-toast key="tst"></p-toast>
                 <div class="p-toolbar-group-right mb-3" style="display: flex; justify-content: flex-end; width: 100%;">
-                    <button pButton type="button" label="New" icon="pi pi-plus" class="mr-2"
+                    <button *ngIf="create" pButton type="button" label="New" icon="pi pi-plus" class="mr-2"
                         (click)="openDialog()"></button>
                 </div>
                 <p-table #dt [value]="CC" [paginator]="true" [rows]="5" responsiveLayout="scroll"
@@ -32,7 +32,8 @@
                             <td>{{ system.createAt | date }}</td>
                             <td>
                                 <div class="flex">
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                    <button *ngIf="delete" pButton pRipple icon="pi pi-trash"
+                                        class="p-button-rounded p-button-danger"
                                         (click)="deleteProduct(system.choosingColumn_id)"></button>
                                 </div>
                             </td>
@@ -52,7 +53,8 @@
                             <label for="key">Column Name ( eg: COMPANY2)</label>
                             <input type="text" pInputText id="key" [(ngModel)]="key" required autofocus
                                 [ngClass]="{'ng-invalid ng-dirty' : submitted && !key}" />
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !key">Column Name is required.</small>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !key">Column Name is
+                                required.</small>
                         </div>
 
                         <div class="field">
@@ -83,9 +85,9 @@
                     <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
                         (click)="hideDialog()"></button>
                     <button pButton pRipple label="Save" *ngIf="!addOrUpdate" icon="pi pi-check" class="p-button-text"
-                        [disabled]="disabled" (click)="saveProduct()"></button>
+                        [disabled]="!create" (click)="saveProduct()"></button>
                     <button pButton pRipple label="Update" icon="pi pi-check" *ngIf="addOrUpdate" class="p-button-text"
-                        [disabled]="disabled" (click)="updateProduct()"></button>
+                        [disabled]="!update" (click)="updateProduct()"></button>
                 </ng-template>
             </p-dialog>
 
