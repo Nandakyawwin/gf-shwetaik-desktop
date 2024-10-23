@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { TableService } from 'primeng/table';
 import { StService } from 'src/app/demo/service/st.service';
 import { Capacitor } from '@capacitor/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-tables',
   providers: [MessageService, TableService],
@@ -96,11 +97,51 @@ export class TablesComponent {
 
   sert: any;
 
-  constructor(private http: StService, private msgService: MessageService, private fb: FormBuilder) {
+  Per: any;
+
+  update: any;
+
+  create: any;
+
+  delete: any;
+
+  constructor(private http: StService, private msgService: MessageService, private fb: FormBuilder, private router: Router) {
     let plat = Capacitor.getPlatform();
     if (plat === 'android') {
       this.sert = true;
     }
+
+    this.http.getString('user_id').then((result) => {
+      console.log(result);
+      this.http.findRoleListByUserId({ user_id: Number(result) }).subscribe(
+        (res: any) => {
+          // console.log(res);
+          res.data.map((item: any) => {
+            // console.log(item);
+            this.http.findPermission({ role_id: item.role.role_id }).subscribe(
+              (result: any) => {
+                if (result.length > 0) {
+                  let dat = result.data;
+                  let L = dat.filter((i: any) => i.task == 'Table');
+                  console.log(L)
+                  this.Per = L;
+                  this.update = this.Per[0].update;
+                  this.create = this.Per[0].create;
+                  this.delete = this.Per[0].delete;
+
+
+                  console.log(this.Per);
+                  if (!this.Per[0].read) {
+                    alert('You Don\'t have read access');
+                    this.router.navigateByUrl('/');
+                  }
+                }
+              }
+            )
+          })
+        }
+      )
+    })
   }
 
   ngOnInit(): void {
@@ -136,25 +177,25 @@ export class TablesComponent {
         let table1 = this.Tables[0].tableName;
         this.selectTableName = table1;
         this.tname = table1;
-          this.http.allDataTable(String(table1)).subscribe(
-            (res: any) => {
-              console.log(res)
-              if (res.message === "Record Not Found") {
-                this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
-              } else {
-                this.datas = res;
-                this.keys = Object.keys(this.datas[0]);
-                console.log(this.keys);
-                this.formGroup = this.fb.group({});
-                this.keys.forEach(key => {
-                  this.formGroup.addControl(key, this.fb.control(''));
-                });
-              }
-            },
-            (err: any) => {
-              console.log(err);
+        this.http.allDataTable(String(table1)).subscribe(
+          (res: any) => {
+            console.log(res)
+            if (res.message === "Record Not Found") {
+              this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
+            } else {
+              this.datas = res;
+              this.keys = Object.keys(this.datas[0]);
+              console.log(this.keys);
+              this.formGroup = this.fb.group({});
+              this.keys.forEach(key => {
+                this.formGroup.addControl(key, this.fb.control(''));
+              });
             }
-          )
+          },
+          (err: any) => {
+            console.log(err);
+          }
+        )
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -195,25 +236,25 @@ export class TablesComponent {
         let table1 = this.Tables[0].tableName;
         this.selectTableName = table1;
         this.tname = table1;
-          this.http.allDataTable(String(table1)).subscribe(
-            (res: any) => {
-              console.log(res)
-              if (res.message === "Record Not Found") {
-                this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
-              } else {
-                this.datas = res;
-                this.keys = Object.keys(this.datas[0]);
-                console.log(this.keys);
-                this.formGroup = this.fb.group({});
-                this.keys.forEach(key => {
-                  this.formGroup.addControl(key, this.fb.control(''));
-                });
-              }
-            },
-            (err: any) => {
-              console.log(err);
+        this.http.allDataTable(String(table1)).subscribe(
+          (res: any) => {
+            console.log(res)
+            if (res.message === "Record Not Found") {
+              this.msgService.add({ key: 'tst', severity: 'error', summary: "Error", detail: 'Data sync Failed!' })
+            } else {
+              this.datas = res;
+              this.keys = Object.keys(this.datas[0]);
+              console.log(this.keys);
+              this.formGroup = this.fb.group({});
+              this.keys.forEach(key => {
+                this.formGroup.addControl(key, this.fb.control(''));
+              });
             }
-          )
+          },
+          (err: any) => {
+            console.log(err);
+          }
+        )
       },
       (error: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(error.name), detail: 'Internet Server Error' })
@@ -374,21 +415,21 @@ export class TablesComponent {
     this.selectTableName = tableData;
     this.datas = [];
     this.keys = [];
-      this.http.allDataTable(String(tableData)).subscribe(
-        (res: any) => {
-          console.log(res);
-          this.Btnfetch = false;
-          this.datas = res;
-          this.keys = Object.keys(this.datas[0]);
-          this.formGroup = this.fb.group({});
-          this.keys.forEach(key => {
-            this.formGroup.addControl(key, this.fb.control(''));
-          });
-        },
-        (err: any) => {
-          console.log(err);
-        }
-      )
+    this.http.allDataTable(String(tableData)).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.Btnfetch = false;
+        this.datas = res;
+        this.keys = Object.keys(this.datas[0]);
+        this.formGroup = this.fb.group({});
+        this.keys.forEach(key => {
+          this.formGroup.addControl(key, this.fb.control(''));
+        });
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    )
 
   }
 
@@ -423,7 +464,7 @@ export class TablesComponent {
       tName: this.selectTableName,
     }
     this.http.getString('port').then(result => {
-      this.http.addData(obj,result).subscribe(
+      this.http.addData(obj, result).subscribe(
         (res: any) => {
           this.msgService.add({ key: 'tst', severity: 'success', summary: "success", detail: 'Data Insert Success' })
         },
@@ -448,7 +489,7 @@ export class TablesComponent {
     };
 
     console.log(obj);
-    
+
 
     // this.http.saveTable(obj).subscribe(
     //   (res: any) => {
@@ -492,7 +533,7 @@ export class TablesComponent {
     //                       }
     //                     }
     //                   )
-    
+
     //                 },
     //                 (err: any) => {
     //                   console.log(err);

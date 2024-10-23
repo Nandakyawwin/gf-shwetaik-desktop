@@ -16,6 +16,12 @@ export class RoleComponent {
 
   tasks: any;
 
+  update: any;
+
+  create: any;
+
+  delete: any;
+
   role_id: any;
 
   roleid: any;
@@ -74,24 +80,21 @@ export class RoleComponent {
 
   constructor(private http: StService, private msgService: MessageService, private router: Router) {
     this.plist = this.http.task;
-    console.log(this.plist);
 
     this.http.getString('user_id').then((result) => {
-      console.log(result);
       this.http.findRoleListByUserId({ user_id: Number(result) }).subscribe(
         (res: any) => {
-          // console.log(res);
           res.data.map((item: any) => {
-            // console.log(item);
             this.http.findPermission({ role_id: item.role.role_id }).subscribe(
               (result: any) => {
                 if (result.length > 0) {
                   let dat = result.data;
                   let L = dat.filter((i: any) => i.task == 'Role');
-                  console.log(L)
                   this.Per = L;
+                  this.update = this.Per[0].update;
+                  this.create = this.Per[0].create;
+                  this.delete = this.Per[0].delete;
 
-                  console.log(this.Per);
                   if (!this.Per[0].read) {
                     alert('You Don\'t have read access');
                     // this.router.navigateByUrl('/');
@@ -131,8 +134,8 @@ export class RoleComponent {
   }
 
   openDialog() {
-    if (this.productDialog == false) {
-      this.productDialog = true;
+    if (this.editDialog == false) {
+      this.editDialog = true;
       this.addOrUpdate = false;
       this.roleName = '';
       this.role_id = '';
@@ -141,7 +144,7 @@ export class RoleComponent {
 
   hideDialog() {
 
-    this.productDialog = false;
+    this.editDialog = false;
     this.submitted = false;
     this.roleName = '';
     this.role_id = '';
@@ -156,10 +159,8 @@ export class RoleComponent {
       delete: true,
       role_id: this.roleid
     }
-    console.log(obj);
     this.http.savePermission(obj).subscribe(
       (res: any) => {
-        console.log(res);
         this.editCRUDDialog = false;
         this.allPermission();
       }
@@ -189,9 +190,27 @@ export class RoleComponent {
       (res: any) => {
         if (res.con) {
           this.msgService.add({ key: 'tst', severity: 'success', summary: 'Success Message', detail: 'User Create Successfully' });
+          console.log(res);
+          this.plist.map((i: any) => {
+            let obj = {
+              task: i.list,
+              read: true,
+              update: true,
+              create: true,
+              delete: true,
+              role_id: res.data.role_id
+            }
+            this.http.savePermission(obj).subscribe(
+              (res: any) => {
+                if (res.con) {
+                  this.editDialog == false;
+                }
+              }
+            )
+          })
           this.roleName = '';
           this.role_id = '';
-          this.productDialog = false;
+          this.editDialog == false
           this.submitted = false;
           this.disabled = false;
 
@@ -219,11 +238,11 @@ export class RoleComponent {
 
   onRowSelect(event: any) {
     this.sole = !this.sole;
-    console.log(event)
+    // console.log(event)
     this.roleid = event.data.role_id;
     this.http.findPermission({ role_id: event.data.role_id }).subscribe(
       (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.con) {
           this.CRUD = res.data;
         }
@@ -237,21 +256,20 @@ export class RoleComponent {
 
 
   onUpdateChange(role: any) {
-    console.log('Update status changed for role:', role);
-    this.http.updatePermission(role).subscribe(
-      (res: any) => {
-        if (res.con) {
-          this.http.findPermission({ role_id: this.roleid }).subscribe(
-            (res: any) => {
-              console.log(res);
-              if (res.con) {
-                this.CRUD = res.data;
-              }
-            }
-          )
-        }
-      }
-    )
+    // this.http.updatePermission(role).subscribe(
+    //   (res: any) => {
+    //     if (res.con) {
+    //       this.http.findPermission({ role_id: this.roleid }).subscribe(
+    //         (res: any) => {
+    //           // console.log(res);
+    //           if (res.con) {
+    //             this.CRUD = res.data;
+    //           }
+    //         }
+    //       )
+    //     }
+    //   }
+    // )
   }
 
   editProduct(event: any) {
@@ -262,7 +280,7 @@ export class RoleComponent {
   }
 
   onRowUnselect(event: any) {
-    console.log(event);
+    // console.log(event);
   };
 
   updateProduct() {
@@ -334,6 +352,24 @@ export class RoleComponent {
       },
       (err: any) => {
         this.msgService.add({ key: 'tst', severity: 'error', summary: JSON.stringify(err.name), detail: 'Internet Server Error' });
+      }
+    )
+  }
+
+  save(ee: any) {
+    console.log(ee);
+    this.http.updatePermission(ee).subscribe(
+      (res: any) => {
+        if (res.con) {
+          this.http.findPermission({ role_id: this.roleid }).subscribe(
+            (res: any) => {
+              // console.log(res);
+              if (res.con) {
+                this.CRUD = res.data;
+              }
+            }
+          )
+        }
       }
     )
   }

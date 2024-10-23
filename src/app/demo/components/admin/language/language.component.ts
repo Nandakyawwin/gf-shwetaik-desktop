@@ -65,6 +65,13 @@ export class LanguageComponent {
   userMange: any;
 
   Per: any;
+
+  update: any;
+
+  create: any;
+
+  delete: any;
+
   constructor(private http: StService, private msgService: MessageService, private router: Router) {
     this.http.getString('user_id').then((result) => {
       console.log(result);
@@ -80,6 +87,10 @@ export class LanguageComponent {
                   let L = dat.filter((i: any) => i.task == 'Language');
                   console.log(L)
                   this.Per = L;
+                  this.update = this.Per[0].update;
+                  this.create = this.Per[0].create;
+                  this.delete = this.Per[0].delete;
+
 
                   console.log(this.Per);
                   if (!this.Per[0].read) {

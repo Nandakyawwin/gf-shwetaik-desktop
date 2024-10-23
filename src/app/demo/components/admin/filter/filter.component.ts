@@ -66,6 +66,11 @@ export class FilterComponent {
 
   addOrUpdate: boolean = false;
 
+  create: any;
+  update: any;
+  delete: any;
+  view: any;
+
   rows = 10;
 
   systemOption_id: any;
@@ -115,6 +120,10 @@ export class FilterComponent {
                   let L = dat.filter((i: any) => i.task == 'Choosing Column');
                   console.log(L)
                   this.Per = L;
+                  this.update = this.Per[0].update;
+                  this.create = this.Per[0].create;
+                  this.delete = this.Per[0].delete;
+
 
                   console.log(this.Per);
                   if (!this.Per[0].read) {
